@@ -6,7 +6,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import {leaflet} from 'leaflet';
 
 @NgModule({
   declarations: [
@@ -14,7 +13,6 @@ import {leaflet} from 'leaflet';
     HomePage
   ],
   imports: [
-    leaflet,
     BrowserModule,
     IonicModule.forRoot(MyApp)
   ],
