@@ -1,5 +1,7 @@
 {
   "name": "Mullentsorgung",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "ionic-angular"
 }
