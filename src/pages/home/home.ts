@@ -63,6 +63,8 @@ export class HomePage {
     this.geolocation.getCurrentPosition().then((resp) => {
       this.lat = resp.coords.latitude
       this.long = resp.coords.longitude
+      // initial View
+      this.map.setView([this.lat, this.long]);
     }).catch((error) => {
       console.log('Error getting location', error);
     });
@@ -72,6 +74,8 @@ export class HomePage {
       // data can be a set of coordinates, or an error (if an error occurred).
       this.lat = data.coords.latitude
       this.long = data.coords.longitude
+      // if follow geopoint is on do next else dont
+      this.map.setView([this.lat, this.long]);
       console.log('LocationSucsess' + this.lat +this.long);
     });
   }
@@ -87,7 +91,6 @@ export class HomePage {
 
     this.map.setZoom(17);
     //this.map.setView([this.lat, this.long]);
-    this.map.setView([52, 8]);
     console.log('MapLoadSuccsess');
   }
 
