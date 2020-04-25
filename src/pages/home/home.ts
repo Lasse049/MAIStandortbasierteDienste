@@ -23,11 +23,15 @@ export class HomePage {
 
   loadmap() {
 
+    // Define and add Leaflet Map with OSM TileLayer
     this.map = leaflet.map("map");
     leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attributions: 'OpenStreetMap',
     }).addTo(this.map);
 
+    this.map.setZoom(17);
+    //this.map.setView([this.lat, this.long]);
+    this.map.setView([53, 8]);
   }
 
 }
