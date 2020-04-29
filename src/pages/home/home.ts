@@ -4,6 +4,8 @@ import { NavController } from 'ionic-angular';
 import leaflet from 'leaflet';
 import { Geolocation } from '@ionic-native/geolocation';
 import {RestProvider} from "../../providers/rest/rest";
+import {ajax} from "rxjs/observable/dom/ajax";
+import {ajaxPost} from "rxjs/observable/dom/AjaxObservable";
 
 @Component({
   selector: 'page-home',
@@ -22,22 +24,22 @@ export class HomePage {
     public navCtrl: NavController,
     private geolocation: Geolocation,
     public restProvider: RestProvider
-    ) {
-    this.getUsers();
-
+  ) {
   }
 
   ionViewDidEnter() {
+    this.getDBData();
     this.getLocation();
     this.loadmap();
   }
 
-  getUsers() {
+  getDBData() {
+    console.log("HelloWhat")
     this.restProvider.getData()
       .then(data => {
-        if(data['trash'])
-        this.dbdata = data;
-        console.log(this.dbdata);
+        console.log("GetDBData");
+        console.log(data);
+        //console.log(this.dbdata.Column[0]);
       });
   }
 
@@ -47,6 +49,7 @@ export class HomePage {
    */
   getData(){
     this.restProvider.getData()
+    console.log("GetData");
       /*
       .then(data => {
         if(data['status'] == 201){
@@ -58,6 +61,8 @@ export class HomePage {
       });
       */
   }
+
+
 
   getLocation(){
     this.geolocation.getCurrentPosition().then((resp) => {

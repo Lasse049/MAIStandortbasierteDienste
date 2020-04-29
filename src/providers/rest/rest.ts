@@ -9,15 +9,18 @@ import { Injectable } from '@angular/core';
 */
 @Injectable()
 export class RestProvider {
-  dburl:string = "http://igf-srv-lehre.igf.uni-osnabrueck.de:37996";
+
+  dburl:string = "http://igf-srv-lehre.igf.uni-osnabrueck.de:33859";
+
   constructor(public http: HttpClient) {
-    console.log('Hello RestProvider Provider');
+    console.log('Hello RestProvider');
   }
 
   public  getData() {
     return new Promise(resolve => {
       this.http.get(this.dburl + '/getData').subscribe(data => {
         resolve(data);
+        console.log(data);
       }, err => {
         console.log(err);
       });
@@ -25,3 +28,5 @@ export class RestProvider {
   }
 
 }
+
+// pm2 start/stop server.js
