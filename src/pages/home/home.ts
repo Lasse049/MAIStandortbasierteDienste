@@ -22,6 +22,7 @@ export class HomePage {
   jsondata: any;
   marker: any;
   timestamp: any;
+  geopoint: any;
 
   constructor(
     public navCtrl: NavController,
@@ -129,7 +130,15 @@ export class HomePage {
 
     bluedot.bindPopup('You are here'+'<br>'+ 'Latitude: ' + this.lat + '</br>' + 'Longitude: ' + this.long + '</br>');
 
-    bluedot.addTo(this.map);
+    if(!bluedot){
+      console.log("no bluedot");
+      bluedot.addTo(this.map);
+    } else {
+      console.log("moving bluedot");
+      var latlng = leaflet.latLng(this.lat, this.long);
+      bluedot.setLatLng(latlng).addTo(this.map);
+      //bluedot.addTo(this.map);
+    }
   }
 
 
@@ -143,6 +152,8 @@ export class HomePage {
       this.lat = data.coords.latitude
       this.long = data.coords.longitude
       this.timestamp = data.timestamp;
+
+      console.log(this.geopoint)
       console.log('LocationSucsess' + this.lat + this.long);
 
       this.showBlueDot();
