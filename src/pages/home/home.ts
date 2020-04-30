@@ -34,7 +34,7 @@ export class HomePage {
     this.getDBData();
     this.getLocation();
     this.loadmap();
-    this.followBlueDot();
+
 
 
   }
@@ -73,7 +73,6 @@ export class HomePage {
         this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sondermuell');
       }
 
-
       markers.addLayer(this.marker);
       console.log("for Markers");
     }
@@ -90,9 +89,7 @@ export class HomePage {
       // initial View
       this.map.setView([this.lat, this.long]);
 
-      if(this.lat!=null){
-        this.showBlueDot();
-      }
+      this.followLocation();
 
     }).catch((error) => {
       console.log('Error getting location', error);
@@ -126,11 +123,11 @@ export class HomePage {
     console.log('Creating Dot Options');
     //let bluedot = leaflet.circle([lat, long],bluedotoptions).addTo(this.map);
     var bluedot
-    bluedot = leaflet.circle([this.lat, this.long],bluedotoptions);
+    bluedot = leaflet.circleMarker([this.lat, this.long],bluedotoptions);
     //leaflet.circleMarker([this.lat, this.long],bluedotoptions).addTo(this.map);
     console.log('Showing Blue dot' + this.lat + this.long);
 
-    bluedot.bindPopup('You are here');
+    bluedot.bindPopup('You are here'+'<br>'+ 'Latitude: ' + this.lat + '</br>' + 'Longitude: ' + this.long + '</br>');
 
     bluedot.addTo(this.map);
   }
@@ -139,7 +136,7 @@ export class HomePage {
 
 
 
-  followBlueDot() {
+  followLocation() {
     let watch = this.geolocation.watchPosition();
     watch.subscribe((data) => {
       // data can be a set of coordinates, or an error (if an error occurred).
@@ -168,6 +165,7 @@ export class HomePage {
     }).addTo(this.map);
 
     this.map.setZoom(17);
+    this.map.setView([0,0])
     //this.map.setView([this.lat, this.long]);
     console.log('MapLoadSuccsess');
 
