@@ -19,6 +19,8 @@ export class HomePage {
   long: any;
   coords: any;
   dbdata: any;
+  jsondata: any;
+  marker: any;
 
   constructor(
     public navCtrl: NavController,
@@ -31,6 +33,9 @@ export class HomePage {
     this.getDBData();
     this.getLocation();
     this.loadmap();
+    this.followBlueDot();
+
+
   }
 
   getDBData() {
@@ -38,33 +43,45 @@ export class HomePage {
     this.restProvider.getData()
       .then(data => {
         console.log("GetDBData");
+        JSON.stringify(data, null,2);
         console.log(data);
-        //console.log(this.dbdata.Column[0]);
+        this.setMarker(data);
+
       });
+
+
   }
 
-  /**
-   * getData()
-   * get Data from Database (Rest Provider)
-   */
-  getData(){
-    this.restProvider.getData()
-    console.log("GetData");
-      /*
-      .then(data => {
-        if(data['status'] == 201){
-          // convert data into JSON-string, no replacer, whitespace 2
-          JSON.stringify(data, null,2);
-          // call function setMarkerForDamage and handover data
-          this.setMarkerForDamage(data);
-        }
-      });
-      */
+  setMarker(data){
+    //this.jsondata = JSON.stringify(data);
+    this.jsondata = data.result;
+    let markers = leaflet.layerGroup().addTo(this.map);
+    console.log("setMarker");
+    console.log(this.jsondata);
+
+    for (let i = 0; i < this.jsondata.length; i++) {
+      this.marker = new leaflet.marker([this.jsondata[i].latitude, this.jsondata[i].longitude]);
+
+      if (this.jsondata[i].hausmuell == true) {
+        this.marker.bindPopup('<br>' +this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Hausmuell');
+      } else if (this.jsondata[i].gruenabfall == true) {
+        this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Gruenabfall');
+      } else if (this.jsondata[i].sperrmuell == true) {
+        this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sperrmuell');
+      } else if (this.jsondata[i].sondermuell == true) {
+        this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sondermuell');
+      }
+
+
+      markers.addLayer(this.marker);
+      console.log("for Markers");
+    }
+
   }
 
 
 
-  getLocation(){
+  getLocation() {
     this.geolocation.getCurrentPosition().then((resp) => {
       this.lat = resp.coords.latitude
       this.long = resp.coords.longitude
@@ -73,17 +90,54 @@ export class HomePage {
     }).catch((error) => {
       console.log('Error getting location', error);
     });
+  }
 
+/*
     let watch = this.geolocation.watchPosition();
     watch.subscribe((data) => {
       // data can be a set of coordinates, or an error (if an error occurred).
       this.lat = data.coords.latitude
       this.long = data.coords.longitude
-      // if follow geopoint is on do next else dont
       this.map.setView([this.lat, this.long]);
-      console.log('LocationSucsess' + this.lat +this.long);
+      console.log('LocationSucsess' + this.lat + this.long);
+
+    });
+    //this.showBlueDot(this.lat, this.long)
+  }
+
+*/
+
+
+
+
+/*
+  showBlueDot(lat,long){
+    const bluedotoptions = {
+      color: 'blue',
+      fillColor: '#f03',
+      fillOpacity: 0.5,
+      radius: leaflet.accuracy
+    }
+
+    console.log('Showing Blue dot' + lat + long);
+    //let bluedot = leaflet.circle([lat, long],bluedotoptions).addTo(this.map);
+    leaflet.marker([lat, long],bluedotoptions).addTo(this.map);
+
+  }
+  */
+
+
+  followBlueDot() {
+    let watch = this.geolocation.watchPosition();
+    watch.subscribe((data) => {
+      // data can be a set of coordinates, or an error (if an error occurred).
+      this.lat = data.coords.latitude
+      this.long = data.coords.longitude
+      this.map.setView([this.lat, this.long]);
+      console.log('LocationSucsess' + this.lat + this.long);
     });
   }
+
 
 
   loadmap() {
