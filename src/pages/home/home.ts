@@ -21,6 +21,7 @@ export class HomePage {
   dbdata: any;
   jsondata: any;
   marker: any;
+  timestamp: any;
 
   constructor(
     public navCtrl: NavController,
@@ -83,10 +84,16 @@ export class HomePage {
 
   getLocation() {
     this.geolocation.getCurrentPosition().then((resp) => {
-      this.lat = resp.coords.latitude
-      this.long = resp.coords.longitude
+      this.lat = resp.coords.latitude;
+      this.long = resp.coords.longitude;
+      this.timestamp = resp.timestamp;
       // initial View
       this.map.setView([this.lat, this.long]);
+
+      if(this.lat!=null){
+        this.showBlueDot();
+      }
+
     }).catch((error) => {
       console.log('Error getting location', error);
     });
@@ -108,23 +115,28 @@ export class HomePage {
 */
 
 
-
-
-/*
-  showBlueDot(lat,long){
+  showBlueDot(){
+    console.log("Entered ShowBlueDot")
     const bluedotoptions = {
-      color: 'blue',
-      fillColor: '#f03',
+      color: '#1e90ff',
+      fillColor: '#1e90ff',
       fillOpacity: 0.5,
-      radius: leaflet.accuracy
+      radius: 5
     }
-
-    console.log('Showing Blue dot' + lat + long);
+    console.log('Creating Dot Options');
     //let bluedot = leaflet.circle([lat, long],bluedotoptions).addTo(this.map);
-    leaflet.marker([lat, long],bluedotoptions).addTo(this.map);
+    var bluedot
+    bluedot = leaflet.circle([this.lat, this.long],bluedotoptions);
+    //leaflet.circleMarker([this.lat, this.long],bluedotoptions).addTo(this.map);
+    console.log('Showing Blue dot' + this.lat + this.long);
 
+    bluedot.bindPopup('You are here');
+
+    bluedot.addTo(this.map);
   }
-  */
+
+
+
 
 
   followBlueDot() {
@@ -133,8 +145,15 @@ export class HomePage {
       // data can be a set of coordinates, or an error (if an error occurred).
       this.lat = data.coords.latitude
       this.long = data.coords.longitude
-      this.map.setView([this.lat, this.long]);
+      this.timestamp = data.timestamp;
       console.log('LocationSucsess' + this.lat + this.long);
+
+      this.showBlueDot();
+
+      // If Button Felix acitve want to... und else nicht
+      this.map.setView([this.lat, this.long]);
+
+
     });
   }
 
@@ -151,6 +170,9 @@ export class HomePage {
     this.map.setZoom(17);
     //this.map.setView([this.lat, this.long]);
     console.log('MapLoadSuccsess');
+
+    console.log("lat: " + this.lat + "long: " + this.long);
+
   }
 
 }
