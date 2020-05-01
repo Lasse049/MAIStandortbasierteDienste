@@ -13,12 +13,12 @@
   <div class="container" style="height:94%">
     <div id="map">
 
-      <button ion-button [color]="buttonColor" (click)="changebool()"><ion-icon name="navigate" isActive="true"></ion-icon> </button>
+      <button ion-button [color]="buttonColor" (click)="startstopfollow()"><ion-icon name="navigate"></ion-icon> </button>
     </div>
 
     <button ion-button (click)="opencheckbox()" id="checkbox"><ion-icon name="add-circle"></ion-icon></button>
-    <button ion-button (click)="standortfind()"><ion-icon name="locate"></ion-icon></button>
-    <button ion-button [color]="buttonColor" (click)="changebool()" id="changeboole"><ion-icon name="navigate" isActive="true"></ion-icon> </button>
+    <button ion-button (click)="zoomonlocation()"><ion-icon name="locate"></ion-icon></button>
+    <button ion-button [color]="buttonColor" (click)="startstopfollow()" id="changeboole"><ion-icon name="navigate"></ion-icon> </button>
     <button ion-button (click)="filter()"><ion-icon name="funnel" isActive="true"></ion-icon> </button>
 
     </div>

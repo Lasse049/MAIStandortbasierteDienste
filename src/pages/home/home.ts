@@ -27,10 +27,12 @@ export class HomePage {
   geopoint: any;
   loconoff: boolean;
   buttonColor: any;
+  watch: any;
+
 
   constructor(
     public navCtrl: NavController,
-    private geolocation: Geolocation,
+    public geolocation: Geolocation,
     public restProvider: RestProvider,
     public alertCtrl: AlertController
   ) {
@@ -38,6 +40,7 @@ export class HomePage {
   }
 
   ionViewDidEnter() {
+
     this.getDBData();
     this.getLocation();
     this.loadmap();
@@ -49,17 +52,7 @@ export class HomePage {
 
 
 
-  changebool() {
-    console.log("changebool")
-    console.log(this.loconoff);
-    if (this.loconoff == false) {
-      this.loconoff = true;
 
-    } else {
-      this.loconoff = false;
-    }
-    console.log(this.loconoff);
-  }
 
   getDBData() {
     console.log("HelloWhat")
@@ -71,8 +64,6 @@ export class HomePage {
         this.setMarker(data);
 
       });
-
-
   }
 
 
@@ -108,7 +99,7 @@ export class HomePage {
       this.long = resp.coords.longitude;
       this.timestamp = resp.timestamp;
       // initial View
-      //this.map.setView([this.lat, this.long]);
+      this.map.setView([this.lat, this.long]);
 
       this.followLocation();
 
@@ -150,23 +141,27 @@ export class HomePage {
 
 
   followLocation() {
-    let watch = this.geolocation.watchPosition();
-    watch.subscribe((data) => {
+    console.log("prelocation is: " + this.loconoff)
+    this.watch = this.geolocation.watchPosition();
+    this.watch.subscribe((data) => {
       // data can be a set of coordinates, or an error (if an error occurred).
       this.lat = data.coords.latitude
       this.long = data.coords.longitude
       this.timestamp = data.timestamp;
-
+      //this.watch.setView = false;
+      console.log("inloc: " + this.loconoff)
+    console.log("watch" + this.watch)
       console.log(this.geopoint)
       console.log('LocationSucsess' + this.lat + this.long);
 
+      console.log("followloc following locatio is: " + this.loconoff)
       this.showBlueDot();
-
+      console.log("after showbluedot following locatio is: " + this.loconoff)
       // If Button Felix acitve want to... und else nicht
 
 
-      this.navanaus();
-
+      this.follownav();
+      console.log("after navanaus following locatio is: " + this.loconoff)
 
 
      // this.map.setView([this.lat, this.long]);
@@ -192,32 +187,49 @@ export class HomePage {
     console.log("lat: " + this.lat + "long: " + this.long);
 
   }
+
   opencheckbox(){
     this.navCtrl.push(CheckboxPage);
 
   }
-  standortfind(){
+
+
+  zoomonlocation(){
     this.map.setView([this.lat, this.long], 17);
   }
 
-  navanaus() {
-    //Lassewarda
-    while (this.loconoff === true) {
-      this.map.followLocation({watch:true, setView: true, zoom: 17})
-      //(this.map.setView([this.lat, this.long]);
-      this.buttonColor = "primary"
-    } if (this.loconoff === false) {
-      this.map.followLocation({watch:true, setView: false, zoom: 17})
-      this.buttonColor = "light"
 
+  startstopfollow() {
+    console.log("changebool")
+    console.log(this.loconoff);
+    if (this.loconoff == false) {
+      this.loconoff = true;
+    } else {
+      this.loconoff = false;
     }
+    console.log(this.loconoff);
+  }
 
-
-
+  follownav() {
+    console.log("navanaus")
+    console.log(this.loconoff)
+    if (this.loconoff) {
+      //this.map.followLocation({watch:true, setView: true, zoom: 17})
+      this.map.setView([this.lat, this.long]);
+      this.buttonColor = "primary";
+    } else {
+      //this.watch.unsubscribe;
+      //this.watch.unsubscribe();
+      //this.map.followLocation({watch:true, setView: false, zoom: 17})
+      this.buttonColor = "light";
     }
+  }
+
+
+
   filter() {
-
     let alert = this.alertCtrl.create();
+
     alert.setTitle('Anzeigefilter');
 
     alert.addInput({
@@ -261,17 +273,27 @@ export class HomePage {
   }
 
 
+
+
   mapisdragged(){
-    this.map.on("drag", function(e) {
-      console.log("Dragqueen")
-      console.log(this.loconoff);
+    console.log("pre Drag: " + this.loconoff);
+    this.map.on("dragstart", function(e) {
+      console.log("Dragging the Map")
       //this.changebool();
       this.loconoff = false;
-      console.log(this.loconoff);
+        console.log("watchmapdragged" + this.watch)
+      //this.watch = this.geolocation.watchPosition();
+      //this.watch = this.geolocation.clearWatch();
+      //this.watch.clearWatch();
+        this.geolocation.clearWatch(this.watch);
+      //Geolocation.clearWarch;
+      console.log("post Drag: " +this.loconoff);
       //var marker = e.target;
       //var position = marker.getLatLng();
       //this.map.panTo(new leaflet.LatLng(position.lat, position.lng));
-    });
+    }
+    );
+    console.log("AfterDrag" + this.loconoff);
   }
 
 
