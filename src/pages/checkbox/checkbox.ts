@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {HomePage} from "../home/home";
 import {root} from "rxjs/util/root";
 import { AlertController } from 'ionic-angular';
-
+//**
 
 @Component({
   selector: 'page-checkbox',
