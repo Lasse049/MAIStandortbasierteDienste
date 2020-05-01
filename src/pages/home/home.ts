@@ -6,6 +6,8 @@ import { Geolocation } from '@ionic-native/geolocation';
 import {RestProvider} from "../../providers/rest/rest";
 import {ajax} from "rxjs/observable/dom/ajax";
 import {ajaxPost} from "rxjs/observable/dom/AjaxObservable";
+import {CheckboxPage} from "../checkbox/checkbox";
+import { AlertController } from 'ionic-angular';
 
 @Component({
   selector: 'page-home',
@@ -23,11 +25,16 @@ export class HomePage {
   marker: any;
   timestamp: any;
   geopoint: any;
+  loconoff: boolean;
+  buttonColor: any;
 
   constructor(
     public navCtrl: NavController,
     private geolocation: Geolocation,
-    public restProvider: RestProvider
+    public restProvider: RestProvider,
+    public alertCtrl: AlertController
+
+
   ) {
   }
 
@@ -159,12 +166,27 @@ export class HomePage {
       this.showBlueDot();
 
       // If Button Felix acitve want to... und else nicht
-      this.map.setView([this.lat, this.long]);
+
+
+      this.navanaus();
+
+
+
+     // this.map.setView([this.lat, this.long]);
 
 
     });
   }
 
+  changebool() {
+    if (this.loconoff == false) {
+      this.loconoff = true;
+    } else {
+      this.loconoff = false;
+
+    }
+
+  }
 
 
   loadmap() {
@@ -183,5 +205,74 @@ export class HomePage {
     console.log("lat: " + this.lat + "long: " + this.long);
 
   }
+  opencheckbox(){
+    this.navCtrl.push(CheckboxPage);
 
-}
+  }
+  standortfind(){
+    this.map.setView([this.lat, this.long], 17);
+  }
+
+  navanaus() {
+
+    if (this.loconoff == true) {
+      this.map.setView([this.lat, this.long]);
+      this.buttonColor = "primary"
+    } else {
+      this.buttonColor = "light"
+
+    }
+
+
+
+    }
+  filter() {
+
+    let alert = this.alertCtrl.create();
+    alert.setTitle('Anzeigefilter');
+
+    alert.addInput({
+      type: 'checkbox',
+      label: 'Sondermüll',
+      value: 'value1',
+      checked: true
+    });
+
+    alert.addInput({
+      type: 'checkbox',
+      label: 'Hausmüll',
+      value: 'value2',
+      checked: true
+    });
+
+    alert.addInput({
+      type: 'checkbox',
+      label: 'Grünabfälle',
+      value: 'value3',
+      checked: true
+    });
+
+    alert.addInput({
+      type: 'checkbox',
+      label: 'Sperrmüll',
+      value: 'value4',
+      checked: true
+    });
+
+    alert.addButton('Cancel');
+    alert.addButton({
+      text: 'Okay',
+      handler: data => {
+        console.log('Checkbox data:', data);
+        this.testCheckboxOpen = false;
+        this.testCheckboxResult = data;
+      }
+    });
+    alert.present();
+  }
+
+
+};
+
+
+

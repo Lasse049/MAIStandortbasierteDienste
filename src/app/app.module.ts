@@ -8,6 +8,7 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { HttpClientModule } from '@angular/common/http';
 import { RestProvider } from '../providers/rest/rest';
+import { CheckboxPage } from '../pages/checkbox/checkbox';
 
 
 
@@ -15,7 +16,8 @@ import { RestProvider } from '../providers/rest/rest';
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    HomePage,
+    CheckboxPage
   ],
   imports: [
     BrowserModule,
@@ -25,7 +27,8 @@ import { RestProvider } from '../providers/rest/rest';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    HomePage,
+    CheckboxPage
   ],
   providers: [
     StatusBar,
