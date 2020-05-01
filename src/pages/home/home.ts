@@ -34,9 +34,7 @@ export class HomePage {
     public restProvider: RestProvider,
     public alertCtrl: AlertController
   ) {
-    document.findElementById('changeboole').addEventListener('click', () => {
-      //your code here
-    });
+
   }
 
   ionViewDidEnter() {
@@ -203,12 +201,13 @@ export class HomePage {
   }
 
   navanaus() {
-
+    //Lassewarda
     while (this.loconoff === true) {
-      this.map.followLocation()
-      this.map.setView([this.lat, this.long]);
+      this.map.followLocation({watch:true, setView: true, zoom: 17})
+      //(this.map.setView([this.lat, this.long]);
       this.buttonColor = "primary"
     } if (this.loconoff === false) {
+      this.map.followLocation({watch:true, setView: false, zoom: 17})
       this.buttonColor = "light"
 
     }
