@@ -36,8 +36,8 @@ export class HomePage {
     public restProvider: RestProvider,
     public alertCtrl: AlertController
   ) {
-
   }
+
 
   ionViewDidEnter() {
 
@@ -46,12 +46,7 @@ export class HomePage {
     this.loadmap();
 
     this.mapisdragged();
-
-
   }
-
-
-
 
 
   getDBData() {
@@ -93,6 +88,7 @@ export class HomePage {
 
   }
 
+
   getLocation() {
     this.geolocation.getCurrentPosition().then((resp) => {
       this.lat = resp.coords.latitude;
@@ -109,7 +105,6 @@ export class HomePage {
   }
 
 
-
   showBlueDot(){
     console.log("Entered ShowBlueDot")
     const bluedotoptions = {
@@ -120,7 +115,7 @@ export class HomePage {
     }
     console.log('Creating Dot Options');
     //let bluedot = leaflet.circle([lat, long],bluedotoptions).addTo(this.map);
-    var bluedot
+    let bluedot
     bluedot = leaflet.circleMarker([this.lat, this.long],bluedotoptions);
     //leaflet.circleMarker([this.lat, this.long],bluedotoptions).addTo(this.map);
     console.log('Showing Blue dot' + this.lat + this.long);
@@ -132,12 +127,11 @@ export class HomePage {
       bluedot.addTo(this.map);
     } else {
       console.log("moving bluedot");
-      var latlng = leaflet.latLng(this.lat, this.long);
+      let latlng = leaflet.latLng(this.lat, this.long);
       bluedot.setLatLng(latlng).addTo(this.map);
       //bluedot.addTo(this.map);
     }
   }
-
 
 
   followLocation() {
@@ -150,29 +144,24 @@ export class HomePage {
       this.timestamp = data.timestamp;
       //this.watch.setView = false;
       console.log("inloc: " + this.loconoff)
-    console.log("watch" + this.watch)
+      console.log("watch" + this.watch)
       console.log(this.geopoint)
       console.log('LocationSucsess' + this.lat + this.long);
 
       console.log("followloc following locatio is: " + this.loconoff)
       this.showBlueDot();
       console.log("after showbluedot following locatio is: " + this.loconoff)
+
       // If Button Felix acitve want to... und else nicht
-
-
       this.follownav();
       console.log("after navanaus following locatio is: " + this.loconoff)
-
-
      // this.map.setView([this.lat, this.long]);
-
 
     });
   }
 
 
   loadmap() {
-
     // Define and add Leaflet Map with OSM TileLayer
     this.map = leaflet.map("map");
     leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -182,15 +171,14 @@ export class HomePage {
     this.map.setZoom(17);
     this.map.setView([0,0])
     //this.map.setView([this.lat, this.long]);
+
     console.log('MapLoadSuccsess');
-
     console.log("lat: " + this.lat + "long: " + this.long);
-
   }
+
 
   opencheckbox(){
     this.navCtrl.push(CheckboxPage);
-
   }
 
 
@@ -202,13 +190,10 @@ export class HomePage {
   startstopfollow() {
     console.log("changebool")
     console.log(this.loconoff);
-    if (this.loconoff == false) {
-      this.loconoff = true;
-    } else {
-      this.loconoff = false;
-    }
+    this.loconoff = !this.loconoff;
     console.log(this.loconoff);
   }
+
 
   follownav() {
     console.log("navanaus")
@@ -224,7 +209,6 @@ export class HomePage {
       this.buttonColor = "light";
     }
   }
-
 
 
   filter() {
@@ -273,8 +257,6 @@ export class HomePage {
   }
 
 
-
-
   mapisdragged(){
     console.log("pre Drag: " + this.loconoff);
     this.map.on("dragstart", function(e) {
@@ -285,20 +267,18 @@ export class HomePage {
       //this.watch = this.geolocation.watchPosition();
       //this.watch = this.geolocation.clearWatch();
       //this.watch.clearWatch();
-        this.geolocation.clearWatch(this.watch);
+      //this.geolocation.clearWatch(this.watch);
       //Geolocation.clearWarch;
-      console.log("post Drag: " +this.loconoff);
+      console.log("post Drag: " + this.loconoff);
       //var marker = e.target;
       //var position = marker.getLatLng();
       //this.map.panTo(new leaflet.LatLng(position.lat, position.lng));
     }
     );
-    console.log("AfterDrag" + this.loconoff);
   }
 
 
-
-};
+}
 
 
 
