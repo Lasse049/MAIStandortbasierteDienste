@@ -4,6 +4,7 @@ import {HomePage} from "../home/home";
 import {root} from "rxjs/util/root";
 import { AlertController } from 'ionic-angular';
 //**
+//Lasse
 
 @Component({
   selector: 'page-checkbox',

@@ -108,7 +108,7 @@ export class HomePage {
       this.long = resp.coords.longitude;
       this.timestamp = resp.timestamp;
       // initial View
-      this.map.setView([this.lat, this.long]);
+      //this.map.setView([this.lat, this.long]);
 
       this.followLocation();
 
