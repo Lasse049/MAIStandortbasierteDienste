@@ -45,7 +45,8 @@ export class HomePage {
     this.getLocation();
     this.loadmap();
 
-    this.mapisdragged();
+
+    //this.mapisdragged();
   }
 
 
@@ -96,12 +97,14 @@ export class HomePage {
       this.timestamp = resp.timestamp;
       // initial View
       this.map.setView([this.lat, this.long]);
+      this.watchlocation();
+      this.showBlueDot();
 
-      this.followLocation();
 
     }).catch((error) => {
       console.log('Error getting location', error);
     });
+
   }
 
 
@@ -134,7 +137,7 @@ export class HomePage {
   }
 
 
-  followLocation() {
+  watchlocation() {
     console.log("prelocation is: " + this.loconoff)
     this.watch = this.geolocation.watchPosition();
     this.watch.subscribe((data) => {
@@ -149,9 +152,9 @@ export class HomePage {
       console.log('LocationSucsess' + this.lat + this.long);
 
       console.log("followloc following locatio is: " + this.loconoff)
-      this.showBlueDot();
-      console.log("after showbluedot following locatio is: " + this.loconoff)
 
+      console.log("after showbluedot following locatio is: " + this.loconoff)
+      //this.showBlueDot();
       // If Button Felix acitve want to... und else nicht
       this.follownav();
       console.log("after navanaus following locatio is: " + this.loconoff)
@@ -174,6 +177,24 @@ export class HomePage {
 
     console.log('MapLoadSuccsess');
     console.log("lat: " + this.lat + "long: " + this.long);
+
+    this.map.on("dragstart", function(e) {
+        console.log("Dragging the Map")
+        //this.changebool();
+        this.loconoff = false;
+        console.log("watchmapdragged" + this.watch)
+        //this.watch = this.geolocation.watchPosition();
+        //this.watch = this.geolocation.clearWatch();
+        //this.watch.clearWatch();
+        //this.geolocation.clearWatch(this.watch);
+        //Geolocation.clearWarch;
+        console.log("post Drag: " + this.loconoff);
+        //var marker = e.target;
+        //var position = marker.getLatLng();
+        //this.map.panTo(new leaflet.LatLng(position.lat, position.lng));
+      }
+    );
+
   }
 
 
@@ -190,6 +211,7 @@ export class HomePage {
   startstopfollow() {
     console.log("changebool")
     console.log(this.loconoff);
+
     this.loconoff = !this.loconoff;
     console.log(this.loconoff);
   }
@@ -198,11 +220,13 @@ export class HomePage {
   follownav() {
     console.log("navanaus")
     console.log(this.loconoff)
-    if (this.loconoff) {
+    if (this.loconoff === true) {
       //this.map.followLocation({watch:true, setView: true, zoom: 17})
+      //this.watch.subscribe();
       this.map.setView([this.lat, this.long]);
       this.buttonColor = "primary";
     } else {
+      //this.watch.unsubscribe();
       //this.watch.unsubscribe;
       //this.watch.unsubscribe();
       //this.map.followLocation({watch:true, setView: false, zoom: 17})
@@ -256,7 +280,7 @@ export class HomePage {
     alert.present();
   }
 
-
+/*
   mapisdragged(){
     console.log("pre Drag: " + this.loconoff);
     this.map.on("dragstart", function(e) {
@@ -276,6 +300,8 @@ export class HomePage {
     }
     );
   }
+
+ */
 
 
 }
