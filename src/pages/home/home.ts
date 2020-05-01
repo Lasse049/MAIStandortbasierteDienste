@@ -25,9 +25,10 @@ export class HomePage {
   marker: any;
   timestamp: any;
   geopoint: any;
-  loconoff: boolean;
+  loconoff: boolean = true;
   buttonColor: any;
   watch: any;
+  subscription: any;
 
 
   constructor(
@@ -97,9 +98,8 @@ export class HomePage {
       this.timestamp = resp.timestamp;
       // initial View
       this.map.setView([this.lat, this.long]);
-      this.watchlocation();
       this.showBlueDot();
-
+      this.followLocation();
 
     }).catch((error) => {
       console.log('Error getting location', error);
@@ -137,10 +137,10 @@ export class HomePage {
   }
 
 
-  watchlocation() {
+  followLocation() {
     console.log("prelocation is: " + this.loconoff)
     this.watch = this.geolocation.watchPosition();
-    this.watch.subscribe((data) => {
+    this.subscription = this.watch.subscribe((data) => {
       // data can be a set of coordinates, or an error (if an error occurred).
       this.lat = data.coords.latitude
       this.long = data.coords.longitude
@@ -211,7 +211,6 @@ export class HomePage {
   startstopfollow() {
     console.log("changebool")
     console.log(this.loconoff);
-
     this.loconoff = !this.loconoff;
     console.log(this.loconoff);
   }
@@ -220,12 +219,31 @@ export class HomePage {
   follownav() {
     console.log("navanaus")
     console.log(this.loconoff)
-    if (this.loconoff === true) {
+    if (this.loconoff) {
       //this.map.followLocation({watch:true, setView: true, zoom: 17})
       //this.watch.subscribe();
       this.map.setView([this.lat, this.long]);
+      //this.map.stopLocate();
+      /*
+      this.map.locate({
+        watch: true,
+        setView: true,
+        zoom: 15
+      })
+      */
       this.buttonColor = "primary";
+      this.followLocation();
     } else {
+      this.subscription.unsubscribe();
+      /*
+      this.map.locate({
+        watch: true,
+        setView: false,
+        zoom: 15
+      })
+      */
+
+      //this.map.stopLocate();
       //this.watch.unsubscribe();
       //this.watch.unsubscribe;
       //this.watch.unsubscribe();
