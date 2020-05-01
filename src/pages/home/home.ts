@@ -33,9 +33,10 @@ export class HomePage {
     private geolocation: Geolocation,
     public restProvider: RestProvider,
     public alertCtrl: AlertController
-
-
   ) {
+    document.findElementById('changeboole').addEventListener('click', () => {
+      //your code here
+    });
   }
 
   ionViewDidEnter() {
@@ -43,8 +44,23 @@ export class HomePage {
     this.getLocation();
     this.loadmap();
 
+    this.mapisdragged();
 
 
+  }
+
+
+
+  changebool() {
+    console.log("changebool")
+    console.log(this.loconoff);
+    if (this.loconoff == false) {
+      this.loconoff = true;
+
+    } else {
+      this.loconoff = false;
+    }
+    console.log(this.loconoff);
   }
 
   getDBData() {
@@ -60,6 +76,7 @@ export class HomePage {
 
 
   }
+
 
   setMarker(data){
     //this.jsondata = JSON.stringify(data);
@@ -87,8 +104,6 @@ export class HomePage {
 
   }
 
-
-
   getLocation() {
     this.geolocation.getCurrentPosition().then((resp) => {
       this.lat = resp.coords.latitude;
@@ -104,20 +119,6 @@ export class HomePage {
     });
   }
 
-/*
-    let watch = this.geolocation.watchPosition();
-    watch.subscribe((data) => {
-      // data can be a set of coordinates, or an error (if an error occurred).
-      this.lat = data.coords.latitude
-      this.long = data.coords.longitude
-      this.map.setView([this.lat, this.long]);
-      console.log('LocationSucsess' + this.lat + this.long);
-
-    });
-    //this.showBlueDot(this.lat, this.long)
-  }
-
-*/
 
 
   showBlueDot(){
@@ -150,8 +151,6 @@ export class HomePage {
 
 
 
-
-
   followLocation() {
     let watch = this.geolocation.watchPosition();
     watch.subscribe((data) => {
@@ -176,16 +175,6 @@ export class HomePage {
 
 
     });
-  }
-
-  changebool() {
-    if (this.loconoff == false) {
-      this.loconoff = true;
-    } else {
-      this.loconoff = false;
-
-    }
-
   }
 
 
@@ -215,10 +204,11 @@ export class HomePage {
 
   navanaus() {
 
-    if (this.loconoff == true) {
+    while (this.loconoff === true) {
+      this.map.followLocation()
       this.map.setView([this.lat, this.long]);
       this.buttonColor = "primary"
-    } else {
+    } if (this.loconoff === false) {
       this.buttonColor = "light"
 
     }
@@ -270,6 +260,21 @@ export class HomePage {
     });
     alert.present();
   }
+
+
+  mapisdragged(){
+    this.map.on("drag", function(e) {
+      console.log("Dragqueen")
+      console.log(this.loconoff);
+      //this.changebool();
+      this.loconoff = false;
+      console.log(this.loconoff);
+      //var marker = e.target;
+      //var position = marker.getLatLng();
+      //this.map.panTo(new leaflet.LatLng(position.lat, position.lng));
+    });
+  }
+
 
 
 };
