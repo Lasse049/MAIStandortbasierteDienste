@@ -171,17 +171,18 @@ export class HomePage {
       attributions: 'OpenStreetMap',
     }).addTo(this.map);
 
-    this.map.setZoom(17);
+    this.map.setZoom(25);
     this.map.setView([0,0])
     //this.map.setView([this.lat, this.long]);
 
     console.log('MapLoadSuccsess');
     console.log("lat: " + this.lat + "long: " + this.long);
 
-    this.map.on("dragstart", function(e) {
+    this.map.on("dragend", function(e) {
         console.log("Dragging the Map")
         //this.changebool();
         this.loconoff = false;
+        this.follownav();
         console.log("watchmapdragged" + this.watch)
         //this.watch = this.geolocation.watchPosition();
         //this.watch = this.geolocation.clearWatch();
@@ -213,6 +214,7 @@ export class HomePage {
     console.log(this.loconoff);
     this.loconoff = !this.loconoff;
     console.log(this.loconoff);
+    this.follownav();
   }
 
 
