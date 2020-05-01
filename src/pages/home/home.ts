@@ -262,11 +262,11 @@ export class HomePage {
     alert.addButton('Cancel');
     alert.addButton({
       text: 'Okay',
-      handler: data => {
+     /* handler: data => {
         console.log('Checkbox data:', data);
         this.testCheckboxOpen = false;
         this.testCheckboxResult = data;
-      }
+      }*/
     });
     alert.present();
   }

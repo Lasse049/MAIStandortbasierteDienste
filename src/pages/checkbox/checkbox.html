@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Abfallart
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-item id="nutzer">
+    <ion-label id="username">Benutzername:   </ion-label>
+    <ion-input id="input">   </ion-input>
+  </ion-item>
+
+
+
+  <p> Bitte geben Sie die aufgefundenen Abfallarten an!</p>
+  <ion-list>
+
+    <ion-item>
+      <ion-label id="hausmuell">Hausmuell</ion-label>
+      <ion-checkbox [(ngModel)]="Hausmuell" (ionChange)="updateHausmuell()"></ion-checkbox>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Sondermuell</ion-label>
+      <ion-checkbox [(ngModel)]="Sondermuell" (ionChange)="updateSondermuell()"></ion-checkbox>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Grünabfall</ion-label>
+      <ion-checkbox [(ngModel)]="Gruenabfall" (ionChange)="updateGruenabfall()"></ion-checkbox>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Sperrmuell</ion-label>
+      <ion-checkbox [(ngModel)]="Sperrmuell" (ionChange)="updateSperrmuell()"></ion-checkbox>
+    </ion-item>
+
+  </ion-list>
+  <button ion-button round outline (click)="absend()">Absenden</button>
+  <button ion-button round outline (click)="logEvent()">Zurück</button>
+</ion-content>
