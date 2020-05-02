@@ -4,6 +4,8 @@ import {HomePage} from "../home/home";
 import {root} from "rxjs/util/root";
 import { AlertController } from 'ionic-angular';
 
+import {ProviderPhotoProvider} from "../../providers/photo/photo";
+
 //Lasse
 //2.TEst
 //felix test
@@ -19,7 +21,7 @@ export class CheckboxPage {
   root: any;
   input: any;
 
-  constructor(public navCtrl: NavController,public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController,public alertCtrl: AlertController, public photoProvider: ProviderPhotoProvider) {
 
   }
   updateHausmuell() {

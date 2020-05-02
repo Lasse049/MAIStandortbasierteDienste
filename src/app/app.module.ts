@@ -10,6 +10,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { RestProvider } from '../providers/rest/rest';
 import { CheckboxPage } from '../pages/checkbox/checkbox';
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ProviderPhotoProvider } from '../providers/photo/photo';
 
 
 
@@ -35,7 +37,11 @@ import { CheckboxPage } from '../pages/checkbox/checkbox';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     RestProvider,
-    Geolocation
+    Geolocation,
+    ProviderPhotoProvider,
+  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
   ]
 })
 export class AppModule {}
