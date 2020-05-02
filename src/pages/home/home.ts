@@ -4,10 +4,10 @@ import { NavController } from 'ionic-angular';
 import leaflet from 'leaflet';
 import { Geolocation } from '@ionic-native/geolocation';
 import {RestProvider} from "../../providers/rest/rest";
-import {ajax} from "rxjs/observable/dom/ajax";
-import {ajaxPost} from "rxjs/observable/dom/AjaxObservable";
 import {CheckboxPage} from "../checkbox/checkbox";
 import { AlertController } from 'ionic-angular';
+
+
 
 @Component({
   selector: 'page-home',
@@ -29,7 +29,7 @@ export class HomePage {
   buttonColor: any;
   watch: any;
   subscription: any;
-
+  bluedot: any;
 
   constructor(
     public navCtrl: NavController,
@@ -110,30 +110,35 @@ export class HomePage {
 
   showBlueDot(){
     console.log("Entered ShowBlueDot")
-    const bluedotoptions = {
-      color: '#1e90ff',
-      fillColor: '#1e90ff',
-      fillOpacity: 0.5,
-      radius: 5
-    }
-    console.log('Creating Dot Options');
+
+
     //let bluedot = leaflet.circle([lat, long],bluedotoptions).addTo(this.map);
-    let bluedot
-    bluedot = leaflet.circleMarker([this.lat, this.long],bluedotoptions);
+
+
     //leaflet.circleMarker([this.lat, this.long],bluedotoptions).addTo(this.map);
-    console.log('Showing Blue dot' + this.lat + this.long);
 
-    bluedot.bindPopup('You are here'+'<br>'+ 'Latitude: ' + this.lat + '</br>' + 'Longitude: ' + this.long + '</br>');
-
-    if(!bluedot){
+    if(this.bluedot == null){
       console.log("no bluedot");
-      bluedot.addTo(this.map);
+      console.log('Creating Dot Options');
+      const bluedotoptions = {
+        color: '#1e90ff',
+        fillColor: '#1e90ff',
+        fillOpacity: 0.5,
+        radius: 5
+      }
+      this.bluedot = leaflet.circleMarker([this.lat, this.long],bluedotoptions);
+      this.bluedot.addTo(this.map);
+      console.log("added bluedot");
     } else {
       console.log("moving bluedot");
       let latlng = leaflet.latLng(this.lat, this.long);
-      bluedot.setLatLng(latlng).addTo(this.map);
-      //bluedot.addTo(this.map);
+
+      this.bluedot.setLatLng(latlng);
+        //.addTo(this.map);
+      //this.bluedot.addTo(this.map);
     }
+    console.log('Showing Blue dot' + this.lat + this.long);
+    this.bluedot.bindPopup('You are here'+'<br>'+ 'Latitude: ' + this.lat + '</br>' + 'Longitude: ' + this.long + '</br>');
   }
 
 
