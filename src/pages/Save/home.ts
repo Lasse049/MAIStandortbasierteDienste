@@ -137,6 +137,10 @@ export class HomePage {
   }
 
 
+  leafletlocation(){
+    
+  }
+
   followLocation() {
     console.log("prelocation is: " + this.loconoff)
     this.watch = this.geolocation.watchPosition();
@@ -146,10 +150,19 @@ export class HomePage {
       this.long = data.coords.longitude
       this.timestamp = data.timestamp;
       //this.watch.setView = false;
+      console.log("inloc: " + this.loconoff)
+      console.log("watch" + this.watch)
+      console.log(this.geopoint)
       console.log('LocationSucsess' + this.lat + this.long);
 
-      this.showBlueDot();
+      console.log("followloc following locatio is: " + this.loconoff)
+
+      console.log("after showbluedot following locatio is: " + this.loconoff)
+      //this.showBlueDot();
+      // If Button Felix acitve want to... und else nicht
       this.follownav();
+      console.log("after navanaus following locatio is: " + this.loconoff)
+     // this.map.setView([this.lat, this.long]);
 
     });
   }
@@ -161,44 +174,69 @@ export class HomePage {
     leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attributions: 'OpenStreetMap',
     }).addTo(this.map);
+
     this.map.setZoom(25);
     this.map.setView([0,0])
     //this.map.setView([this.lat, this.long]);
+
     console.log('MapLoadSuccsess');
     console.log("lat: " + this.lat + "long: " + this.long);
 
 
+
+
+
     this.map.on("dragend", function(e) {
         console.log("Dragging the Map")
-        //let something = e.latlng;
-          //console.log(something);
-      //this.simplemethod();
+
+        //this.subscription.unsubscribe();
         //this.changebool();
         this.loconoff = false;
         //this.follownav();
-        //console.log("watchmapdragged" + this.watch)
+        console.log("watchmapdragged" + this.watch)
         //this.watch = this.geolocation.watchPosition();
         //this.watch = this.geolocation.clearWatch();
         //this.watch.clearWatch();
         //this.geolocation.clearWatch(this.watch);
         //Geolocation.clearWarch;
-        console.log("post Drag: " + this.loconoff);
+        //console.log("post Drag: " + this.loconoff);
         //var marker = e.target;
         //var position = marker.getLatLng();
         //this.map.panTo(new leaflet.LatLng(position.lat, position.lng));
-      }.bind(this)
+      //return this.loconoff;
+      }
+
     );
-
-
 
   }
 
+
+  opencheckbox(){
+    this.navCtrl.push(CheckboxPage);
+  }
+
+
+  zoomonlocation(){
+    this.map.setView([this.lat, this.long], 17);
+  }
+
+
+  startstopfollow() {
+   //console.log("changebool")
+   // console.log(this.loconoff);
+    this.loconoff = !this.loconoff;
+    console.log(this.loconoff);
+    if (this.loconoff === true) {
+    this.followLocation();
+    //this.subscription.subscribe();
+    }
+  }
+
+
   follownav() {
-    console.log("navanaus")
-    console.log(this.loconoff)
+    //console.log("navanaus")
+    //console.log(this.loconoff)
     if (this.loconoff) {
-      console.log("follownav is on")
-      this.buttonColor = "primary";
       //this.map.followLocation({watch:true, setView: true, zoom: 17})
       //this.watch.subscribe();
       this.map.setView([this.lat, this.long]);
@@ -210,9 +248,10 @@ export class HomePage {
         zoom: 15
       })
       */
+      this.buttonColor = "primary";
+      this.followLocation();
     } else {
-      console.log("follownav is OFF")
-      //this.watch.subscription.unsubscribe();
+      //this.subscription.unsubscribe();
       /*
       this.map.locate({
         watch: true,
@@ -229,29 +268,6 @@ export class HomePage {
       this.buttonColor = "light";
     }
   }
-
-  simplemethod(){
-    console.log("its simple")
-  }
-
-  opencheckbox(){
-    this.navCtrl.push(CheckboxPage);
-  }
-
-
-  zoomonlocation(){
-    this.map.setView([this.lat, this.long], 17);
-  }
-
-
-  startstopfollow() {
-    console.log("changebool")
-    this.loconoff = !this.loconoff;
-    this.follownav();
-  }
-
-
-
 
 
   filter() {
@@ -290,15 +306,40 @@ export class HomePage {
     alert.addButton('Cancel');
     alert.addButton({
       text: 'Okay',
-      /* handler: data => {
-         console.log('Checkbox data:', data);
-         this.testCheckboxOpen = false;
-         this.testCheckboxResult = data;
-       }*/
+     /* handler: data => {
+        console.log('Checkbox data:', data);
+        this.testCheckboxOpen = false;
+        this.testCheckboxResult = data;
+      }*/
     });
     alert.present();
   }
 
+/*
+  mapisdragged(){
+    console.log("pre Drag: " + this.loconoff);
+    this.map.on("dragstart", function(e) {
+      console.log("Dragging the Map")
+      //this.changebool();
+      this.loconoff = false;
+        console.log("watchmapdragged" + this.watch)
+      //this.watch = this.geolocation.watchPosition();
+      //this.watch = this.geolocation.clearWatch();
+      //this.watch.clearWatch();
+      //this.geolocation.clearWatch(this.watch);
+      //Geolocation.clearWarch;
+      console.log("post Drag: " + this.loconoff);
+      //var marker = e.target;
+      //var position = marker.getLatLng();
+      //this.map.panTo(new leaflet.LatLng(position.lat, position.lng));
+    }
+    );
+  }
+
+ */
+
+
 }
+
 
 
