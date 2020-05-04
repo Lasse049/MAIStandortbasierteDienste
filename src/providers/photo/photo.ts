@@ -19,6 +19,8 @@ const { Camera, Filesystem, Storage } = Plugins;
 @Injectable()
 export class ProviderPhotoProvider {
 
+  picture:any;
+
   constructor(public http: HttpClient) {
     console.log('Hello ProviderPhotoProvider Provider');
   }
@@ -27,11 +29,16 @@ export class ProviderPhotoProvider {
 
   public async addNewToGallery() {
     // Take a photo
-    const capturedPhoto = await Camera.getPhoto({
-      resultType: CameraResultType.Uri,
-      source: CameraSource.Camera,
-      quality: 100
-    });
+    try {
+      const capturedPhoto = await Camera.getPhoto({
+        resultType: CameraResultType.Uri,
+        source: CameraSource.Camera,
+        quality: 100
+      });
+      this.picture = capturedPhoto.base64String;
+    } catch (error) {
+      console.error(error);
+    }
 
   }
 
