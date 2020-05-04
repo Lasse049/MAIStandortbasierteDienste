@@ -50,7 +50,10 @@ export class HomePage {
 
 
     this.getLocation();
-    this.loadmap();
+    if (this.map==null){
+      this.loadmap();
+    }
+
     //this.getLocation();
     //this.loadmap();
 
@@ -279,7 +282,16 @@ export class HomePage {
   }
 
   opencheckbox(){
-    this.navCtrl.push(CheckboxPage);
+    this.navCtrl.push(CheckboxPage,
+      {
+        data:this.jsondata,
+        long:this.long,
+        lat:this.lat,
+        time:this.timestamp,
+      },{},function(e){
+      console.log("data pushed");
+      }
+      );
   }
 
   openfilterbox(){

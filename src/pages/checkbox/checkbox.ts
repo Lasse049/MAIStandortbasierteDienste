@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {HomePage} from "../home/home";
 import {root} from "rxjs/util/root";
 import { AlertController } from 'ionic-angular';
-
+import { HttpClient } from '@angular/common/http';
 import {ProviderPhotoProvider} from "../../providers/photo/photo";
+import { Events } from 'ionic-angular';
 
 
 @Component({
@@ -18,8 +19,26 @@ export class CheckboxPage {
   Sperrmuell: boolean;
   root: any;
   input: any;
+  latitude: any;
+  longitude: any;
+  data: any;
+  username: any;
+  timestamp: any;
 
-  constructor(public navCtrl: NavController,public alertCtrl: AlertController, public photoProvider: ProviderPhotoProvider) {
+  constructor(
+    public navCtrl: NavController,
+    public alertCtrl: AlertController,
+    public photoProvider: ProviderPhotoProvider,
+    public navParams: NavParams,
+    public loadingCtrl: LoadingController,
+    public http: HttpClient,
+    public event: Events
+  )
+  {
+    this.latitude = this.navParams.get('lat');
+    this.longitude = this.navParams.get('long');
+    this.timestamp = this.navParams.get('time');
+    this.data = this.navParams.get('data');
 
   }
   updateHausmuell() {
@@ -43,17 +62,90 @@ export class CheckboxPage {
     this.navCtrl.popToRoot(root);
   }
 
-  absend() {
+  send() {
+    // zeile löschen
+    let photo = null;
+    this.sendtoserver(photo);
+    /*
     if (this.Hausmuell== false && this.Gruenabfall == false && this.Sperrmuell == false && this.Sondermuell == false) {
-    this.showAlertma()
-      if (this.input == null) {
-        this.showAlertnu()
-      }
-  } else {
-    //senden einfügen
-  }
+      this.showAlertma()
+        if (this.input == null) {
+          this.showAlertnu()
+        }
+      } else {
+        if(this.longitude != null && this.latitude != null){
+        this.sendtoserver(photo);
+        }
+    }
+   */
 
   }
+
+  sendtoserver(photo) {
+    console.log("sendToserver Ausgeloest");
+    ///////// TESTDATEN//////////
+    this.username="cccfake";
+    this.latitude=52;
+    this.longitude=8;
+    this.Hausmuell=true;
+    this.Sondermuell=false;
+    this.Gruenabfall=false;
+    this.Sperrmuell=false;
+    /////////////////////////////
+
+    let sending = this.loadingCtrl.create({
+      content: 'Sending Data',
+      spinner: 'bubbles'
+    });
+    //sending.present();
+
+    const url = "http://igf-srv-lehre.igf.uni-osnabrueck.de:33859/send"
+    let data = {
+      time: this.timestamp,
+      user: this.username,
+      lat: this.latitude,
+      long: this.longitude,
+      haustrash: this.Hausmuell,
+      sondertrash: this.Sondermuell,
+      gruentrash: this.Gruenabfall,
+      sperrtrash: this.Sperrmuell,
+      picture: photo
+    };
+    //this.http.post(url,data).subscribe();
+    this.http.post(url, data).subscribe(e => {
+      console.log("Data has been sent");
+      //sending.dismissAll()
+    }, err => {
+      console.log("Could not send data");
+      console.log(err);
+      //sending.dismissAll()
+    });
+
+  }
+
+  /*
+    this.http.post(url, data).subscribe((response) => {
+
+      console.log("senden erfolgreich");
+      sending.dismiss();
+      //this.navCtrl.pop();
+      this.alertCtrl.create({
+        title: 'Daten gesendet!',
+        subTitle: 'Vielen Dank',
+        buttons: ['OK']
+      }).present(),
+        console.log("senden fehlgeschlagen");
+        sending.dismiss();
+        this.alertCtrl.create({
+          title: 'Fehler!',
+          subTitle: 'Daten konnten nicht gesendet werden',
+          buttons: ['OK']
+        }).present();
+console.log(this.longitude);
+    });
+
+
+   */
 
   showAlertma() {
     const alert = this.alertCtrl.create({
@@ -73,6 +165,10 @@ export class CheckboxPage {
     });
 
     alert.present();
+  }
+
+  ionViewDidLeave() {
+    //Send Data back to home
   }
 
 }

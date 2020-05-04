@@ -48,4 +48,8 @@ export class FilterboxPage {
     console.log('ionViewDidLoad FilterboxPage');
   }
 
+  ionViewDidLeave() {
+    //Send Data back to home
+  }
+
 }
