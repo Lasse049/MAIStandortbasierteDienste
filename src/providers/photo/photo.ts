@@ -35,7 +35,33 @@ export class ProviderPhotoProvider {
 
   }
 
+  /**
+   *
+   *
+   *    Falls das so wie oben nicht geht kannst dus sonst mal so versuchen
+   *
+   *
+   *
+       import { Camera, CameraOptions } from '@ionic-native/camera';
 
+       constructor
+       private camera: Camera;
+
+        const options: CameraOptions = {
+            destinationType: this.camera.DestinationType.DATA_URL,
+            encodingType: this.camera.EncodingType.JPEG,
+            mediaType: this.camera.MediaType.PICTURE,
+            saveToPhotoAlbum: true,
+            quality: x
+          }
+          this.camera.getPicture(options).then((imageData) => {
+            var x = 'data:image/jpeg;base64,' + imageData;
+            this.sendToServer(x);
+          }, (err) => {
+      });
+   *
+   *
+   */
 
 
 }
