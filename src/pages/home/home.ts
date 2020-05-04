@@ -5,6 +5,7 @@ import leaflet from 'leaflet';
 import { Geolocation } from '@ionic-native/geolocation';
 import {RestProvider} from "../../providers/rest/rest";
 import {CheckboxPage} from "../checkbox/checkbox";
+import {FilterboxPage} from "../filterbox/filterbox";
 import { AlertController } from 'ionic-angular';
 
 
@@ -30,6 +31,10 @@ export class HomePage {
   watch: any;
   subscription: any;
   bluedot: any;
+  testCheckboxResult: any;
+  testCheckboxOpen: any;
+ options: any
+  data:any
 
   constructor(
     public navCtrl: NavController,
@@ -59,7 +64,7 @@ export class HomePage {
         JSON.stringify(data, null,2);
         console.log(data);
         this.setMarker(data);
-
+        return (data)
       });
   }
 
@@ -192,6 +197,8 @@ export class HomePage {
         //var position = marker.getLatLng();
         //this.map.panTo(new leaflet.LatLng(position.lat, position.lng));
       }.bind(this)
+
+
     );
 
 
@@ -243,6 +250,10 @@ export class HomePage {
     this.navCtrl.push(CheckboxPage);
   }
 
+  openfilterbox(){
+    this.navCtrl.push(FilterboxPage);
+  }
+
 
   zoomonlocation(){
     this.map.setView([this.lat, this.long], 17);
@@ -254,8 +265,36 @@ export class HomePage {
     this.loconoff = !this.loconoff;
     this.follownav();
   }
+/*
+  filter(data) {
 
-
+    this.jsondata = data.result;
+    // -) Loop and set the array item checked to match current setting
+    let AlertInputs = this.jsondata.filter((Item) => {
+      // add 'checked' to each object in our array
+      Item['checked'] = Item['label'] === this.options.PauseAfter
+      return Item
+    })
+    // -) Setup alert
+    let Alert = this.alertCtrl.create({
+      title: 'Pause After Selection',
+      message: 'Make a selection...',
+      // https://ionicframework.com/docs/components/#alert-radio
+      inputs:
+      AlertInputs,
+      buttons: [{
+        text: 'Ok',
+        handler: (data) => {
+          // INOTE: storing the label, but you can store the index :)
+          this.options.PauseAfter = this.jsondata[data].label
+        }
+      },
+      ]
+    });
+    // Show the alert
+    Alert.present();
+  }
+*/
 
 
 
@@ -268,38 +307,38 @@ export class HomePage {
       type: 'checkbox',
       label: 'Sondermüll',
       value: 'value1',
-      checked: true
+
     });
 
     alert.addInput({
       type: 'checkbox',
       label: 'Hausmüll',
       value: 'value2',
-      checked: true
+
     });
 
     alert.addInput({
       type: 'checkbox',
       label: 'Grünabfälle',
       value: 'value3',
-      checked: true
+
     });
 
     alert.addInput({
       type: 'checkbox',
       label: 'Sperrmüll',
       value: 'value4',
-      checked: true
+
     });
 
     alert.addButton('Cancel');
     alert.addButton({
       text: 'Okay',
-      /* handler: data => {
+      handler: data => {
          console.log('Checkbox data:', data);
          this.testCheckboxOpen = false;
          this.testCheckboxResult = data;
-       }*/
+       }
     });
     alert.present();
   }

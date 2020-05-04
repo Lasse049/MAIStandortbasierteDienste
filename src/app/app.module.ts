@@ -11,6 +11,7 @@ import { RestProvider } from '../providers/rest/rest';
 import { CheckboxPage } from '../pages/checkbox/checkbox';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ProviderPhotoProvider } from '../providers/photo/photo';
+import {FilterboxPage} from "../pages/filterbox/filterbox";
 
 
 
@@ -18,7 +19,8 @@ import { ProviderPhotoProvider } from '../providers/photo/photo';
   declarations: [
     MyApp,
     HomePage,
-    CheckboxPage
+    CheckboxPage,
+    FilterboxPage
   ],
   imports: [
     BrowserModule,
@@ -29,7 +31,8 @@ import { ProviderPhotoProvider } from '../providers/photo/photo';
   entryComponents: [
     MyApp,
     HomePage,
-    CheckboxPage
+    CheckboxPage,
+    FilterboxPage
   ],
   providers: [
     StatusBar,

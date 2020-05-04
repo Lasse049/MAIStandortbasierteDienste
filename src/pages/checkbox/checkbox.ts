@@ -6,9 +6,7 @@ import { AlertController } from 'ionic-angular';
 
 import {ProviderPhotoProvider} from "../../providers/photo/photo";
 
-//Lasse
-//2.TEst
-//felix test
+
 @Component({
   selector: 'page-checkbox',
   templateUrl: 'checkbox.html'
