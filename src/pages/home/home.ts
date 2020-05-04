@@ -7,6 +7,7 @@ import {RestProvider} from "../../providers/rest/rest";
 import {CheckboxPage} from "../checkbox/checkbox";
 import {FilterboxPage} from "../filterbox/filterbox";
 import { AlertController } from 'ionic-angular';
+import {e} from "@angular/core/src/render3";
 
 
 
@@ -47,9 +48,11 @@ export class HomePage {
 
   ionViewDidEnter() {
 
-    this.getDBData();
+
     this.getLocation();
     this.loadmap();
+    //this.getLocation();
+    //this.loadmap();
 
 
     //this.mapisdragged();
@@ -63,7 +66,12 @@ export class HomePage {
         console.log("GetDBData");
         JSON.stringify(data, null,2);
         console.log(data);
+        this.dbdata = data;
+
+
         this.setMarker(data);
+
+
         return (data)
       });
   }
@@ -177,6 +185,24 @@ export class HomePage {
     console.log('MapLoadSuccsess');
     console.log("lat: " + this.lat + "long: " + this.long);
 
+/*
+    this.map.on("whenReady", function(e){
+        console.log("map is ready event triggered")
+        this.maplodedsetmarker();
+    }.bind(this)
+    );
+    */
+
+
+    this.map.whenReady(function(e){
+      console.log("map is ready event triggered")
+      this.maplodedsetmarker();
+    }.bind(this)
+    );
+
+    //this.map.on("ready")
+
+
 
     this.map.on("dragend", function(e) {
         console.log("Dragging the Map")
@@ -242,7 +268,13 @@ export class HomePage {
     }
   }
 
-  simplemethod(){
+
+  simplemethod2(){
+    console.log("its simple")
+  }
+
+  maplodedsetmarker(){
+      this.getDBData();
     console.log("its simple")
   }
 
