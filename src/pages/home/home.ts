@@ -34,7 +34,7 @@ export class HomePage {
   bluedot: any;
   testCheckboxResult: any;
   testCheckboxOpen: any;
- options: any
+  options: any
   data:any
 
   constructor(
@@ -70,7 +70,7 @@ export class HomePage {
 
 
         this.setMarker(data);
-
+        this.simplemethod2();
 
         return (data)
       });
@@ -156,7 +156,6 @@ export class HomePage {
 
 
   followLocation() {
-    console.log("prelocation is: " + this.loconoff)
     this.watch = this.geolocation.watchPosition();
     this.subscription = this.watch.subscribe((data) => {
       // data can be a set of coordinates, or an error (if an error occurred).
@@ -270,12 +269,13 @@ export class HomePage {
 
 
   simplemethod2(){
+    this.buttonColor = "black";
     console.log("its simple")
   }
 
   maplodedsetmarker(){
       this.getDBData();
-    console.log("its simple")
+    console.log("Map Loaded. Getting DB Data")
   }
 
   opencheckbox(){

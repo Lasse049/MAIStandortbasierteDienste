@@ -24,12 +24,15 @@
     "@capacitor/ios": "^2.0.2",
     "@ionic-native/core": "4.20.0",
     "@ionic-native/geolocation": "^4.20.0",
+    "@ionic-native/http": "^5.24.0",
     "@ionic-native/splash-screen": "4.20.0",
     "@ionic-native/status-bar": "4.20.0",
     "@ionic/pwa-elements": "^1.5.2",
     "@ionic/storage": "2.2.0",
     "cordova-android": "^8.1.0",
     "cordova-ios": "^5.1.1",
+    "cordova-plugin-advanced-http": "^2.4.1",
+    "cordova-plugin-file": "^6.0.2",
     "cordova-plugin-geolocation": "^4.0.2",
     "cordova-serve": "^4.0.0",
     "ionic-angular": "3.9.9",
@@ -58,7 +61,9 @@
       "cordova-plugin-statusbar": {},
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
-      "cordova-plugin-ionic-webview": {},
+      "cordova-plugin-ionic-webview": {
+        "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
+      },
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-geolocation": {},
       "cordova-plugin-advanced-http": {}
