@@ -13,7 +13,6 @@ export class RestProvider {
   dburl:string = "http://igf-srv-lehre.igf.uni-osnabrueck.de:33859/getData";
 
   constructor(public http: HttpClient) {
-    console.log('Hello RestProvider');
   }
 
   public  getData() {
@@ -22,7 +21,10 @@ export class RestProvider {
         resolve(data);
         console.log(data);
       }, err => {
+        console.log("Data request failed due to Server issues");
         console.log(err);
+      },() => {
+        console.log("Data received from the Server");
       });
     });
   }

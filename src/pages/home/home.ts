@@ -131,10 +131,9 @@ export class HomePage {
   }
 
   getDBData() {
-    console.log("HelloWhat")
+    console.log("Trying to connect to Server")
     this.restProvider.getData()
       .then(data => {
-        console.log("GetDBData");
         JSON.stringify(data, null,2);
         console.log(data);
         this.dbdata = data;
