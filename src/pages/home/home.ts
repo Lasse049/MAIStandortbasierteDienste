@@ -8,6 +8,7 @@ import {CheckboxPage} from "../checkbox/checkbox";
 import {FilterboxPage} from "../filterbox/filterbox";
 import { AlertController } from 'ionic-angular';
 import {e} from "@angular/core/src/render3";
+import {catchError} from "rxjs/operators";
 
 
 
@@ -99,7 +100,7 @@ export class HomePage {
       }
 
       markers.addLayer(this.marker);
-      console.log("for Markers");
+      console.log("Markers added");
     }
 
   }
