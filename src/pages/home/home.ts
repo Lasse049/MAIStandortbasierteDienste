@@ -71,9 +71,7 @@ export class HomePage {
         console.log(data);
         this.dbdata = data;
 
-
         this.setMarker(data);
-        this.simplemethod2();
 
         return (data)
       });
@@ -125,8 +123,6 @@ export class HomePage {
 
 
   showBlueDot(){
-    console.log("Entered ShowBlueDot")
-
 
     //let bluedot = leaflet.circle([lat, long],bluedotoptions).addTo(this.map);
 
@@ -153,7 +149,6 @@ export class HomePage {
         //.addTo(this.map);
       //this.bluedot.addTo(this.map);
     }
-    console.log('Showing Blue dot' + this.lat + this.long);
     this.bluedot.bindPopup('You are here'+'<br>'+ 'Latitude: ' + this.lat + '</br>' + 'Longitude: ' + this.long + '</br>');
   }
 
@@ -186,7 +181,6 @@ export class HomePage {
     //this.map.setView([this.lat, this.long]);
     console.log('MapLoadSuccsess');
     console.log("lat: " + this.lat + "long: " + this.long);
-
 /*
     this.map.on("whenReady", function(e){
         console.log("map is ready event triggered")
@@ -194,16 +188,11 @@ export class HomePage {
     }.bind(this)
     );
     */
-
-
     this.map.whenReady(function(e){
       console.log("map is ready event triggered")
       this.maplodedsetmarker();
     }.bind(this)
     );
-
-    //this.map.on("ready")
-
 
 
     this.map.on("dragend", function(e) {
@@ -225,8 +214,6 @@ export class HomePage {
         //var position = marker.getLatLng();
         //this.map.panTo(new leaflet.LatLng(position.lat, position.lng));
       }.bind(this)
-
-
     );
 
 
@@ -234,10 +221,9 @@ export class HomePage {
   }
 
   follownav() {
-    console.log("navanaus")
     console.log(this.loconoff)
     if (this.loconoff) {
-      console.log("follownav is on")
+      console.log("Follow GPS is on")
       this.buttonColor = "primary";
       //this.map.followLocation({watch:true, setView: true, zoom: 17})
       //this.watch.subscribe();
@@ -251,7 +237,7 @@ export class HomePage {
       })
       */
     } else {
-      console.log("follownav is OFF")
+      console.log("Follow GPS is OFF")
       //this.watch.subscription.unsubscribe();
       /*
       this.map.locate({
@@ -272,7 +258,6 @@ export class HomePage {
 
 
   simplemethod2(){
-    this.buttonColor = "black";
     console.log("its simple")
   }
 

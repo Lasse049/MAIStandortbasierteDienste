@@ -113,13 +113,15 @@ export class CheckboxPage {
     };
     //this.http.post(url,data).subscribe();
     this.http.post(url, data).subscribe(e => {
-      console.log("Data has been sent");
+      console.log("Sending Data...");
       //sending.dismissAll()
     }, err => {
       console.log("Could not send data");
       console.log(err);
       //sending.dismissAll()
-    });
+    },() => {
+      console.log("Data has been sent to the Server");
+      });
 
   }
 
