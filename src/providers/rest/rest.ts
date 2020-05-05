@@ -10,19 +10,21 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class RestProvider {
 
-  dburl:string = "http://igf-srv-lehre.igf.uni-osnabrueck.de:33859";
+  dburl:string = "http://igf-srv-lehre.igf.uni-osnabrueck.de:33859/getData";
 
   constructor(public http: HttpClient) {
-    console.log('Hello RestProvider');
   }
 
   public  getData() {
     return new Promise(resolve => {
-      this.http.get(this.dburl + '/getData').subscribe(data => {
+      this.http.get(this.dburl).subscribe(data => {
         resolve(data);
         console.log(data);
       }, err => {
+        console.log("Data request failed due to Server issues");
         console.log(err);
+      },() => {
+        console.log("Data received from the Server");
       });
     });
   }
