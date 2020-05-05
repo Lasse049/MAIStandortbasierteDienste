@@ -49,62 +49,17 @@ export class HomePage {
 
   ionViewDidEnter() {
 
-
     this.getLocation();
+
     if (this.map==null){
       this.loadmap();
     }
 
+
     //this.getLocation();
     //this.loadmap();
-
-
     //this.mapisdragged();
   }
-
-
-  getDBData() {
-    console.log("HelloWhat")
-    this.restProvider.getData()
-      .then(data => {
-        console.log("GetDBData");
-        JSON.stringify(data, null,2);
-        console.log(data);
-        this.dbdata = data;
-
-        this.setMarker(data);
-
-        return (data)
-      });
-  }
-
-
-  setMarker(data){
-    //this.jsondata = JSON.stringify(data);
-    this.jsondata = data.result;
-    let markers = leaflet.layerGroup().addTo(this.map);
-    console.log("setMarker");
-    console.log(this.jsondata);
-
-    for (let i = 0; i < this.jsondata.length; i++) {
-      this.marker = new leaflet.marker([this.jsondata[i].latitude, this.jsondata[i].longitude]);
-
-      if (this.jsondata[i].hausmuell == true) {
-        this.marker.bindPopup('<br>' +this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Hausmuell');
-      } else if (this.jsondata[i].gruenabfall == true) {
-        this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Gruenabfall');
-      } else if (this.jsondata[i].sperrmuell == true) {
-        this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sperrmuell');
-      } else if (this.jsondata[i].sondermuell == true) {
-        this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sondermuell');
-      }
-
-      markers.addLayer(this.marker);
-      console.log("Markers added");
-    }
-
-  }
-
 
   getLocation() {
     this.geolocation.getCurrentPosition().then((resp) => {
@@ -122,13 +77,23 @@ export class HomePage {
 
   }
 
+  followLocation() {
+    this.watch = this.geolocation.watchPosition();
+    this.subscription = this.watch.subscribe((data) => {
+
+      this.lat = data.coords.latitude
+      this.long = data.coords.longitude
+      this.timestamp = data.timestamp;
+
+      console.log('Location found at: ' + this.lat + " ; " + this.long);
+
+      this.showBlueDot();
+      this.follownav();
+
+    });
+  }
 
   showBlueDot(){
-
-    //let bluedot = leaflet.circle([lat, long],bluedotoptions).addTo(this.map);
-
-
-    //leaflet.circleMarker([this.lat, this.long],bluedotoptions).addTo(this.map);
 
     if(this.bluedot == null){
       console.log("no bluedot");
@@ -147,29 +112,61 @@ export class HomePage {
       let latlng = leaflet.latLng(this.lat, this.long);
 
       this.bluedot.setLatLng(latlng);
-        //.addTo(this.map);
+      //.addTo(this.map);
       //this.bluedot.addTo(this.map);
     }
     this.bluedot.bindPopup('You are here'+'<br>'+ 'Latitude: ' + this.lat + '</br>' + 'Longitude: ' + this.long + '</br>');
   }
 
-
-  followLocation() {
-    this.watch = this.geolocation.watchPosition();
-    this.subscription = this.watch.subscribe((data) => {
-      // data can be a set of coordinates, or an error (if an error occurred).
-      this.lat = data.coords.latitude
-      this.long = data.coords.longitude
-      this.timestamp = data.timestamp;
-      //this.watch.setView = false;
-      console.log('LocationSucsess' + this.lat + this.long);
-
-      this.showBlueDot();
-      this.follownav();
-
-    });
+  follownav() {
+    console.log(this.loconoff)
+    if (this.loconoff) {
+      console.log("Follow GPS is on")
+      this.buttonColor = "primary";
+      this.map.setView([this.lat, this.long]);
+    } else {
+      console.log("Follow GPS is OFF")
+       this.buttonColor = "light";
+    }
   }
 
+  getDBData() {
+    console.log("HelloWhat")
+    this.restProvider.getData()
+      .then(data => {
+        console.log("GetDBData");
+        JSON.stringify(data, null,2);
+        console.log(data);
+        this.dbdata = data;
+
+        this.setMarker(data);
+
+        return (data)
+      });
+  }
+
+  setMarker(data){
+    this.jsondata = data.result;
+    let markers = leaflet.layerGroup().addTo(this.map);
+    console.log("setMarker");
+    console.log(this.jsondata);
+
+    for (let i = 0; i < this.jsondata.length; i++) {
+      this.marker = new leaflet.marker([this.jsondata[i].latitude, this.jsondata[i].longitude]);
+
+      if (this.jsondata[i].hausmuell == true) {
+        this.marker.bindPopup('<br>' +this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Hausmuell');
+      } else if (this.jsondata[i].gruenabfall == true) {
+        this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Gruenabfall');
+      } else if (this.jsondata[i].sperrmuell == true) {
+        this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sperrmuell');
+      } else if (this.jsondata[i].sondermuell == true) {
+        this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sondermuell');
+      }
+      markers.addLayer(this.marker);
+      console.log("Markers added");
+    }
+  }
 
   loadmap() {
     // Define and add Leaflet Map with OSM TileLayer
@@ -182,90 +179,26 @@ export class HomePage {
     //this.map.setView([this.lat, this.long]);
     console.log('MapLoadSuccsess');
     console.log("lat: " + this.lat + "long: " + this.long);
-/*
-    this.map.on("whenReady", function(e){
-        console.log("map is ready event triggered")
-        this.maplodedsetmarker();
-    }.bind(this)
-    );
-    */
+
+
     this.map.whenReady(function(e){
-      console.log("map is ready event triggered")
+      console.log("Map is ready")
       this.maplodedsetmarker();
     }.bind(this)
     );
 
-
     this.map.on("dragend", function(e) {
         console.log("Dragging the Map")
-        //let something = e.latlng;
-          //console.log(something);
-      //this.simplemethod();
-        //this.changebool();
         this.loconoff = false;
-        //this.follownav();
-        //console.log("watchmapdragged" + this.watch)
-        //this.watch = this.geolocation.watchPosition();
-        //this.watch = this.geolocation.clearWatch();
-        //this.watch.clearWatch();
-        //this.geolocation.clearWatch(this.watch);
-        //Geolocation.clearWarch;
-        console.log("post Drag: " + this.loconoff);
-        //var marker = e.target;
-        //var position = marker.getLatLng();
-        //this.map.panTo(new leaflet.LatLng(position.lat, position.lng));
       }.bind(this)
     );
-
-
-
-  }
-
-  follownav() {
-    console.log(this.loconoff)
-    if (this.loconoff) {
-      console.log("Follow GPS is on")
-      this.buttonColor = "primary";
-      //this.map.followLocation({watch:true, setView: true, zoom: 17})
-      //this.watch.subscribe();
-      this.map.setView([this.lat, this.long]);
-      //this.map.stopLocate();
-      /*
-      this.map.locate({
-        watch: true,
-        setView: true,
-        zoom: 15
-      })
-      */
-    } else {
-      console.log("Follow GPS is OFF")
-      //this.watch.subscription.unsubscribe();
-      /*
-      this.map.locate({
-        watch: true,
-        setView: false,
-        zoom: 15
-      })
-      */
-
-      //this.map.stopLocate();
-      //this.watch.unsubscribe();
-      //this.watch.unsubscribe;
-      //this.watch.unsubscribe();
-      //this.map.followLocation({watch:true, setView: false, zoom: 17})
-      this.buttonColor = "light";
-    }
-  }
-
-
-  simplemethod2(){
-    console.log("its simple")
   }
 
   maplodedsetmarker(){
-      this.getDBData();
+    this.getDBData();
     console.log("Map Loaded. Getting DB Data")
   }
+
 
   opencheckbox(){
     this.navCtrl.push(CheckboxPage,
@@ -295,38 +228,6 @@ export class HomePage {
     this.loconoff = !this.loconoff;
     this.follownav();
   }
-/*
-  filter(data) {
-
-    this.jsondata = data.result;
-    // -) Loop and set the array item checked to match current setting
-    let AlertInputs = this.jsondata.filter((Item) => {
-      // add 'checked' to each object in our array
-      Item['checked'] = Item['label'] === this.options.PauseAfter
-      return Item
-    })
-    // -) Setup alert
-    let Alert = this.alertCtrl.create({
-      title: 'Pause After Selection',
-      message: 'Make a selection...',
-      // https://ionicframework.com/docs/components/#alert-radio
-      inputs:
-      AlertInputs,
-      buttons: [{
-        text: 'Ok',
-        handler: (data) => {
-          // INOTE: storing the label, but you can store the index :)
-          this.options.PauseAfter = this.jsondata[data].label
-        }
-      },
-      ]
-    });
-    // Show the alert
-    Alert.present();
-  }
-*/
-
-
 
   filter() {
     let alert = this.alertCtrl.create();
@@ -372,6 +273,43 @@ export class HomePage {
     });
     alert.present();
   }
+
+  /*
+  filter(data) {
+
+    this.jsondata = data.result;
+    // -) Loop and set the array item checked to match current setting
+    let AlertInputs = this.jsondata.filter((Item) => {
+      // add 'checked' to each object in our array
+      Item['checked'] = Item['label'] === this.options.PauseAfter
+      return Item
+    })
+    // -) Setup alert
+    let Alert = this.alertCtrl.create({
+      title: 'Pause After Selection',
+      message: 'Make a selection...',
+      // https://ionicframework.com/docs/components/#alert-radio
+      inputs:
+      AlertInputs,
+      buttons: [{
+        text: 'Ok',
+        handler: (data) => {
+          // INOTE: storing the label, but you can store the index :)
+          this.options.PauseAfter = this.jsondata[data].label
+        }
+      },
+      ]
+    });
+    // Show the alert
+    Alert.present();
+  }
+*/
+
+
+  simplemethod2(){
+    console.log("its simple for tests")
+  }
+
 
 }
 
