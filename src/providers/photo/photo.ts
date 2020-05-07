@@ -54,6 +54,8 @@ export class ProviderPhotoProvider {
       //console.log('Fotopfad:' + savedImageFile);
       this.photos.unshift(savedImageFile);
 
+      
+
       /*this.photos.unshift({
         filepath: "soon...",
         webviewPath: capturedPhoto.webPath
@@ -87,6 +89,8 @@ export class ProviderPhotoProvider {
     // Convert photo to base64 format, required by Filesystem API to save
     const base64Data = await this.readAsBase64(cameraPhoto);
 
+    this.ueber = base64Data;
+
     // Write the file to the data directory
     const fileName = new Date().getTime() + '.jpeg';
     //console.log('fileName:' + fileName);
@@ -95,8 +99,6 @@ export class ProviderPhotoProvider {
       data: base64Data,
       directory: FilesystemDirectory.Data
     });
-
-    this.ueber = savedFile;
 
     if (this.platform.is('hybrid')) {
       // Display the new image by rewriting the 'file://' path to HTTP
