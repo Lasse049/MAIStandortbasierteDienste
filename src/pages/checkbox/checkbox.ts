@@ -173,4 +173,8 @@ console.log(this.longitude);
     //Send Data back to home
   }
 
+  //load Photos
+  ngOnInit() {
+    this.photoProvider.loadSaved();
+  }
 }

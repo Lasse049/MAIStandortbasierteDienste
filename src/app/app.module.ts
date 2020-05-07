@@ -13,8 +13,6 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ProviderPhotoProvider } from '../providers/photo/photo';
 import {FilterboxPage} from "../pages/filterbox/filterbox";
 
-
-
 @NgModule({
   declarations: [
     MyApp,
