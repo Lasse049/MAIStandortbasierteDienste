@@ -84,11 +84,14 @@ export class FilterboxPage {
   filter2() {
     if (this.data != null) {
       let b = 0;
+      let d = 0;
+      let g = 0;
       this.data2 = this.data
       if(this.finput != null) {
         for (let a = 0; a < this.data2.length; a++) {
           if (this.data2[a].username == this.finput) {
-            this.data2[b] = this.data2[a];
+            this.data2[d] = this.data2[a];
+            d++;
 
             // console.log(this.hausmuellarr);
           }
@@ -97,7 +100,8 @@ export class FilterboxPage {
       if(this.fdate!= null) {
         for (let c = 0; c < this.data2.length; c++) {
           if (this.data2[c].time == this.fdate) {
-            this.data2[b] = this.data2[c];
+            this.data2[g] = this.data2[c];
+            g++
 
             // console.log(this.hausmuellarr);
           }
