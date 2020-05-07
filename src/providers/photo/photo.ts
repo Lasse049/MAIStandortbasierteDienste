@@ -8,8 +8,10 @@ import { Plugins, CameraResultType, Capacitor, FilesystemDirectory,
 
 const { Camera, Filesystem, Storage } = Plugins;
 
-import { Platform } from 'ionic-angular';
+import { Platform, Checkbox } from 'ionic-angular';
 import { THROW_IF_NOT_FOUND } from '@angular/core/src/di/injector';
+import { CheckboxPageModule } from '../../pages/checkbox/checkbox.module';
+import { CheckboxPage } from '../../pages/checkbox/checkbox';
 
 
 /*
@@ -24,6 +26,8 @@ export class ProviderPhotoProvider {
   picture:any;
 
   public photos: Photo[] = [];
+
+  public ueber: string;
 
   //Loading Photos
   private PHOTO_STORAGE: string = "photos";
@@ -47,7 +51,7 @@ export class ProviderPhotoProvider {
       });
       
       const savedImageFile = await this.savePicture(capturedPhoto)
-      console.log('Fotopfad:' + savedImageFile);
+      //console.log('Fotopfad:' + savedImageFile);
       this.photos.unshift(savedImageFile);
 
       /*this.photos.unshift({
@@ -85,12 +89,14 @@ export class ProviderPhotoProvider {
 
     // Write the file to the data directory
     const fileName = new Date().getTime() + '.jpeg';
-    console.log('fileName:' + fileName);
+    //console.log('fileName:' + fileName);
     const savedFile = await Filesystem.writeFile({
       path: fileName,
       data: base64Data,
       directory: FilesystemDirectory.Data
     });
+
+    this.ueber = savedFile.uri;
 
     if (this.platform.is('hybrid')) {
       // Display the new image by rewriting the 'file://' path to HTTP

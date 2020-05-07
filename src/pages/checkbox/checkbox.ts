@@ -6,6 +6,8 @@ import { AlertController } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 import {ProviderPhotoProvider} from "../../providers/photo/photo";
 import { Events } from 'ionic-angular';
+import { delay } from 'rxjs/operators';
+import { ReturnStatement } from '@angular/compiler';
 
 
 @Component({
@@ -24,6 +26,8 @@ export class CheckboxPage {
   data: any;
   username: any;
   timestamp: any;
+  photopfad: any;
+
 
   constructor(
     public navCtrl: NavController,
@@ -63,6 +67,10 @@ export class CheckboxPage {
   }
 
   send() {
+
+    this.photopfad = this.photoProvider.ueber;
+    console.log("Hier: " + this.photopfad);
+
     if (this.username == null) {
       this.showAlertnu()
     }
@@ -78,6 +86,7 @@ export class CheckboxPage {
 
 
   }
+
 
   sendtoserver(photo) {
     console.log("sendToserver Ausgeloest");
@@ -109,7 +118,7 @@ export class CheckboxPage {
       sondertrash: this.Sondermuell,
       gruentrash: this.Gruenabfall,
       sperrtrash: this.Sperrmuell,
-      picture: photo
+      picture: photo,
     };
     //this.http.post(url,data).subscribe();
     this.http.post(url, data).subscribe(e => {
