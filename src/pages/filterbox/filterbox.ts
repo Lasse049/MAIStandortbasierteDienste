@@ -22,6 +22,11 @@ export class FilterboxPage {
   finput: any;
   fdate: any;
   data: any;
+  data2: any;
+  hausmuellarr: any = [];
+  sperrmuellarr: any = [];
+  sondermuellarr: any = [];
+  guenabfallarr: any = [];
 
 
   constructor(
@@ -76,6 +81,53 @@ export class FilterboxPage {
   }
 
    */
+  filter2() {
+    if (this.data != null) {
+      let b = 0;
+      this.data2 = this.data
+      if(this.finput != null) {
+        for (let a = 0; a < this.data2.length; a++) {
+          if (this.data2[a].username == this.finput) {
+            this.data2[b] = this.data2[a];
+
+            // console.log(this.hausmuellarr);
+          }
+        }
+      }
+      if(this.fdate!= null) {
+        for (let c = 0; c < this.data2.length; c++) {
+          if (this.data2[c].time == this.fdate) {
+            this.data2[b] = this.data2[c];
+
+            // console.log(this.hausmuellarr);
+          }
+        }
+      }
+      for (let i = 0; i < this.data2.length; i++) {
+        if (this.data2[i].hausmuell == true) {
+          this.hausmuellarr[b] = this.data2[i];
+
+         // console.log(this.hausmuellarr);
+        }
+        if (this.data2[i].Sperrmuell == true) {
+          this.sperrmuellarr[b] = this.data2[i];
+
+         // console.log(this.sperrmuellarr);
+        }
+        if (this.data2[i].Sondermuell == true) {
+          this.sondermuellarr[b] = this.data2[i];
+
+          //console.log(this.sondermuellarr);
+        }
+        if (this.data2[i].Gruenabfall == true) {
+          this.guenabfallarr[b] = this.data2[i];
+
+          console.log(this.guenabfallarr);
+        }
+        b++;
+      }
+    }
+  }
 
   filter() {
     //this.navCtrl.setRoot(HomePage);

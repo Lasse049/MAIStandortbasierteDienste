@@ -14,7 +14,7 @@
   <ion-item id="nutzerfilter">
     <p> Einträge welchen Nutzers sollen angezeigt werden?</p>
     <ion-label id="username">Benutzername:</ion-label>
-    <ion-input id="finput" placeholder="Nutzername">   </ion-input>
+    <ion-input id="finput" placeholder="Nutzername" [(ngModel)]="finput">   </ion-input>
   </ion-item>
 <!--
   <ion-list>
@@ -82,7 +82,7 @@
     </ion-item>
 
   </ion-list>
-  <button ion-button round outline (click)="filter()">Anzeigen</button>
+  <button ion-button round outline (click)="filter2()">Anzeigen</button>
   <button ion-button round outline (click)="back()">Zurück</button>
 
 </ion-content>
