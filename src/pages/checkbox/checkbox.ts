@@ -27,7 +27,7 @@ export class CheckboxPage {
   username: any;
   timestamp: any;
   photopfad: any;
-
+  picture: any;
 
   constructor(
     public navCtrl: NavController,
@@ -67,9 +67,14 @@ export class CheckboxPage {
   }
 
   send() {
-
     this.photopfad = this.photoProvider.ueber;
-    console.log("Hier: " + this.photopfad);
+    console.log("Da Pic: " + this.photoProvider.picture)
+
+    console.log("Hier Pfad: " + this.photopfad);
+
+    let data64 = this.photoProvider.lueber;
+
+    this.picture= "data:image/jpeg;base64,"+ data64;
 
     if (this.username == null) {
       this.showAlertnu()
@@ -79,8 +84,8 @@ export class CheckboxPage {
 
     } else {
         if(this.longitude != null && this.latitude != null){
-          let photo = null
-          this.sendtoserver(photo);
+
+          this.sendtoserver(this.picture);
         }
     }
 
@@ -182,8 +187,5 @@ console.log(this.longitude);
     //Send Data back to home
   }
 
-  //load Photos
-  ngOnInit() {
-    this.photoProvider.loadSaved();
-  }
+
 }

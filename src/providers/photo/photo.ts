@@ -1,17 +1,11 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 
 
-
-import { Plugins, CameraResultType, Capacitor, FilesystemDirectory,
-  CameraPhoto, CameraSource } from '@capacitor/core';
+import {CameraPhoto, CameraResultType, CameraSource, Capacitor, FilesystemDirectory, Plugins} from '@capacitor/core';
+import {Platform} from 'ionic-angular';
 
 const { Camera, Filesystem, Storage } = Plugins;
-
-import { Platform, Checkbox } from 'ionic-angular';
-import { THROW_IF_NOT_FOUND } from '@angular/core/src/di/injector';
-import { CheckboxPageModule } from '../../pages/checkbox/checkbox.module';
-import { CheckboxPage } from '../../pages/checkbox/checkbox';
 
 
 /*
@@ -28,13 +22,17 @@ export class ProviderPhotoProvider {
   public photos: Photo[] = [];
 
   public ueber: any;
-
+  public lueber: any;
   //Loading Photos
   private PHOTO_STORAGE: string = "photos";
 
   private platform: Platform;
 
-  constructor(public http: HttpClient, platform: Platform) {
+  constructor(
+    public http: HttpClient,
+    platform: Platform,
+  ) {
+
     this.platform = platform;
     console.log('Hello ProviderPhotoProvider Provider');
   }
@@ -45,22 +43,23 @@ export class ProviderPhotoProvider {
     // Take a photo
     try {
       const capturedPhoto = await Camera.getPhoto({
-        resultType: CameraResultType.Uri,
+        //resultType: CameraResultType.Uri,
+        resultType: CameraResultType.DataUrl,
         source: CameraSource.Camera,
-        quality: 100
+        quality: 20,
       });
-      
+
       const savedImageFile = await this.savePicture(capturedPhoto)
       //console.log('Fotopfad:' + savedImageFile);
-      this.photos.unshift(savedImageFile);
+      //this.photos.unshift(savedImageFile);
 
-      
+      this.lueber =  'data:image/jpeg;base64,' + savedImageFile;
 
       /*this.photos.unshift({
         filepath: "soon...",
         webviewPath: capturedPhoto.webPath
       });*/
-      
+
       //this.picture = capturedPhoto.base64String;
     } catch (error) {
       console.error(error);
@@ -85,11 +84,11 @@ export class ProviderPhotoProvider {
   }
 
   private async savePicture(cameraPhoto : CameraPhoto) {
-
+      this.ueber = cameraPhoto;
     // Convert photo to base64 format, required by Filesystem API to save
     const base64Data = await this.readAsBase64(cameraPhoto);
 
-    this.ueber = base64Data;
+    //this.ueber = base64Data;
 
     // Write the file to the data directory
     const fileName = new Date().getTime() + '.jpeg';
@@ -99,6 +98,8 @@ export class ProviderPhotoProvider {
       data: base64Data,
       directory: FilesystemDirectory.Data
     });
+
+    //this.ueber = savedFile.data;
 
     if (this.platform.is('hybrid')) {
       // Display the new image by rewriting the 'file://' path to HTTP
@@ -130,17 +131,17 @@ export class ProviderPhotoProvider {
         path: cameraPhoto.path
       });
 
-      return file.data;    
+      return file.data;
     }
     else {
       // Fetch the photo, read as a blob, then convert to base64 format
       const response = await fetch(cameraPhoto.webPath!);
       const blob = await response.blob();
-    
-      return await this.convertBlobToBase64(blob) as string; 
-    } 
+
+      return await this.convertBlobToBase64(blob) as string;
+    }
   }
-  
+
   convertBlobToBase64 = (blob: Blob) => new Promise((resolve, reject) => {
     const reader = new FileReader;
     reader.onerror = reject;
@@ -155,7 +156,7 @@ export class ProviderPhotoProvider {
     // Retrieve cached photo array data
     const photos = await Storage.get({ key: this.PHOTO_STORAGE });
     this.photos = JSON.parse(photos.value) || [];
-  
+
     if (!this.platform.is('hybrid')) {
 
       for (let photo of this.photos) {
@@ -164,7 +165,7 @@ export class ProviderPhotoProvider {
             path: photo.filepath,
             directory: FilesystemDirectory.Data
         });
-      
+
         // Web platform only: Save the photo into the base64 field
         photo.base64 = `data:image/jpeg;base64,${readFile.data}`;
       }

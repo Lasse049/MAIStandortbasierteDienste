@@ -22,7 +22,7 @@
     "@capacitor/android": "^2.0.2",
     "@capacitor/core": "2.0.2",
     "@capacitor/ios": "^2.0.2",
-    "@ionic-native/camera": "^5.24.0",
+    "@ionic-native/camera": "^5.25.0",
     "@ionic-native/core": "4.20.0",
     "@ionic-native/date-picker": "^4.20.0",
     "@ionic-native/geolocation": "^4.20.0",
@@ -74,9 +74,7 @@
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-geolocation": {},
       "cordova-plugin-advanced-http": {},
-      "cordova-plugin-camera": {
-        "ANDROID_SUPPORT_V4_VERSION": "27.+"
-      },
+      "cordova-plugin-camera": {},
       "cordova-plugin-datepicker": {}
     },
     "platforms": [
