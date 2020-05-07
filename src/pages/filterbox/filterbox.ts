@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {HomePage} from "../home/home";
 import {root} from "rxjs/util/root";
+//import { DatePicker } from '@ionic-native/date-picker';
 import { AlertController } from 'ionic-angular';
 
 
@@ -12,36 +13,45 @@ import { AlertController } from 'ionic-angular';
   templateUrl: 'filterbox.html',
 })
 export class FilterboxPage {
-  Hausmuell: boolean;
-  Sondermuell: boolean;
-  Gruenabfall: boolean;
-  Sperrmuell: boolean;
+  fHausmuell: boolean;
+  fSondermuell: boolean;
+  fGruenabfall: boolean;
+  fSperrmuell: boolean;
   root: any;
-  input: any;
+  finput: any;
+  fdate: any;
+  data: any;
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams)
+  {
+    this.data = this.navParams.get('data');
   }
-
+  datesave (){
+    console.log('datum ist:'+this.fdate);
+  }
   updateHausmuell() {
-    console.log('Hausmuell new state:' + this.Hausmuell);
+    console.log('Hausmuell new state:' + this.fHausmuell);
   }
 
   updateSondermuell() {
-    console.log('Sondermuells new state:' + this.Sondermuell);
+    console.log('Sondermuells new state:' + this.fSondermuell);
   }
   updateGruenabfall() {
-    console.log('Gruenabfall new state:' + this.Gruenabfall);
+    console.log('Gruenabfall new state:' + this.fGruenabfall);
 
   }
   updateSperrmuell() {
-    console.log('Sperrmuells new state:' + this.Sperrmuell);
+    console.log('Sperrmuells new state:' + this.fSperrmuell);
 
   }
 
-  logEvent() {
-    this.navCtrl.setRoot(HomePage);
-    this.navCtrl.popToRoot(root);
+  anzeige() {
+    //this.navCtrl.setRoot(HomePage);
+    console.log('hallo');
+    console.log(this.fdate);
   }
 
   ionViewDidLoad() {
@@ -51,5 +61,6 @@ export class FilterboxPage {
   ionViewDidLeave() {
     //Send Data back to home
   }
+
 
 }

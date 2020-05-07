@@ -213,7 +213,13 @@ export class HomePage {
   }
 
   openfilterbox(){
-    this.navCtrl.push(FilterboxPage);
+    this.navCtrl.push(FilterboxPage,
+      {
+        data:this.jsondata,
+      },{},function(e){
+        console.log("data pushed");
+      }
+    );
   }
 
 
