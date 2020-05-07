@@ -4,6 +4,7 @@ import {HomePage} from "../home/home";
 import {root} from "rxjs/util/root";
 //import { DatePicker } from '@ionic-native/date-picker';
 import { AlertController } from 'ionic-angular';
+import { DatePicker } from '@ionic-native/date-picker';
 
 
 
@@ -25,10 +26,17 @@ export class FilterboxPage {
 
   constructor(
     public navCtrl: NavController,
-    public navParams: NavParams)
+    public navParams: NavParams,
+    public datePicker: DatePicker
+  )
   {
     this.data = this.navParams.get('data');
   }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad FilterboxPage');
+  }
+
   datesave (){
     console.log('datum ist:'+this.fdate);
   }
@@ -48,15 +56,40 @@ export class FilterboxPage {
 
   }
 
-  anzeige() {
+  /*
+  calendar(){
+    this.datePicker.show({
+      date: new Date(),
+      mode: 'date'
+      //allowFutureDates: false,
+      //androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
+    }).then(
+      date => this.setdate(date)
+      ,
+      err => console.log('Error occurred while getting date: ', err)
+    );
+  }
+
+  setdate(date){
+    this.fdate=date;
+    console.log('Got date: ', date)
+  }
+
+   */
+
+  filter() {
     //this.navCtrl.setRoot(HomePage);
     console.log('hallo');
     console.log(this.fdate);
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad FilterboxPage');
+  back() {
+    //this.navCtrl.setRoot(HomePage);
+    console.log('hallo');
+    console.log(this.fdate);
   }
+
+
 
   ionViewDidLeave() {
     //Send Data back to home

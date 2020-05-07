@@ -50,10 +50,13 @@
     </ion-item>
   </ion-list>
 -->
-  <ion-item>
-    <ion-label>Date</ion-label>
-    <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MMMM YYYY"  [(ngModel)]='fdate'></ion-datetime>
+
+  
+  <ion-item id="datum">
+    <ion-label color="dark">Date:</ion-label>
+    <ion-datetime displayFormat="DD.MM.YYYY" [(ngModel)]="fdate"></ion-datetime>
   </ion-item>
+
 
   <p> Welche Abfallart/en sollen angezeigt werden?</p>
   <ion-list>
@@ -79,8 +82,8 @@
     </ion-item>
 
   </ion-list>
-  <button ion-button round outline (click)="anzeige()">Anzeigen</button>
-  <button ion-button round outline (click)="anzeige()">Zurück</button>
+  <button ion-button round outline (click)="filter()">Anzeigen</button>
+  <button ion-button round outline (click)="back()">Zurück</button>
 
 </ion-content>
 
