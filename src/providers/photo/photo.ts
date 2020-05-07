@@ -27,7 +27,7 @@ export class ProviderPhotoProvider {
 
   public photos: Photo[] = [];
 
-  public ueber: string;
+  public ueber: any;
 
   //Loading Photos
   private PHOTO_STORAGE: string = "photos";
@@ -96,7 +96,7 @@ export class ProviderPhotoProvider {
       directory: FilesystemDirectory.Data
     });
 
-    this.ueber = savedFile.uri;
+    this.ueber = savedFile;
 
     if (this.platform.is('hybrid')) {
       // Display the new image by rewriting the 'file://' path to HTTP
