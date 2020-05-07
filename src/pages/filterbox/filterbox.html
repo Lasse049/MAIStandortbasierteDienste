@@ -11,30 +11,79 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-item id="nutzerfilter">
+    <p> Einträge welchen Nutzers sollen angezeigt werden?</p>
+    <ion-label id="username">Benutzername:</ion-label>
+    <ion-input id="finput" placeholder="Nutzername">   </ion-input>
+  </ion-item>
+<!--
+  <ion-list>
+    <ion-item>
+      <ion-label>Datum</ion-label>
+
+      <ion-select placeholder="Tag" [(ngModel)]="day">
+        <ion-option value="1">1</ion-option>
+        <ion-option value="2">2</ion-option>
+        <ion-option value="3">3</ion-option>
+        <ion-option value="4">4</ion-option>
+        <ion-option value="5">5</ion-option>
+        <ion-option value="6">6</ion-option>
+      </ion-select>
+
+      <ion-select placeholder="Monat" [(ngModel)]="month">
+        <ion-option value="Jan">Januar</ion-option>
+        <ion-option value="Feb">Februar</ion-option>
+        <ion-option value="Mar">März</ion-option>
+        <ion-option value="Apr">April</ion-option>
+        <ion-option value="Mai">Mai</ion-option>
+        <ion-option value="Jun">Juni</ion-option>
+      </ion-select>
+
+      <ion-select placeholder="Jahr"[(ngModel)]="year">
+        <ion-option value="2019">2019</ion-option>
+        <ion-option value="2020">2020</ion-option>
+        <ion-option value="2021">2021</ion-option>
+        <ion-option value="2022">2022</ion-option>
+        <ion-option value="2023">2023</ion-option>
+        <ion-option value="2024">2024</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+-->
+
+
+  <ion-item id="datum">
+    <ion-label color="dark">Date:</ion-label>
+    <ion-datetime displayFormat="DD.MM.YYYY" [(ngModel)]="fdate"></ion-datetime>
+  </ion-item>
+
+
   <p> Welche Abfallart/en sollen angezeigt werden?</p>
   <ion-list>
 
     <ion-item>
       <ion-label id="hausmuell">Hausmuell</ion-label>
-      <ion-checkbox [(ngModel)]="Hausmuell" (ionChange)="updateHausmuell()"></ion-checkbox>
+      <ion-checkbox [(ngModel)]="fHausmuell" (ionChange)="updateHausmuell()"></ion-checkbox>
     </ion-item>
 
     <ion-item>
       <ion-label>Sondermuell</ion-label>
-      <ion-checkbox [(ngModel)]="Sondermuell" (ionChange)="updateSondermuell()"></ion-checkbox>
+      <ion-checkbox [(ngModel)]="fSondermuell" (ionChange)="updateSondermuell()"></ion-checkbox>
     </ion-item>
 
     <ion-item>
       <ion-label>Grünabfall</ion-label>
-      <ion-checkbox [(ngModel)]="Gruenabfall" (ionChange)="updateGruenabfall()"></ion-checkbox>
+      <ion-checkbox [(ngModel)]="fGruenabfall" (ionChange)="updateGruenabfall()"></ion-checkbox>
     </ion-item>
 
     <ion-item>
       <ion-label>Sperrmuell</ion-label>
-      <ion-checkbox [(ngModel)]="Sperrmuell" (ionChange)="updateSperrmuell()"></ion-checkbox>
+      <ion-checkbox [(ngModel)]="fSperrmuell" (ionChange)="updateSperrmuell()"></ion-checkbox>
     </ion-item>
 
   </ion-list>
-  /<button ion-button round outline >Anzeigen</button>
-  <button ion-button round outline (click)="logEvent()">Zurück</button>
+  <button ion-button round outline (click)="filter()">Anzeigen</button>
+  <button ion-button round outline (click)="back()">Zurück</button>
+
 </ion-content>
+
