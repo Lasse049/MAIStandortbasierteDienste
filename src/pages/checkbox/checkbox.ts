@@ -13,10 +13,10 @@ import { Events } from 'ionic-angular';
   templateUrl: 'checkbox.html'
 })
 export class CheckboxPage {
-  Hausmuell: boolean;
-  Sondermuell: boolean;
-  Gruenabfall: boolean;
-  Sperrmuell: boolean;
+  Hausmuell: boolean = false;
+  Sondermuell: boolean = false;
+  Gruenabfall: boolean = false;
+  Sperrmuell: boolean = false;
   root: any;
   input: any;
   latitude: any;
@@ -63,34 +63,34 @@ export class CheckboxPage {
   }
 
   send() {
-    // zeile löschen
-    let photo = null;
-    this.sendtoserver(photo);
-    /*
-    if (this.Hausmuell== false && this.Gruenabfall == false && this.Sperrmuell == false && this.Sondermuell == false) {
+    if (this.username == null) {
+      this.showAlertnu()
+    }
+    if (this.Hausmuell== false && this.Gruenabfall == false && this.Sperrmuell == false && this.Sondermuell == false ) {
       this.showAlertma()
-        if (this.input == null) {
-          this.showAlertnu()
-        }
-      } else {
+
+    } else {
         if(this.longitude != null && this.latitude != null){
-        this.sendtoserver(photo);
+          let photo = null
+          this.sendtoserver(photo);
         }
     }
-   */
+
 
   }
 
   sendtoserver(photo) {
     console.log("sendToserver Ausgeloest");
     ///////// TESTDATEN//////////
-    this.username="cccfake";
+   /* this.username="cccfake";
     this.latitude=52;
     this.longitude=8;
     this.Hausmuell=true;
     this.Sondermuell=false;
     this.Gruenabfall=false;
     this.Sperrmuell=false;
+
+    */
     /////////////////////////////
 
     let sending = this.loadingCtrl.create({

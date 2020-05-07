@@ -85,7 +85,7 @@ export class HomePage {
       this.long = data.coords.longitude
       this.timestamp = data.timestamp;
 
-      console.log('Location found at: ' + this.lat + " ; " + this.long);
+      //console.log('Location found at: ' + this.lat + " ; " + this.long);
 
       this.showBlueDot();
       this.follownav();
@@ -108,7 +108,7 @@ export class HomePage {
       this.bluedot.addTo(this.map);
       console.log("added bluedot");
     } else {
-      console.log("moving bluedot");
+     // console.log("moving bluedot");
       let latlng = leaflet.latLng(this.lat, this.long);
 
       this.bluedot.setLatLng(latlng);
@@ -119,13 +119,13 @@ export class HomePage {
   }
 
   follownav() {
-    console.log(this.loconoff)
+    //console.log(this.loconoff)
     if (this.loconoff) {
-      console.log("Follow GPS is on")
+      //console.log("Follow GPS is on")
       this.buttonColor = "primary";
       this.map.setView([this.lat, this.long]);
     } else {
-      console.log("Follow GPS is OFF")
+      //console.log("Follow GPS is OFF")
        this.buttonColor = "light";
     }
   }
