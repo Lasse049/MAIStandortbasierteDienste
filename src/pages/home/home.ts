@@ -42,12 +42,14 @@ export class HomePage {
     public navCtrl: NavController,
     public geolocation: Geolocation,
     public restProvider: RestProvider,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+
   ) {
   }
 
 
   ionViewDidEnter() {
+
 
     this.getLocation();
 
@@ -60,6 +62,8 @@ export class HomePage {
     //this.loadmap();
     //this.mapisdragged();
   }
+
+
 
   getLocation() {
     this.geolocation.getCurrentPosition().then((resp) => {

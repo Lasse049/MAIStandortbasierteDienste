@@ -14,6 +14,7 @@ import { ProviderPhotoProvider } from '../providers/photo/photo';
 import {FilterboxPage} from "../pages/filterbox/filterbox";
 import { DatePicker } from '@ionic-native/date-picker/';
 
+
 @NgModule({
   declarations: [
     MyApp,
