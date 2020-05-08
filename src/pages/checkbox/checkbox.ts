@@ -72,9 +72,9 @@ export class CheckboxPage {
 
     console.log("Hier Pfad: " + this.photopfad);
 
-    let data64 = this.photoProvider.lueber;
+    let data64 = this.photoProvider.ueber;
 
-    this.picture= "data:image/jpeg;base64,"+ data64;
+    this.picture= data64;
 
     if (this.username == null) {
       this.showAlertnu()

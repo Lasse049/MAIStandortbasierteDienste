@@ -43,18 +43,18 @@ export class ProviderPhotoProvider {
     // Take a photo
     try {
       const capturedPhoto = await Camera.getPhoto({
-        //resultType: CameraResultType.Uri,
-        resultType: CameraResultType.DataUrl,
+        resultType: CameraResultType.Uri,
+        //resultType: CameraResultType.DataUrl,
         source: CameraSource.Camera,
         quality: 20,
       });
 
       const savedImageFile = await this.savePicture(capturedPhoto)
       //console.log('Fotopfad:' + savedImageFile);
-      //this.photos.unshift(savedImageFile);
+      this.photos.unshift(savedImageFile);
 
-      this.lueber =  'data:image/jpeg;base64,' + savedImageFile;
-
+      //this.lueber =  'data:image/jpeg;base64,' + savedImageFile;
+      console.log("57" + this.lueber);
       /*this.photos.unshift({
         filepath: "soon...",
         webviewPath: capturedPhoto.webPath
@@ -65,31 +65,16 @@ export class ProviderPhotoProvider {
       console.error(error);
     }
 
-    //Loading Photos
-    Storage.set({
-      key: this.PHOTO_STORAGE,
-      value: this.platform.is('hybrid')
-              ? JSON.stringify(this.photos)
-              : JSON.stringify(this.photos.map(p => {
-                // Don't save the base64 representation of the photo data,
-                // since it's already saved on the Filesystem
-                const photoCopy = { ...p };
-                delete photoCopy.base64;
-
-                return photoCopy;
-            }))
-    });
-
-
   }
 
   private async savePicture(cameraPhoto : CameraPhoto) {
-      this.ueber = cameraPhoto;
+    //this.ueber = cameraPhoto;
     // Convert photo to base64 format, required by Filesystem API to save
     const base64Data = await this.readAsBase64(cameraPhoto);
 
-    //this.ueber = base64Data;
-
+    this.ueber = base64Data;
+    //this.ueber = 'data:image/jpeg;base64,' +base64Data;
+    //console.log("92" + this.ueber);
     // Write the file to the data directory
     const fileName = new Date().getTime() + '.jpeg';
     //console.log('fileName:' + fileName);
@@ -99,8 +84,8 @@ export class ProviderPhotoProvider {
       directory: FilesystemDirectory.Data
     });
 
-    //this.ueber = savedFile.data;
-
+    this.lueber = savedFile;
+    //console.log("103" + this.lueber); Objekt
     if (this.platform.is('hybrid')) {
       // Display the new image by rewriting the 'file://' path to HTTP
       // Details: https://ionicframework.com/docs/building/webview#file-protocol
