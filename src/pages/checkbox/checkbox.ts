@@ -30,6 +30,8 @@ export class CheckboxPage {
   picture: any;
   error: boolean = false;
   count: number = 3;
+  sending: any;
+
   constructor(
     public navCtrl: NavController,
     public alertCtrl: AlertController,
@@ -108,11 +110,11 @@ export class CheckboxPage {
      */
     /////////////////////////////
 
-    let sending = this.loadingCtrl.create({
+    this.sending = this.loadingCtrl.create({
       content: 'Sending Data',
       spinner: 'circles'
     });
-    sending.present();
+    this.sending.present();
 
     const url = "http://igf-srv-lehre.igf.uni-osnabrueck.de:33859/send"
     let data = {
@@ -127,17 +129,24 @@ export class CheckboxPage {
       picture: photo,
     };
 
-
-    this.http.post(url,data).subscribe(data => {
+    console.log("132: "+ this.error);
+    this.http.post(url,data).subscribe(() => {
+      this.error= true;
+      console.log("135: "+ this.error);
     }, err => {
       console.log("Could not send data");
       console.log(err);
       this.error = true;
-      sending.dismissAll();
+      console.log("140: "+ this.error);
     },() => {
+      this.error= false;
+      console.log("143: "+ this.error);
     });
+
+
     if(this.error == false){
-      sending.dismissAll();
+      console.log("147: "+ this.error);
+
       this.showAlertSe();
       //this.navCtrl.pop()
     }
@@ -193,6 +202,8 @@ export class CheckboxPage {
       buttons: [{
         text: 'OK',
         handler: () => {
+          this.sending.dismissAll();
+          this.sending = null;
           this.navCtrl.pop();
         console.log('Agree clicked');
         }
@@ -202,6 +213,7 @@ export class CheckboxPage {
   }
 
   ionViewDidLeave() {
+
     //Send Data back to home
   }
 

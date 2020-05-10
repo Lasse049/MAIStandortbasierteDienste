@@ -39,6 +39,7 @@ export class HomePage {
   data:any;
   loading:any;
 
+
   constructor(
     public navCtrl: NavController,
     public geolocation: Geolocation,
@@ -47,32 +48,33 @@ export class HomePage {
     public loadingCtrl: LoadingController,
 
   ) {
-    this.loading = this.loadingCtrl.create({
-      content: 'Loading App',
-      spinner: 'circles'
-    });
   }
 
 
   ionViewDidEnter() {
 
+      this.loading = this.loadingCtrl.create({
+        content: 'Loading App',
+        spinner: 'circles'
+      });
 
-    this.loading.present();
-    this.getLocation();
 
-    if (this.map==null){
-      this.loadmap();
+      this.getLocation();
+
+      if (this.map == null) {
+        this.loadmap();
+      }
     }
-
 
     //this.getLocation();
     //this.loadmap();
     //this.mapisdragged();
-  }
+
 
 
 
   getLocation() {
+
     this.geolocation.getCurrentPosition().then((resp) => {
       this.lat = resp.coords.latitude;
       this.long = resp.coords.longitude;
@@ -168,11 +170,13 @@ export class HomePage {
   }
 
   maplodedsetmarker(){
+
     this.getDBData();
     console.log("Map Loaded. Getting DB Data")
   }
 
   getDBData() {
+    this.loading.present();
     console.log("Trying to connect to Server")
     this.restProvider.getData()
       .then(data => {
@@ -187,6 +191,7 @@ export class HomePage {
   }
 
   setMarker(data){
+
     this.jsondata = data.result;
     let markers = leaflet.layerGroup().addTo(this.map);
     console.log("setMarker");
@@ -209,7 +214,10 @@ export class HomePage {
       console.log("Markers added");
     }
     // Finished Loading all
-    this.loading.dismissAll();
+    if(this.loading!=null) {
+      this.loading.dismissAll();
+      this.loading = null;
+    }
   }
 
 
@@ -248,6 +256,14 @@ export class HomePage {
     this.follownav();
   }
 
+  ionViewDidLeave() {
+    if (this.loading != null) {
+      this.loading.dismissAll();
+      this.loading = null;
+    }
+  }
+
+  /*
   filter() {
     let alert = this.alertCtrl.create();
 
@@ -290,9 +306,11 @@ export class HomePage {
          this.testCheckboxResult = data;
        }
     });
-    alert.present();
+
   }
 
+
+   */
   /*
   filter(data) {
 
@@ -328,6 +346,11 @@ export class HomePage {
   simplemethod2(){
     console.log("its simple for tests")
   }
+
+
+
+
+
 
 
 }

@@ -31,12 +31,21 @@ export class RestProvider {
     });
   }
 
-  showAlertData() {
+  // Alert sollte nicht hier hin - in home ts
+  public showAlertData() {
     const alert = this.alertCtrl.create({
-      title: 'Fehler Daten',
-      subTitle: 'Fehler Daten',
-      buttons: ['OK']
+      title: 'Server Fehler!',
+      subTitle: 'Konnte keine Verbindung zum Server herstellen.'  +'<br>'+ 'Versuchen Sie es später erneut.',
+      buttons: [{
+        text: 'OK',
+        handler: () => {
+          //thisdestroy();
+          console.log('Agree clicked');
+        }
+      }]
     });
+
+
 
     alert.present();
   }
