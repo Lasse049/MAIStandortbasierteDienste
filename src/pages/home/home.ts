@@ -9,7 +9,7 @@ import {FilterboxPage} from "../filterbox/filterbox";
 import { AlertController } from 'ionic-angular';
 import {e} from "@angular/core/src/render3";
 import {catchError} from "rxjs/operators";
-
+import {Platform} from 'ionic-angular';
 
 
 @Component({
@@ -46,7 +46,7 @@ export class HomePage {
     public restProvider: RestProvider,
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
-
+    public platform: Platform,
   ) {
   }
 
@@ -162,7 +162,7 @@ export class HomePage {
       }.bind(this)
     );
 
-    this.map.on("dragend", function(e) {
+    this.map.on("dragstart", function(e) {
         console.log("Dragging the Map")
         this.loconoff = false;
       }.bind(this)
@@ -172,11 +172,9 @@ export class HomePage {
     legend.onAdd = this.getLegend;
     legend.addTo(this.map);
 
-
   }
 
   getLegend() {
-
     var div = leaflet.DomUtil.create('div', 'info legend');
 
     div.innerHTML += '<h3>Legende</h3>';
@@ -184,11 +182,9 @@ export class HomePage {
     div.innerHTML += 'illegale Müllablagerung';
 
     return div;
-
   }
 
   maplodedsetmarker(){
-
     this.getDBData();
     console.log("Map Loaded. Getting DB Data")
   }
@@ -208,28 +204,36 @@ export class HomePage {
       });
   }
 
+
   setMarker(data){
+    if(this.jsondata = []){
+      this.showAlertnoData();
+    } else {
+      this.jsondata = data.result;
+      let markers = leaflet.layerGroup().addTo(this.map);
+      console.log("setMarker");
+      console.log(this.jsondata);
 
-    this.jsondata = data.result;
-    let markers = leaflet.layerGroup().addTo(this.map);
-    console.log("setMarker");
-    console.log(this.jsondata);
+      for (let i = 0; i < this.jsondata.length; i++) {
+        //Markerfarbe
+        this.marker = new leaflet.marker([this.jsondata[i].latitude, this.jsondata[i].longitude]);
 
-    for (let i = 0; i < this.jsondata.length; i++) {
-      //Markerfarbe
-      this.marker = new leaflet.marker([this.jsondata[i].latitude, this.jsondata[i].longitude]);
-
-      if (this.jsondata[i].hausmuell == true) {
-        this.marker.bindPopup('<br>' +this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Hausmuell');
-      } else if (this.jsondata[i].gruenabfall == true) {
-        this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Gruenabfall');
-      } else if (this.jsondata[i].sperrmuell == true) {
-        this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sperrmuell');
-      } else if (this.jsondata[i].sondermuell == true) {
-        this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sondermuell');
+        if (this.jsondata[i].hausmuell == true) {
+          this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Hausmuell');
+        } else if (this.jsondata[i].gruenabfall == true) {
+          this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Gruenabfall');
+        } else if (this.jsondata[i].sperrmuell == true) {
+          this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sperrmuell');
+        } else if (this.jsondata[i].sondermuell == true) {
+          this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sondermuell');
+        }
+        markers.addLayer(this.marker);
+        console.log("Markers added");
       }
-      markers.addLayer(this.marker);
-      console.log("Markers added");
+      if (this.loading != null) {
+        this.loading.dismissAll();
+        this.loading = null;
+      }
     }
   }
 
@@ -267,6 +271,24 @@ export class HomePage {
     this.loconoff = !this.loconoff;
     this.follownav();
   }
+
+
+  showAlertnoData() {
+    const alert = this.alertCtrl.create({
+      title: 'Konnte keine Daten vom Server abrufen.',
+      subTitle: 'App wird geschlossen',
+      buttons: [{
+        text: 'OK',
+        handler: () => {
+          this.loading.dismissAll();
+          this.loading = null;
+          this.platform.exitApp()
+        }
+      }]
+    });
+    alert.present();
+  }
+
 
   ionViewDidLeave() {
     if (this.loading != null) {

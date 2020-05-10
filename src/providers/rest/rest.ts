@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlertController } from 'ionic-angular';
+import {catchError, timeout} from "rxjs/operators";
+import {of} from "rxjs/observable/of";
 
 /*
   Generated class for the RestProvider provider.
@@ -15,10 +17,12 @@ export class RestProvider {
 
   constructor(public http: HttpClient, public alertCtrl: AlertController) {
   }
-
+//20000
   public  getData() {
     return new Promise(resolve => {
-      this.http.get(this.dburl).subscribe(data => {
+      this.http.get(this.dburl)
+        .pipe(timeout(20000), catchError(error => of([])))
+        .subscribe(data => {
         resolve(data);
         console.log(data);
       }, err => {
@@ -30,6 +34,7 @@ export class RestProvider {
       });
     });
   }
+
 
   // Alert sollte nicht hier hin - in home ts
   public showAlertData() {
@@ -44,11 +49,9 @@ export class RestProvider {
         }
       }]
     });
-
-
-
     alert.present();
   }
+
 
 }
 
