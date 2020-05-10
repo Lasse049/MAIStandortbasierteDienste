@@ -24,7 +24,7 @@ export class RestProvider {
       }, err => {
         console.log("Data request failed due to Server issues");
         console.log(err);
-
+        this.showAlertData();
       },() => {
         console.log("Data received from the Server");
       });
