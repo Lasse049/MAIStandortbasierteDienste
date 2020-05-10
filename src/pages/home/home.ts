@@ -157,9 +157,9 @@ export class HomePage {
 
 
     this.map.whenReady(function(e){
-      console.log("Map is ready")
-      this.maplodedsetmarker();
-    }.bind(this)
+        console.log("Map is ready")
+        this.maplodedsetmarker();
+      }.bind(this)
     );
 
     this.map.on("dragend", function(e) {
@@ -167,6 +167,24 @@ export class HomePage {
         this.loconoff = false;
       }.bind(this)
     );
+
+    var legend = leaflet.control({position: 'bottomright'});
+    legend.onAdd = this.getLegend;
+    legend.addTo(this.map);
+
+
+  }
+
+  getLegend() {
+
+    var div = leaflet.DomUtil.create('div', 'info legend');
+
+    div.innerHTML += '<h3>Legende</h3>';
+    div.innerHTML += 'eigener Standort' + '<br>';
+    div.innerHTML += 'illegale Müllablagerung';
+
+    return div;
+
   }
 
   maplodedsetmarker(){
@@ -215,50 +233,10 @@ export class HomePage {
     }
   }
 
-  loadmap() {
-    // Define and add Leaflet Map with OSM TileLayer
-    this.map = leaflet.map("map");
-    leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attributions: 'OpenStreetMap',
-    }).addTo(this.map);
-    this.map.setZoom(25);
-    this.map.setView([0,0])
-    //this.map.setView([this.lat, this.long]);
-    console.log('MapLoadSuccsess');
-    console.log("lat: " + this.lat + "long: " + this.long);
 
 
-    this.map.whenReady(function(e){
-      console.log("Map is ready")
-      this.maplodedsetmarker();
-    }.bind(this)
-    );
-
-    this.map.on("dragend", function(e) {
-        console.log("Dragging the Map")
-        this.loconoff = false;
-      }.bind(this)
-    );
-
-    var legend = leaflet.control({position: 'bottomright'});
-    legend.onAdd = this.getLegend;
-    legend.addTo(this.map);
 
 
-  }
-
-  getLegend() {
-
-    var div = leaflet.DomUtil.create('div', 'info legend');
-
-    div.innerHTML += '<h3>Legende</h3>';
-    div.innerHTML += 'eigener Standort' + '<br>';
-    div.innerHTML += 'illegale Müllablagerung';
-
-    return div;
-
-    }
-  }
 
 
   opencheckbox(){
