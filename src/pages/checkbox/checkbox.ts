@@ -132,10 +132,10 @@ export class CheckboxPage {
     }, err => {
       console.log("Could not send data");
       console.log(err);
-      sending.dismiss();
+      sending.dismissAll();
     },() => {
       console.log("Data has been sent to the Server");
-      sending.dismiss();
+      sending.dismissAll();
       this.showAlertSend();
     });
 
