@@ -28,7 +28,8 @@ export class CheckboxPage {
   timestamp: any;
   photopfad: any;
   picture: any;
-
+  error: boolean = false;
+  count: number = 3;
   constructor(
     public navCtrl: NavController,
     public alertCtrl: AlertController,
@@ -74,7 +75,7 @@ export class CheckboxPage {
 
     let data64 = this.photoProvider.ueber;
 
-    this.picture= data64;
+    this.picture= "data:image/jpeg;base64,"+ data64;
 
     if (this.username == null) {
       this.showAlertnu()
@@ -83,10 +84,10 @@ export class CheckboxPage {
       this.showAlertma()
 
     } else {
-        if(this.longitude != null && this.latitude != null){
+      if(this.longitude != null && this.latitude != null){
 
-          this.sendtoserver(this.picture);
-        }
+        this.sendtoserver(this.picture);
+      }
     }
 
 
@@ -96,15 +97,15 @@ export class CheckboxPage {
   sendtoserver(photo) {
     console.log("sendToserver Ausgeloest");
     ///////// TESTDATEN//////////
-   /* this.username="cccfake";
-    this.latitude=52;
-    this.longitude=8;
-    this.Hausmuell=true;
-    this.Sondermuell=false;
-    this.Gruenabfall=false;
-    this.Sperrmuell=false;
+    /* this.username="cccfake";
+     this.latitude=52;
+     this.longitude=8;
+     this.Hausmuell=true;
+     this.Sondermuell=false;
+     this.Gruenabfall=false;
+     this.Sperrmuell=false;
 
-    */
+     */
     /////////////////////////////
 
     let sending = this.loadingCtrl.create({
@@ -125,45 +126,47 @@ export class CheckboxPage {
       sperrtrash: this.Sperrmuell,
       picture: photo,
     };
-    //this.http.post(url,data).subscribe();
-    this.http.post(url, data).subscribe(e => {
-      console.log("Sending Data...");
 
+
+    this.http.post(url,data).subscribe(data => {
     }, err => {
       console.log("Could not send data");
       console.log(err);
+      this.error = true;
       sending.dismissAll();
     },() => {
-      console.log("Data has been sent to the Server");
-      sending.dismissAll();
-      this.showAlertSend();
     });
+    if(this.error == false){
+      sending.dismissAll();
+      this.showAlertSe();
+      //this.navCtrl.pop()
+    }
 
+
+    console.log(this.count);
   }
 
-  /*
-    this.http.post(url, data).subscribe((response) => {
-
-      console.log("senden erfolgreich");
-      sending.dismiss();
-      //this.navCtrl.pop();
-      this.alertCtrl.create({
-        title: 'Daten gesendet!',
-        subTitle: 'Vielen Dank',
-        buttons: ['OK']
-      }).present(),
-        console.log("senden fehlgeschlagen");
-        sending.dismiss();
-        this.alertCtrl.create({
-          title: 'Fehler!',
-          subTitle: 'Daten konnten nicht gesendet werden',
-          buttons: ['OK']
-        }).present();
-console.log(this.longitude);
+/*
+    console.log(this.count);
+    this.http.post(url,data).subscribe(data => {
+      console.log("Sending Data...")
+      //sending.dismissAll()
+    }, err => {
+      console.log("Could not send data")
+      console.log(err)
+      this.error = true;
+      //sending.dismissAll()
+    },() => {
+      this.count = 1;
+      console.log("Data has been sent to the Server")
     });
+    //this.navCtrl.pop()
+
+      console.log(this.count);
+  }
+  */
 
 
-   */
 
   showAlertma() {
     const alert = this.alertCtrl.create({
@@ -171,7 +174,6 @@ console.log(this.longitude);
       subTitle: 'Bitte geben Sie eine Müllart an',
       buttons: ['OK']
     });
-
     alert.present();
   }
 
@@ -181,20 +183,23 @@ console.log(this.longitude);
       subTitle: 'Bitte geben Sie einen Namen an',
       buttons: ['OK']
     });
-
     alert.present();
   }
 
-  showAlertSend() {
+  showAlertSe() {
     const alert = this.alertCtrl.create({
-      title: 'Daten gesendet',
-      subTitle: 'Sie werden zur Startseite zurückgeleitet',
-      buttons: ['OK']
+      title: 'Daten gesendet!',
+      subTitle: 'Vielen Dank.',
+      buttons: [{
+        text: 'OK',
+        handler: () => {
+          this.navCtrl.pop();
+        console.log('Agree clicked');
+        }
+      }]
     });
-
     alert.present();
   }
-
 
   ionViewDidLeave() {
     //Send Data back to home

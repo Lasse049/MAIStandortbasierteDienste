@@ -1,5 +1,5 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import { NavController } from 'ionic-angular';
+import {LoadingController, NavController} from 'ionic-angular';
 
 import leaflet from 'leaflet';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -35,22 +35,29 @@ export class HomePage {
   bluedot: any;
   testCheckboxResult: any;
   testCheckboxOpen: any;
-  options: any
-  data:any
+  options: any;
+  data:any;
+  loading:any;
 
   constructor(
     public navCtrl: NavController,
     public geolocation: Geolocation,
     public restProvider: RestProvider,
     public alertCtrl: AlertController,
+    public loadingCtrl: LoadingController,
 
   ) {
+    this.loading = this.loadingCtrl.create({
+      content: 'Loading App',
+      spinner: 'circles'
+    });
   }
 
 
   ionViewDidEnter() {
 
 
+    this.loading.present();
     this.getLocation();
 
     if (this.map==null){
@@ -134,6 +141,37 @@ export class HomePage {
     }
   }
 
+  loadmap() {
+    // Define and add Leaflet Map with OSM TileLayer
+    this.map = leaflet.map("map");
+    leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attributions: 'OpenStreetMap',
+    }).addTo(this.map);
+    this.map.setZoom(25);
+    this.map.setView([0,0])
+    //this.map.setView([this.lat, this.long]);
+    console.log('MapLoadSuccsess');
+    console.log("lat: " + this.lat + "long: " + this.long);
+
+
+    this.map.whenReady(function(e){
+      console.log("Map is ready")
+      this.maplodedsetmarker();
+    }.bind(this)
+    );
+
+    this.map.on("dragend", function(e) {
+        console.log("Dragging the Map")
+        this.loconoff = false;
+      }.bind(this)
+    );
+  }
+
+  maplodedsetmarker(){
+    this.getDBData();
+    console.log("Map Loaded. Getting DB Data")
+  }
+
   getDBData() {
     console.log("Trying to connect to Server")
     this.restProvider.getData()
@@ -170,37 +208,8 @@ export class HomePage {
       markers.addLayer(this.marker);
       console.log("Markers added");
     }
-  }
-
-  loadmap() {
-    // Define and add Leaflet Map with OSM TileLayer
-    this.map = leaflet.map("map");
-    leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attributions: 'OpenStreetMap',
-    }).addTo(this.map);
-    this.map.setZoom(25);
-    this.map.setView([0,0])
-    //this.map.setView([this.lat, this.long]);
-    console.log('MapLoadSuccsess');
-    console.log("lat: " + this.lat + "long: " + this.long);
-
-
-    this.map.whenReady(function(e){
-      console.log("Map is ready")
-      this.maplodedsetmarker();
-    }.bind(this)
-    );
-
-    this.map.on("dragend", function(e) {
-        console.log("Dragging the Map")
-        this.loconoff = false;
-      }.bind(this)
-    );
-  }
-
-  maplodedsetmarker(){
-    this.getDBData();
-    console.log("Map Loaded. Getting DB Data")
+    // Finished Loading all
+    this.loading.dismissAll();
   }
 
 
