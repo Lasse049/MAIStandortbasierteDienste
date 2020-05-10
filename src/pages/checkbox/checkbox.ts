@@ -10,7 +10,6 @@ import { delay } from 'rxjs/operators';
 import { ReturnStatement } from '@angular/compiler';
 
 
-
 @Component({
   selector: 'page-checkbox',
   templateUrl: 'checkbox.html'
@@ -137,6 +136,7 @@ export class CheckboxPage {
     },() => {
       console.log("Data has been sent to the Server");
       sending.dismiss();
+      this.showAlertSend();
     });
 
   }
@@ -184,6 +184,17 @@ console.log(this.longitude);
 
     alert.present();
   }
+
+  showAlertSend() {
+    const alert = this.alertCtrl.create({
+      title: 'Daten gesendet',
+      subTitle: 'Sie werden zur Startseite zurückgeleitet',
+      buttons: ['OK']
+    });
+
+    alert.present();
+  }
+
 
   ionViewDidLeave() {
     //Send Data back to home

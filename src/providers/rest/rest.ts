@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AlertController } from 'ionic-angular';
 
 /*
   Generated class for the RestProvider provider.
@@ -12,7 +13,7 @@ export class RestProvider {
 
   dburl:string = "http://igf-srv-lehre.igf.uni-osnabrueck.de:33859/getData";
 
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient, public alertCtrl: AlertController) {
   }
 
   public  getData() {
@@ -23,11 +24,21 @@ export class RestProvider {
       }, err => {
         console.log("Data request failed due to Server issues");
         console.log(err);
-        
+
       },() => {
         console.log("Data received from the Server");
       });
     });
+  }
+
+  showAlertData() {
+    const alert = this.alertCtrl.create({
+      title: 'Fehler Daten',
+      subTitle: 'Fehler Daten',
+      buttons: ['OK']
+    });
+
+    alert.present();
   }
 
 }
