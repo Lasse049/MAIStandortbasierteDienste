@@ -109,7 +109,7 @@ export class CheckboxPage {
 
     let sending = this.loadingCtrl.create({
       content: 'Sending Data',
-      spinner: 'bubbles'
+      spinner: 'circles'
     });
     sending.present();
 
