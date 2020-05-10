@@ -233,12 +233,6 @@ export class HomePage {
     }
   }
 
-
-
-
-
-
-
   opencheckbox(){
     this.navCtrl.push(CheckboxPage,
       {
