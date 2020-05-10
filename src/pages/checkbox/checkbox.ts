@@ -9,6 +9,7 @@ import {catchError, delay, timeout} from 'rxjs/operators';
 import { ReturnStatement } from '@angular/compiler';
 import {of} from "rxjs/observable/of";
 import {HTTPResponse} from "@ionic-native/http";
+import 'rxjs/add/operator/map';
 
 
 @Component({
@@ -66,17 +67,9 @@ export class CheckboxPage {
 
   }
 
-  /*
-  logEvent() {
-    this.navCtrl.setRoot(HomePage);
-    this.navCtrl.popToRoot(root);
-  }
-*/
-
   send() {
     this.photopfad = this.photoProvider.ueber;
     console.log("Da Pic: " + this.photoProvider.picture)
-
     console.log("Hier Pfad: " + this.photopfad);
 
     let data64 = this.photoProvider.ueber;
@@ -127,18 +120,28 @@ export class CheckboxPage {
       picture: photo,
     };
 
+/*
+  this.http.post(url,data)
+    .map(res => res.json())
+    .subscribe(data => {
 
-  this.http.post(url,data).subscribe((data) => {
-    console.log("next" + data);
-    }, (errorResponse: any) => {
-      this.error = true;
-      console.log(errorResponse);
-      console.log("didnt send data");
-      this.showAlertSf();
-    },() => {
-    console.log("complete");
-    this.subscriptioncomplete = true;
-    });
+      }
+    )
+*/
+/////// ERROR KLAPPT; NEXT/COMPLETE NICHT
+    this.http.post(url,data)
+    .subscribe
+      ((data) => {
+          console.log("next" + data);
+      },(errorResponse: any) => {
+          this.error = true;
+          console.log(errorResponse);
+          console.log("didnt send data");
+          this.showAlertSf();
+      },() => {
+          console.log("complete");
+           this.subscriptioncomplete = true;
+      });
 
   // Das funkctioniert nicht - Error wird ausgegeben, Erfolg jedoch nicht. how to handle?
     if(this.error!= true){
@@ -201,7 +204,10 @@ export class CheckboxPage {
   }
 
   ionViewDidLeave() {
-
+    if(this.sending!=null){
+      this.sending.dismissAll();
+      this.sending = null;
+    }
     //Send Data back to home
   }
 
