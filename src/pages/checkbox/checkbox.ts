@@ -10,6 +10,7 @@ import { delay } from 'rxjs/operators';
 import { ReturnStatement } from '@angular/compiler';
 
 
+
 @Component({
   selector: 'page-checkbox',
   templateUrl: 'checkbox.html'
@@ -132,10 +133,10 @@ export class CheckboxPage {
     }, err => {
       console.log("Could not send data");
       console.log(err);
-      sending.dismissAll();
+      sending.dismiss();
     },() => {
       console.log("Data has been sent to the Server");
-      sending.dismissAll();
+      sending.dismiss();
     });
 
   }
