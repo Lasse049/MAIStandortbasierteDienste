@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {HomePage} from "../home/home";
-import {root} from "rxjs/util/root";
 import { AlertController } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 import {ProviderPhotoProvider} from "../../providers/photo/photo";
@@ -9,6 +8,7 @@ import { Events } from 'ionic-angular';
 import {catchError, delay, timeout} from 'rxjs/operators';
 import { ReturnStatement } from '@angular/compiler';
 import {of} from "rxjs/observable/of";
+import {HTTPResponse} from "@ionic-native/http";
 
 
 @Component({
@@ -32,6 +32,7 @@ export class CheckboxPage {
   error: boolean = false;
   sending: any;
   subscriptioncomplete: boolean = false;
+  sendingdata: any;
 
   constructor(
     public navCtrl: NavController,
@@ -65,10 +66,12 @@ export class CheckboxPage {
 
   }
 
+  /*
   logEvent() {
     this.navCtrl.setRoot(HomePage);
     this.navCtrl.popToRoot(root);
   }
+*/
 
   send() {
     this.photopfad = this.photoProvider.ueber;
@@ -102,24 +105,13 @@ export class CheckboxPage {
 
   sendtoserver(photo) {
     console.log("sendToserver Ausgeloest");
-    ///////// TESTDATEN//////////
-    /* this.username="cccfake";
-     this.latitude=52;
-     this.longitude=8;
-     this.Hausmuell=true;
-     this.Sondermuell=false;
-     this.Gruenabfall=false;
-     this.Sperrmuell=false;
-
-     */
-    /////////////////////////////
     console.log(photo);
+
     this.sending = this.loadingCtrl.create({
       content: 'Sending Data',
       spinner: 'circles'
     });
     this.sending.present();
-
 
     const url = "http://igf-srv-lehre.igf.uni-osnabrueck.de:44458/send"
 //  const url = "http://igf-srv-lehre.igf.uni-osnabrueck.de:33859/send"
@@ -135,10 +127,12 @@ export class CheckboxPage {
       picture: photo,
     };
 
-    //pipe(timeout(20000))
-  this.http.post(url,data).subscribe((data: any) => {
+
+  this.http.post(url,data).subscribe((data) => {
+    console.log("next" + data);
     }, (errorResponse: any) => {
       this.error = true;
+      console.log(errorResponse);
       console.log("didnt send data");
       this.showAlertSf();
     },() => {
@@ -146,49 +140,11 @@ export class CheckboxPage {
     this.subscriptioncomplete = true;
     });
 
-  if(this.subscriptioncomplete==true && this.error!=true){
-    this.showAlertSe();
+  // Das funkctioniert nicht - Error wird ausgegeben, Erfolg jedoch nicht. how to handle?
+    if(this.error!= true){
+      this.showAlertSe();
+    }
   }
-
-  }
-
-/**
-    this.http.post(url,data).pipe(timeout(20000), catchError(error => of (405))).subscribe((data) => {
-      //this.showAlertSe();
-      console.log(data)
-    }, err => {
-      console.log("Could not send data");
-      console.log(err);
-      this.error = true;
-    },() => {
-      console.log("complete")
-    });
-**/
-
-
-
-
-/*
-    console.log(this.count);
-    this.http.post(url,data).subscribe(data => {
-      console.log("Sending Data...")
-      //sending.dismissAll()
-    }, err => {
-      console.log("Could not send data")
-      console.log(err)
-      this.error = true;
-      //sending.dismissAll()
-    },() => {
-      this.count = 1;
-      console.log("Data has been sent to the Server")
-    });
-    //this.navCtrl.pop()
-
-      console.log(this.count);
-  }
-  */
-
-
 
   showAlertma() {
     const alert = this.alertCtrl.create({
@@ -210,13 +166,15 @@ export class CheckboxPage {
 
   showAlertSe() {
     const alert = this.alertCtrl.create({
-      title: 'Daten gesendet!',
-      subTitle: 'Vielen Dank.',
+      title: 'Daten wurden versandt.',
+      subTitle: 'Vielen Dank!',
       buttons: [{
         text: 'OK',
         handler: () => {
-          this.sending.dismissAll();
-          this.sending = null;
+          if(this.sending!=null){
+            this.sending.dismissAll();
+            this.sending = null;
+          }
           this.navCtrl.pop();
         }
       }]
@@ -226,14 +184,16 @@ export class CheckboxPage {
 
   showAlertSf() {
     const alert = this.alertCtrl.create({
-      title: 'Daten konnten nicht gesendet werden!',
+      title: 'Daten konnten nicht übermittelt werden!',
       subTitle: 'Versuchen sie es später erneut.',
       buttons: [{
         text: 'OK',
         handler: () => {
           this.error = true;
-          this.sending.dismissAll();
-          this.sending = null;
+          if(this.sending!=null){
+            this.sending.dismissAll();
+            this.sending = null;
+          }
         }
       }]
     });

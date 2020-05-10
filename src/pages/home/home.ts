@@ -275,8 +275,8 @@ export class HomePage {
 
   showAlertnoData() {
     const alert = this.alertCtrl.create({
-      title: 'App wurde angehalten.',
-      subTitle: 'Konnte keine Verbindung zum Server herstellen.',
+      title: 'Keine Verbindung zum Server!',
+      subTitle: 'App nur eingeschränkt nutzbar.',
       buttons: [{
         text: 'OK',
         handler: () => {
