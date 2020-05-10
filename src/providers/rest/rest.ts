@@ -13,15 +13,15 @@ import {of} from "rxjs/observable/of";
 @Injectable()
 export class RestProvider {
 
-  dburl:string = "http://igf-srv-lehre.igf.uni-osnabrueck.de:33859/getData";
-
+  //dburl:string = "http://igf-srv-lehre.igf.uni-osnabrueck.de:33859/getData";
+  dburl:string = "http://igf-srv-lehre.igf.uni-osnabrueck.de:44458/getData";
   constructor(public http: HttpClient, public alertCtrl: AlertController) {
   }
 //20000
   public  getData() {
     return new Promise(resolve => {
       this.http.get(this.dburl)
-        .pipe(timeout(20000), catchError(error => of([])))
+        .pipe(timeout(20000), catchError(error => of(404)))
         .subscribe(data => {
         resolve(data);
         console.log(data);
@@ -30,7 +30,7 @@ export class RestProvider {
         console.log(err);
         this.showAlertData();
       },() => {
-        console.log("Data received from the Server");
+        console.log("Data Request finished");
       });
     });
   }
@@ -44,8 +44,6 @@ export class RestProvider {
       buttons: [{
         text: 'OK',
         handler: () => {
-          //thisdestroy();
-          console.log('Agree clicked');
         }
       }]
     });

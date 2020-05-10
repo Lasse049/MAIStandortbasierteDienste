@@ -206,7 +206,7 @@ export class HomePage {
 
 
   setMarker(data){
-    if(this.jsondata = []){
+    if(data == 404){
       this.showAlertnoData();
     } else {
       this.jsondata = data.result;
@@ -275,8 +275,8 @@ export class HomePage {
 
   showAlertnoData() {
     const alert = this.alertCtrl.create({
-      title: 'Konnte keine Daten vom Server abrufen.',
-      subTitle: 'App wird geschlossen',
+      title: 'App wurde angehalten.',
+      subTitle: 'Konnte keine Verbindung zum Server herstellen.',
       buttons: [{
         text: 'OK',
         handler: () => {

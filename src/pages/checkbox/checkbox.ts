@@ -6,8 +6,9 @@ import { AlertController } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 import {ProviderPhotoProvider} from "../../providers/photo/photo";
 import { Events } from 'ionic-angular';
-import { delay } from 'rxjs/operators';
+import {catchError, delay, timeout} from 'rxjs/operators';
 import { ReturnStatement } from '@angular/compiler';
+import {of} from "rxjs/observable/of";
 
 
 @Component({
@@ -29,8 +30,8 @@ export class CheckboxPage {
   photopfad: any;
   picture: any;
   error: boolean = false;
-  count: number = 3;
   sending: any;
+  subscriptioncomplete: boolean = false;
 
   constructor(
     public navCtrl: NavController,
@@ -77,22 +78,25 @@ export class CheckboxPage {
 
     let data64 = this.photoProvider.ueber;
 
+    console.log("data64: " + data64);
+    if (data64 != null){
+      console.log("data64 is not null: " + data64);
     this.picture= "data:image/jpeg;base64,"+ data64;
+    }
 
     if (this.username == null) {
       this.showAlertnu()
     }
     if (this.Hausmuell== false && this.Gruenabfall == false && this.Sperrmuell == false && this.Sondermuell == false ) {
       this.showAlertma()
-
-    } else {
-      if(this.longitude != null && this.latitude != null){
-
-        this.sendtoserver(this.picture);
+    }
+    if ( this.username!= null) {
+      if (this.Hausmuell == true || this.Gruenabfall == true || this.Sperrmuell == true || this.Sondermuell || true) {
+       if (this.longitude != null && this.latitude != null) {
+         this.sendtoserver(this.picture);
+        }
       }
     }
-
-
   }
 
 
@@ -109,14 +113,16 @@ export class CheckboxPage {
 
      */
     /////////////////////////////
-
+    console.log(photo);
     this.sending = this.loadingCtrl.create({
       content: 'Sending Data',
       spinner: 'circles'
     });
     this.sending.present();
 
-    const url = "http://igf-srv-lehre.igf.uni-osnabrueck.de:33859/send"
+
+    const url = "http://igf-srv-lehre.igf.uni-osnabrueck.de:44458/send"
+//  const url = "http://igf-srv-lehre.igf.uni-osnabrueck.de:33859/send"
     let data = {
       time: this.timestamp,
       user: this.username,
@@ -129,31 +135,38 @@ export class CheckboxPage {
       picture: photo,
     };
 
-    console.log("132: "+ this.error);
-    this.http.post(url,data).subscribe(() => {
-      this.error= true;
-      console.log("135: "+ this.error);
+    //pipe(timeout(20000))
+  this.http.post(url,data).subscribe((data: any) => {
+    }, (errorResponse: any) => {
+      this.error = true;
+      console.log("didnt send data");
+      this.showAlertSf();
+    },() => {
+    console.log("complete");
+    this.subscriptioncomplete = true;
+    });
+
+  if(this.subscriptioncomplete==true && this.error!=true){
+    this.showAlertSe();
+  }
+
+  }
+
+/**
+    this.http.post(url,data).pipe(timeout(20000), catchError(error => of (405))).subscribe((data) => {
+      //this.showAlertSe();
+      console.log(data)
     }, err => {
       console.log("Could not send data");
       console.log(err);
       this.error = true;
-      console.log("140: "+ this.error);
     },() => {
-      this.error= false;
-      console.log("143: "+ this.error);
+      console.log("complete")
     });
+**/
 
 
-    if(this.error == false){
-      console.log("147: "+ this.error);
 
-      this.showAlertSe();
-      //this.navCtrl.pop()
-    }
-
-
-    console.log(this.count);
-  }
 
 /*
     console.log(this.count);
@@ -205,7 +218,22 @@ export class CheckboxPage {
           this.sending.dismissAll();
           this.sending = null;
           this.navCtrl.pop();
-        console.log('Agree clicked');
+        }
+      }]
+    });
+    alert.present();
+  }
+
+  showAlertSf() {
+    const alert = this.alertCtrl.create({
+      title: 'Daten konnten nicht gesendet werden!',
+      subTitle: 'Versuchen sie es später erneut.',
+      buttons: [{
+        text: 'OK',
+        handler: () => {
+          this.error = true;
+          this.sending.dismissAll();
+          this.sending = null;
         }
       }]
     });
