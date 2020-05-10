@@ -109,9 +109,9 @@ export class CheckboxPage {
 
     let sending = this.loadingCtrl.create({
       content: 'Sending Data',
-      spinner: 'bubbles'
+      spinner: 'circles'
     });
-    //sending.present();
+    sending.present();
 
     const url = "http://igf-srv-lehre.igf.uni-osnabrueck.de:33859/send"
     let data = {
@@ -128,16 +128,16 @@ export class CheckboxPage {
     //this.http.post(url,data).subscribe();
     this.http.post(url, data).subscribe(e => {
       console.log("Sending Data...");
-      //sending.dismissAll()
+
     }, err => {
       console.log("Could not send data");
       console.log(err);
-      //sending.dismissAll()
+      sending.dismissAll();
     },() => {
       console.log("Data has been sent to the Server");
-      this.showAlertSend()
-      });
-
+      this.showAlertSend();
+      sending.dismissAll();
+    });
   }
 
   /*
