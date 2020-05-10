@@ -131,8 +131,8 @@ export class CheckboxPage {
 /////// ERROR KLAPPT; NEXT/COMPLETE NICHT
     this.http.post(url,data)
     .subscribe
-      ((data) => {
-          console.log("next" + data);
+      ((res) => {
+          console.log("next" + res);
       },(errorResponse: any) => {
           this.error = true;
           console.log(errorResponse);
