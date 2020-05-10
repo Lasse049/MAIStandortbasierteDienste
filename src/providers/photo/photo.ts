@@ -137,7 +137,7 @@ export class ProviderPhotoProvider {
   });
 
   //Loading Photos
-  public async loadSaved() {
+  /*public async loadSaved() {
     // Retrieve cached photo array data
     const photos = await Storage.get({ key: this.PHOTO_STORAGE });
     this.photos = JSON.parse(photos.value) || [];
@@ -155,42 +155,7 @@ export class ProviderPhotoProvider {
         photo.base64 = `data:image/jpeg;base64,${readFile.data}`;
       }
     }
-  }
-
-
-
-
-
-
-
-  /**
-   *
-   *
-   *    Falls das so wie oben nicht geht kannst dus sonst mal so versuchen
-   *
-   *
-   *
-       import { Camera, CameraOptions } from '@ionic-native/camera';
-
-       constructor
-       private camera: Camera;
-
-        const options: CameraOptions = {
-            destinationType: this.camera.DestinationType.DATA_URL,
-            encodingType: this.camera.EncodingType.JPEG,
-            mediaType: this.camera.MediaType.PICTURE,
-            saveToPhotoAlbum: true,
-            quality: x
-          }
-          this.camera.getPicture(options).then((imageData) => {
-            var x = 'data:image/jpeg;base64,' + imageData;
-            this.sendToServer(x);
-          }, (err) => {
-      });
-   *
-   *
-   */
-
+  }*/
 
 }
 

@@ -9,6 +9,7 @@ import {FilterboxPage} from "../filterbox/filterbox";
 import { AlertController } from 'ionic-angular';
 import {e} from "@angular/core/src/render3";
 import {catchError} from "rxjs/operators";
+import { directive } from '@angular/core/src/render3/instructions';
 
 
 
@@ -196,6 +197,24 @@ export class HomePage {
         this.loconoff = false;
       }.bind(this)
     );
+
+    var legend = leaflet.control({position: 'bottomright'});
+    legend.onAdd = this.getLegend;
+    legend.addTo(this.map);
+
+
+  }
+
+  getLegend() {
+
+    var div = leaflet.DomUtil.create('div', 'info legend');
+
+    div.innerHTML += '<h3>Legende</h3>';
+    div.innerHTML += 'eigener Standort' + '<br>';
+    div.innerHTML += 'illegale Müllablagerung';
+
+    return div;
+
   }
 
   maplodedsetmarker(){
@@ -319,7 +338,6 @@ export class HomePage {
   simplemethod2(){
     console.log("its simple for tests")
   }
-
 
 }
 

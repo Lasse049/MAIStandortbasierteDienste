@@ -135,10 +135,12 @@ export class CheckboxPage {
       sending.dismiss();
     },() => {
       console.log("Data has been sent to the Server");
-      sending.dismiss();
+      sending.dismiss({'dismissed': true});
       this.showAlertSend();
     });
-
+    //sending.dissmiss wird in Z. 138 ja gar nicht erreicht
+    sending.dismiss({'dismissed': true});
+    this.showAlertSend();
   }
 
   /*
@@ -189,7 +191,10 @@ console.log(this.longitude);
     const alert = this.alertCtrl.create({
       title: 'Daten gesendet',
       subTitle: 'Sie werden zur Startseite zurückgeleitet',
-      buttons: ['OK']
+      buttons: [{
+        text: 'OK',
+        handler: () => {this.logEvent()}
+      }]
     });
 
     alert.present();
