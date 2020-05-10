@@ -135,6 +135,7 @@ export class CheckboxPage {
       //sending.dismissAll()
     },() => {
       console.log("Data has been sent to the Server");
+      this.showAlertSend()
       });
 
   }
@@ -182,6 +183,17 @@ console.log(this.longitude);
 
     alert.present();
   }
+
+  showAlertSend() {
+    const alert = this.alertCtrl.create({
+      title: 'Daten gesendet',
+      subTitle: 'Sie werden zur Startseite zurückgeleitet',
+      buttons: ['OK']
+    });
+
+    alert.present();
+  }
+
 
   ionViewDidLeave() {
     //Send Data back to home
