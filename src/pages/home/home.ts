@@ -155,6 +155,7 @@ export class HomePage {
     console.log(this.jsondata);
 
     for (let i = 0; i < this.jsondata.length; i++) {
+      //Markerfarbe
       this.marker = new leaflet.marker([this.jsondata[i].latitude, this.jsondata[i].longitude]);
 
       if (this.jsondata[i].hausmuell == true) {
@@ -228,7 +229,7 @@ export class HomePage {
 
 
   zoomonlocation(){
-    this.map.setView([this.lat, this.long], 25);
+    this.map.setView([this.lat, this.long], 17);
   }
 
 
