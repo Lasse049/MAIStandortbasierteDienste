@@ -228,7 +228,7 @@ export class HomePage {
 
 
   zoomonlocation(){
-    this.map.setView([this.lat, this.long], 17);
+    this.map.setView([this.lat, this.long], 25);
   }
 
 
