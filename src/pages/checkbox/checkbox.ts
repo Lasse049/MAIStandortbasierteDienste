@@ -120,54 +120,18 @@ export class CheckboxPage {
       sperrtrash: this.Sperrmuell,
       picture: photo,
     };
-
-    /*
-      this.http.post(url,data)
-        .map(res => res.json())
-        .subscribe(data => {
-
-          }
-        )
-    */
-/////// ERROR KLAPPT; NEXT/COMPLETE NICHT
-/*
-    this.http.post(url, data).subscribe((res) => {
-      if (res['status'] == 204) {
-        console.log("sucsess");
-      } else {
-        console.log("failed");
+    
+    this.postsubscription = this.http.post(url, data).subscribe((response) => {
+      console.log(response);
+      if(response['status'] == 200){
+        this.showAlertSe()
+      }else{
+        this.showAlertSf()
       }
-    });
+    },err=>
+      this.showAlertSf()
+    );
   }
-
-
- */
-
-    this.postsubscription = this.http.post(url,data)
-      .map((res) => {
-        console.log("lol")
-        return res as Object
-      })
-    .subscribe
-      ((data) => {
-          console.log("polly")
-          console.log("next" + data);
-      },(errorResponse: any) => {
-          this.error = true;
-          console.log(errorResponse);
-          console.log("didnt send data");
-          this.showAlertSf();
-      },() => {
-          console.log("complete");
-           this.subscriptioncomplete = true;
-      });
-
-  // Das funkctioniert nicht - Error wird ausgegeben, Erfolg jedoch nicht. how to handle?
-    if(this.error!= true){
-      this.showAlertSe();
-    }
-  }
-
 
   showAlertma() {
     const alert = this.alertCtrl.create({
