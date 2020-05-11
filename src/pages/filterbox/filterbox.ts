@@ -29,6 +29,7 @@ export class FilterboxPage {
   guenabfallarr: any = [];
   namearr: any = [];
   datearr: any = [];
+  filterboolean: any;
 
 
   constructor(
@@ -181,13 +182,15 @@ export class FilterboxPage {
 
        */
 
+        this.filterboolean=true;
+
         this.navCtrl.push(HomePage,
           {
             hausmuellarr:this.hausmuellarr,
             sperrmuelarr:this.sperrmuellarr,
             gruenabfallarr:this.guenabfallarr,
-            sondermuell:this.sondermuellarr
-
+            sondermuell:this.sondermuellarr,
+            filterbool: this.filterboolean
           },{},function(e){
             console.log("data pushed");
           }

@@ -1,5 +1,5 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import {LoadingController, NavController} from 'ionic-angular';
+import {LoadingController, NavController, NavParams} from 'ionic-angular';
 
 import leaflet from 'leaflet';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -10,6 +10,7 @@ import { AlertController } from 'ionic-angular';
 import {e} from "@angular/core/src/render3";
 import {catchError} from "rxjs/operators";
 import {Platform} from 'ionic-angular';
+import {DatePicker} from "@ionic-native/date-picker";
 
 
 @Component({
@@ -43,6 +44,8 @@ export class HomePage {
   gruenabfallarr;
   sondermuellarr;
   sperrmuellarr;
+  markers:any;
+  mapinit: boolean = false;
 
   constructor(
     public navCtrl: NavController,
@@ -51,27 +54,37 @@ export class HomePage {
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
     public platform: Platform,
+    public navParams: NavParams,
   ) {
+
   }
+
+
 
   /***
    * On Start
    */
   ionViewDidEnter() {
 
+    console.log("mapinit: " + this.mapinit);
     //Create Loading Spinner while App is not ready
     this.loading = this.loadingCtrl.create({
       content: 'Loading App',
       spinner: 'circles'
     });
 
+    //If Map doesnt exist, Load it
+    this.loadmap();
+
+
     // Call Method GetLocation
     this.getLocation();
-
-    //If Map doesnt exist, Load it
+   /*
     if (this.map == null) {
       this.loadmap();
     }
+
+    */
     }
 
   /***
@@ -148,13 +161,18 @@ export class HomePage {
   }
 
   loadmap() {
-    // Define and add Leaflet Map with OSM TileLayer
-    this.map = leaflet.map("map");
-    leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attributions: 'OpenStreetMap',
-    }).addTo(this.map);
-    this.map.setZoom(25);
-    this.map.setView([0,0])
+    console.log("mapinit: " + this.mapinit);
+    if(this.mapinit==false) {
+      //this.map.remove();
+      console.log("loading map");
+      // Define and add Leaflet Map with OSM TileLayer
+      this.map = leaflet.map("map");
+      leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attributions: 'OpenStreetMap',
+      }).addTo(this.map);
+      this.map.setZoom(25);
+      this.map.setView([0, 0])
+    }
     //this.map.setView([this.lat, this.long]);
     console.log('MapLoadSuccsess');
     console.log("lat: " + this.lat + "long: " + this.long);
@@ -162,6 +180,7 @@ export class HomePage {
 
     this.map.whenReady(function(e){
         console.log("Map is ready")
+        this.mapinit = true;
         this.maplodedsetmarker();
       }.bind(this)
     );
@@ -225,7 +244,7 @@ export class HomePage {
     } else {
       if (this.gruenabfallarr == null && this.hausmuellarr == null && this.sondermuellarr == null && this.sperrmuellarr == null) {
         this.jsondata = data.result;
-        let markers = new leaflet.layerGroup().addTo(this.map);
+        this.markers = new leaflet.layerGroup().addTo(this.map);
         console.log("setMarker");
         console.log(this.jsondata);
 
@@ -242,7 +261,7 @@ export class HomePage {
           } else if (this.jsondata[i].sondermuell == true) {
             this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sondermuell');
           }
-          markers.addLayer(this.marker);
+          this.markers.addLayer(this.marker);
           console.log("Markers added");
         }
       } else {
@@ -258,7 +277,7 @@ export class HomePage {
   setFilterMarker(){
     console.log("IMHERE");
 
-    let markers = new leaflet.layerGroup().addTo(this.map);
+    this.markers = new leaflet.layerGroup().addTo(this.map);
     console.log("setfilterMarker");
     //console.log(this.jsondata);
     //Markerfarbe
@@ -287,7 +306,7 @@ export class HomePage {
       }
     }
     console.log("ANDHERE");
-    markers.addLayer(this.marker);
+    this.markers.addLayer(this.marker);
     console.log("Markers added");
   }
 
@@ -355,6 +374,15 @@ export class HomePage {
       this.loading.dismissAll();
       this.loading = null;
     }
+    if (this.map != null){
+      //this.map.remove();
+      // removes complete div container incl map
+    }
+    if(this.subscription!=null) {
+      this.subscription.unsubscribe();
+    }
+
+    //this.map.removeLayer(this.markers);
   }
 
   /*
