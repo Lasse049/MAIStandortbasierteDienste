@@ -38,6 +38,7 @@ export class HomePage {
   testCheckboxOpen: any;
   options: any
   data:any
+  y: any
 
   constructor(
     public navCtrl: NavController,
@@ -207,15 +208,25 @@ export class HomePage {
 
   getLegend() {
 
-    var div = leaflet.DomUtil.create('div', 'info legend');
+    var div = leaflet.DomUtil.create('div', 'info legend'),
+        categories = ['eigener Standort','illegale Müllablagerung'],
+        labels = [],
+        from, to;
 
     div.innerHTML += '<h3>Legende</h3>';
-    div.innerHTML += 'eigener Standort' + '<br>';
-    div.innerHTML += 'illegale Müllablagerung';
+
+
+    for (var i = 0; i < categories.length; i++) {
+        from = categories[i];
+        to = categories[i + 1];
+        labels.push(
+          '<i class="colorcircle"  + "></i> ' + from + (to ? '&ndash;' + to : '+'));
+    }
 
     return div;
 
   }
+
 
   maplodedsetmarker(){
     this.getDBData();
