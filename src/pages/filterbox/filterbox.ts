@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Events, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {HomePage} from "../home/home";
 import {root} from "rxjs/util/root";
 //import { DatePicker } from '@ionic-native/date-picker';
@@ -30,16 +30,17 @@ export class FilterboxPage {
   namearr: any = [];
   datearr: any = [];
   filterboolean: any;
-  map:any;
+  originialdata:any;
 
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public datePicker: DatePicker
+    public datePicker: DatePicker,
+    public events: Events
   ) {
     this.data = this.navParams.get('data');
-    this.map = this.navParams.get('map')
+    this.originialdata = this.data;
   }
 
   ionViewDidLoad() {
@@ -89,15 +90,16 @@ export class FilterboxPage {
 
    */
   filter2() {
-
-    this.data = JSON.parse(JSON.stringify(this.data));
+    // braucht die nächste zeile wirklich?
+    //this.data = JSON.parse(JSON.stringify(this.data));
     console.log('button works')
     // console.log('namearr' + this.namearr)
+    //if(this.finput!=null|| ){
     if (this.data != null) {
       let b = 0;
       let d = 0;
       let g = 0;
-      this.data2
+
       console.log(this.finput)
       if (this.finput != null) {
         for (let a = 0; a < this.data.length; a++) {
@@ -109,115 +111,58 @@ export class FilterboxPage {
       }
       console.log(this.namearr)
       console.log(this.fdate)
-      /*
-      if (this.finput != null) {
-        this.data2 = this.namearr
-      } else {
-        this.data2 = this.data
-      }
-      console.log(this.data2)
-      if (this.fdate != null) {
-        for (let a = 0; a < this.data2.length; a++) {
-          if (this.data2[a].date == this.fdate) {
-            this.datearr[d] = this.data2[a];
-            d++;
-          }
-        }
-      }*/
-      console.log(this.datearr)
-     // console.log(this.data2)
 
-      this.namearr = JSON.parse(JSON.stringify(this.namearr));
+      console.log(this.datearr)
+
+
+      // NameArry Hausmuell was?
+      //this.namearr = JSON.parse(JSON.stringify(this.namearr));
        for (let i = 0; i < this.namearr.length; i++) {
          if (this.namearr[i].hausmuell== true) {
-           this.hausmuellarr[b] = this.namearr[i];
+           this.hausmuellarr.push(this.namearr[i]);
            console.log("hausmuellarr");
-
            console.log(this.hausmuellarr);
          }
-
-         /*
-         if (this.namearr[i].Sperrmuell == true) {
-           this.sperrmuellarr[b] = this.namearr[i];
-
-          // console.log(this.sperrmuellarr);
-         }
-         if (this.namearr[i].Sondermuell == true) {
-           this.sondermuellarr[b] = this.namearr[i];
-
-           //console.log(this.sondermuellarr);
-         }*/
          if (this.namearr[i].gruenabfall == true) {
-           this.guenabfallarr[b] = this.namearr[i];
-
+           this.guenabfallarr.push(this.namearr[i]);
            console.log("gruen");
            console.log(this.guenabfallarr);
            b++
-         }
-         ;
-       }/*
-     } else {
-       console.log('daten leer')
-     }
-   }*/
-      /*
-            filter()
-            {
-              //this.navCtrl.setRoot(HomePage);
-              console.log('hallo');
-              console.log(this.fdate);
-            }
+         };
+       }
 
-
-            back()
-            {
-              //this.navCtrl.setRoot(HomePage);
-              console.log('hallo');
-              console.log(this.fdate);
-            }
-
-
-            ionViewDidLeave()
-            {
-              //Send Data back to home
-            }
-
-       */
-
-        this.filterboolean=true;
-
-        this.navCtrl.push(HomePage,
-          {
-            hausmuellarr:this.hausmuellarr,
-            sperrmuelarr:this.sperrmuellarr,
-            gruenabfallarr:this.guenabfallarr,
-            sondermuell:this.sondermuellarr,
-            filterbool: this.filterboolean,
-            mapsave: this.map,
-          },{},function(e){
-            console.log("data pushed");
-          }
-        );
-      }
     }
+    this.filterboolean=true;
+    let filterdata = {
+      hausmuellarr:this.hausmuellarr,
+      sperrmuelarr:this.sperrmuellarr,
+      gruenabfallarr:this.guenabfallarr,
+      sondermuell:this.sondermuellarr,
+      filterbool: this.filterboolean,
+      origindata: this.originialdata
+    };
+
+    this.navCtrl.pop().then(() => {
+      // Trigger custom event and pass data to be send back
+      this.events.publish('custom-user-events', filterdata);
+    });
+    }
+
 
     back(){
-    this.navCtrl.pop();
+      this.filterboolean=false;
+      let filterdata = {
+        origindata: this.originialdata,
+        filterbool: this.filterboolean
+      }
+      ;
+      this.navCtrl.pop().then(() => {
+        // Trigger custom event and pass data to be send back
+        this.events.publish('custom-user-events', filterdata);
+        //this.navCtrl.pop();
+      });
     }
 
-    back2(){
-      this.navCtrl.push(HomePage,
-        {
-          data:this.data,
-          filterbool: this.filterboolean,
-          mapsave: this.map,
-         },
-        {},
-        function(e){
-          console.log("data returned");
-          }
-      );
-    }
 }
 
 

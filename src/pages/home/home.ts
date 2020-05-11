@@ -1,5 +1,5 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import {LoadingController, NavController, NavParams} from 'ionic-angular';
+import {Events, LoadingController, NavController, NavParams} from 'ionic-angular';
 
 import leaflet from 'leaflet';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -38,13 +38,23 @@ export class HomePage {
   testCheckboxOpen: any;
   options: any
   data:any
-  y: any
   loading:any;
   hausmuellarr: any = [];
   gruenabfallarr: any = [];
   sondermuellarr: any = [];
   sperrmuellarr: any = [];
+  filterbool: boolean = false;
   markers:any;
+  dataFromOtherPage: any = null;
+  hausmarker: any;
+  gruenabfall: any;
+  sondermuell: any;
+  spermuell: any;
+  fmarkers: any;
+  fmarker: any;
+
+
+
 
 
   constructor(
@@ -55,6 +65,7 @@ export class HomePage {
     public loadingCtrl: LoadingController,
     public platform: Platform,
     public navParams: NavParams,
+    public events: Events
   ) {
   }
 
@@ -64,21 +75,33 @@ export class HomePage {
    * On Start
    */
   ionViewDidEnter() {
-
-    //Create Loading Spinner while App is not ready
     this.loading = this.loadingCtrl.create({
       content: 'Loading App',
       spinner: 'circles'
     });
 
+    this.loadmap();
+    //Create Loading Spinner while App is not ready
+
+
     //If Map doesnt exist, Load it
     if (this.map == null) {
-      this.loadmap();
+      console.log("map is null")
+      //this.loadmap();
     }
 
 
     // Call Method GetLocation
     this.getLocation();
+
+    console.log(this.hausmuellarr);
+    console.log(this.gruenabfallarr);
+    console.log(this.sperrmuellarr);
+    console.log(this.sondermuellarr);
+    console.log(this.filterbool);
+
+
+
 
     }
 
@@ -162,7 +185,18 @@ export class HomePage {
       // Define and add Leaflet Map with OSM TileLayer
 
  //   }
-     this.map = new leaflet.map("map"); //Already init oder undefined
+    if (this.map != undefined) {
+      console.log("map removed")
+      this.map.remove();
+    }
+    var container = leaflet.DomUtil.get('map');
+    if(container != null){
+      console.log("container");
+      container._leaflet_id = null;
+    }
+
+    this.map = leaflet.map("map"); //Already init oder undefined
+    //this.map.createPane("map");
       leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attributions: 'OpenStreetMap',
       }).addTo(this.map);
@@ -172,6 +206,13 @@ export class HomePage {
     //this.map.setView([this.lat, this.long]);
     console.log('MapLoadSuccsess');
     console.log("lat: " + this.lat + "long: " + this.long);
+    //this.map.createPane("map","map");
+
+    if (this.map!=null){
+      console.log("map is not null")
+    } else {
+      console.log("map is null again")
+    }
 
 
     this.map.whenReady(function(e){
@@ -190,6 +231,8 @@ export class HomePage {
     var legend = leaflet.control({position: 'bottomright'});
     legend.onAdd = this.getLegend;
     legend.addTo(this.map);
+
+    this.map.invalidateSize();
 
   }
 
@@ -235,10 +278,10 @@ export class HomePage {
   }
 
   setMarker(data){
-    if(data == 404){
+    if(data == 404 || data == null || data == undefined){
       this.showAlertnoData();
     } else {
-      if (this.gruenabfallarr[0] == null && this.hausmuellarr[0] == null && this.sondermuellarr[0] == null && this.sperrmuellarr[0] == null) {
+      if (this.filterbool==false) {
         this.jsondata = data.result;
         this.markers = new leaflet.layerGroup().addTo(this.map);
         console.log("setMarker");
@@ -246,7 +289,7 @@ export class HomePage {
 
         for (let i = 0; i < this.jsondata.length; i++) {
           //Markerfarbe
-          this.marker = new leaflet.marker([this.jsondata[i].latitude, this.jsondata[i].longitude]);
+          this.marker = new leaflet.marker([this.jsondata[i].latitude, this.jsondata[i].longitude],{color: 583470});
 
           if (this.jsondata[i].hausmuell == true) {
             this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Hausmuell');
@@ -271,38 +314,57 @@ export class HomePage {
   }
 
   setFilterMarker(){
+    if(this.markers!=null) {
+      this.map.removeLayer(this.markers);
+      this.markers = null;
+    }
+    if(this.marker!=null){
+      this.marker = null;
+    }
+
+    this.fmarkers = new leaflet.layerGroup().addTo(this.map);
+
+    //this.markers = new leaflet.layerGroup().addTo(this.map);
     console.log("IMHERE");
 
-    this.markers = new leaflet.layerGroup().addTo(this.map);
+    this.hausmarker = new leaflet.layerGroup().addTo(this.map);
+    this.gruenabfall = new leaflet.layerGroup().addTo(this.map);
+    this.sondermuell = new leaflet.layerGroup().addTo(this.map);
+    this.spermuell = new leaflet.layerGroup().addTo(this.map);
     console.log("setfilterMarker");
     //console.log(this.jsondata);
     //Markerfarbe
-    if (this.hausmuellarr != null) {
+
+
+    if (this.hausmuellarr != undefined) {
       for (let i = 0; i < this.hausmuellarr.length; i++) {
-        this.marker = new leaflet.marker([this.hausmuellarr[i].latitude, this.hausmuellarr[i].longitude]);
-        this.marker.bindPopup('<br>' + this.hausmuellarr[i].time + ' <br> Username: ' + this.hausmuellarr[i].username + '<br>' + ' Hausmuell');
+        this.hausmarker = new leaflet.marker([this.hausmuellarr[i].latitude, this.hausmuellarr[i].longitude]);
+        this.hausmarker.bindPopup('<br>' + this.hausmuellarr[i].time + ' <br> Username: ' + this.hausmuellarr[i].username + '<br>' + ' Hausmuell');
+        this.fmarkers.addLayer(this.hausmarker);
       }
     }
-    if (this.sperrmuellarr != null) {
+    if (this.sperrmuellarr != undefined) {
       for (let i = 0; i < this.sperrmuellarr.length; i++) {
-        this.marker = new leaflet.marker([this.sperrmuellarr[i].latitude, this.sperrmuellarr[i].longitude]);
-        this.marker.bindPopup('<br>' + this.sperrmuellarr[i].time + ' <br> Username: ' + this.sperrmuellarr[i].username + '<br>' + ' Sperrmuell');
-      }
+        this.spermuell = new leaflet.marker([this.sperrmuellarr[i].latitude, this.sperrmuellarr[i].longitude]);
+        this.spermuell.bindPopup('<br>' + this.sperrmuellarr[i].time + ' <br> Username: ' + this.sperrmuellarr[i].username + '<br>' + ' Sperrmuell');
+        this.fmarkers.addLayer(this.spermuell);}
     }
-    if (this.gruenabfallarr != null) {
+    if (this.gruenabfallarr != undefined) {
       for (let i = 0; i < this.gruenabfallarr.length; i++) {
-        this.marker = new leaflet.marker([this.gruenabfallarr[i].latitude, this.gruenabfallarr[i].longitude]);
-        this.marker.bindPopup('<br>' + this.gruenabfallarr[i].time + ' <br> Username: ' + this.gruenabfallarr[i].username + '<br>' + ' Gruenabfall');
+        this.gruenabfall = new leaflet.marker([this.gruenabfallarr[i].latitude, this.gruenabfallarr[i].longitude]);
+        this.gruenabfall.bindPopup('<br>' + this.gruenabfallarr[i].time + ' <br> Username: ' + this.gruenabfallarr[i].username + '<br>' + ' Gruenabfall');
+        this.fmarkers.addLayer(this.gruenabfall);
       }
     }
-    if (this.sondermuellarr != null) {
+    if (this.sondermuellarr != undefined) {
       for (let i = 0; i < this.sondermuellarr.length; i++) {
-        this.marker = new leaflet.marker([this.sondermuellarr[i].latitude, this.sondermuellarr[i].longitude]);
-        this.marker.bindPopup('<br>' + this.sondermuellarr[i].time + ' <br> Username: ' + this.sondermuellarr[i].username + '<br>' + ' Sondermuell');
+        this.sondermuell = new leaflet.marker([this.sondermuellarr[i].latitude, this.sondermuellarr[i].longitude]);
+        this.sondermuell.bindPopup('<br>' + this.sondermuellarr[i].time + ' <br> Username: ' + this.sondermuellarr[i].username + '<br>' + ' Sondermuell');
+        this.fmarkers.addLayer(this.sondermuell);
       }
     }
     console.log("ANDHERE");
-    this.markers.addLayer(this.marker);
+    this.fmarkers.addTo(this.map);
     console.log("Markers added");
 
     if (this.loading != null) {
@@ -331,6 +393,34 @@ export class HomePage {
   }
 
   openfilterbox(){
+    this.events.subscribe('custom-user-events', (filterdata) => {
+      console.log("subscribing filters");
+      console.log(filterdata);
+      this.dataFromOtherPage = filterdata;
+      this.hausmuellarr = filterdata.hausmuellarr;
+      this.gruenabfallarr = filterdata.gruenabfallarr;
+      this.sperrmuellarr = filterdata.sperrmuelarr;
+      this.sondermuellarr = filterdata.sondermuell;
+      this.filterbool = filterdata.filterbool;
+      this.jsondata = filterdata.origindata;
+      console.log("Received data: " + filterdata);
+
+
+      console.log(this.hausmuellarr);
+      console.log(this.gruenabfallarr);
+      console.log(this.sperrmuellarr);
+      console.log(this.sondermuellarr);
+      console.log(this.filterbool);
+      /*
+        hausmuellarr:this.hausmuellarr,
+        sperrmuelarr:this.sperrmuellarr,
+        gruenabfallarr:this.guenabfallarr,
+        sondermuell:this.sondermuellarr,
+        console.log(filterdata);
+        */
+      console.log(filterdata);
+      //this.events.unsubscribe('custom-user-events'); // unsubscribe this event
+    })
     this.navCtrl.push(FilterboxPage,
       {
         data:this.jsondata,
@@ -381,6 +471,8 @@ export class HomePage {
       this.subscription.unsubscribe();
     }
     if(this.map) {
+      //this.map.off();
+      //this.map.remove();
       //this.map.remove(); // Removes the map completly incl div
     }
 
