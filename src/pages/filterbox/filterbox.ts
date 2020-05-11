@@ -22,19 +22,20 @@ export class FilterboxPage {
   finput: any;
   fdate: any;
   data: any;
-  data2: any;
+  data2: any = [];
   hausmuellarr: any = [];
   sperrmuellarr: any = [];
   sondermuellarr: any = [];
   guenabfallarr: any = [];
+  namearr: any = [];
+  datearr: any = [];
 
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public datePicker: DatePicker
-  )
-  {
+  ) {
     this.data = this.navParams.get('data');
   }
 
@@ -42,9 +43,10 @@ export class FilterboxPage {
     console.log('ionViewDidLoad FilterboxPage');
   }
 
-  datesave (){
-    console.log('datum ist:'+this.fdate);
+  datesave() {
+    console.log('datum ist:' + this.fdate);
   }
+
   updateHausmuell() {
     console.log('Hausmuell new state:' + this.fHausmuell);
   }
@@ -52,10 +54,12 @@ export class FilterboxPage {
   updateSondermuell() {
     console.log('Sondermuells new state:' + this.fSondermuell);
   }
+
   updateGruenabfall() {
     console.log('Gruenabfall new state:' + this.fGruenabfall);
 
   }
+
   updateSperrmuell() {
     console.log('Sperrmuells new state:' + this.fSperrmuell);
 
@@ -82,74 +86,115 @@ export class FilterboxPage {
 
    */
   filter2() {
+
+    this.data = JSON.parse(JSON.stringify(this.data));
+    console.log('button works')
+    // console.log('namearr' + this.namearr)
     if (this.data != null) {
       let b = 0;
       let d = 0;
       let g = 0;
-      this.data2 = this.data
-      if(this.finput != null) {
+      this.data2
+      console.log(this.finput)
+      if (this.finput != null) {
+        for (let a = 0; a < this.data.length; a++) {
+          if (this.data[a].username == this.finput) {
+            this.namearr[g] = this.data[a];
+            g++;
+          }
+        }
+      }
+      console.log(this.namearr)
+      console.log(this.fdate)
+      /*
+      if (this.finput != null) {
+        this.data2 = this.namearr
+      } else {
+        this.data2 = this.data
+      }
+      console.log(this.data2)
+      if (this.fdate != null) {
         for (let a = 0; a < this.data2.length; a++) {
-          if (this.data2[a].username == this.finput) {
-            this.data2[d] = this.data2[a];
+          if (this.data2[a].date == this.fdate) {
+            this.datearr[d] = this.data2[a];
             d++;
-
-            // console.log(this.hausmuellarr);
           }
         }
-      }
-      if(this.fdate!= null) {
-        for (let c = 0; c < this.data2.length; c++) {
-          if (this.data2[c].time == this.fdate) {
-            this.data2[g] = this.data2[c];
-            g++
+      }*/
+      console.log(this.datearr)
+     // console.log(this.data2)
 
-            // console.log(this.hausmuellarr);
+      this.namearr = JSON.parse(JSON.stringify(this.namearr));
+       for (let i = 0; i < this.namearr.length; i++) {
+         if (this.namearr[i].hausmuell== true) {
+           this.hausmuellarr[b] = this.namearr[i];
+           console.log("hausmuellarr");
+
+           console.log(this.hausmuellarr);
+         }
+
+         /*
+         if (this.namearr[i].Sperrmuell == true) {
+           this.sperrmuellarr[b] = this.namearr[i];
+
+          // console.log(this.sperrmuellarr);
+         }
+         if (this.namearr[i].Sondermuell == true) {
+           this.sondermuellarr[b] = this.namearr[i];
+
+           //console.log(this.sondermuellarr);
+         }*/
+         if (this.namearr[i].gruenabfall == true) {
+           this.guenabfallarr[b] = this.namearr[i];
+
+           console.log("gruen");
+           console.log(this.guenabfallarr);
+           b++
+         }
+         ;
+       }/*
+     } else {
+       console.log('daten leer')
+     }
+   }*/
+      /*
+            filter()
+            {
+              //this.navCtrl.setRoot(HomePage);
+              console.log('hallo');
+              console.log(this.fdate);
+            }
+
+
+            back()
+            {
+              //this.navCtrl.setRoot(HomePage);
+              console.log('hallo');
+              console.log(this.fdate);
+            }
+
+
+            ionViewDidLeave()
+            {
+              //Send Data back to home
+            }
+
+       */
+
+        this.navCtrl.push(HomePage,
+          {
+            hausmuellarr:this.hausmuellarr,
+            sperrmuelarr:this.sperrmuellarr,
+            gruenabfallarr:this.guenabfallarr,
+            sondermuell:this.sondermuellarr
+
+          },{},function(e){
+            console.log("data pushed");
           }
-        }
-      }
-      for (let i = 0; i < this.data2.length; i++) {
-        if (this.data2[i].hausmuell == true) {
-          this.hausmuellarr[b] = this.data2[i];
-
-         // console.log(this.hausmuellarr);
-        }
-        if (this.data2[i].Sperrmuell == true) {
-          this.sperrmuellarr[b] = this.data2[i];
-
-         // console.log(this.sperrmuellarr);
-        }
-        if (this.data2[i].Sondermuell == true) {
-          this.sondermuellarr[b] = this.data2[i];
-
-          //console.log(this.sondermuellarr);
-        }
-        if (this.data2[i].Gruenabfall == true) {
-          this.guenabfallarr[b] = this.data2[i];
-
-          console.log(this.guenabfallarr);
-        }
-        b++;
+        );
       }
     }
-  }
-
-  filter() {
-    //this.navCtrl.setRoot(HomePage);
-    console.log('hallo');
-    console.log(this.fdate);
-  }
-
-  back() {
-    //this.navCtrl.setRoot(HomePage);
-    console.log('hallo');
-    console.log(this.fdate);
-  }
-
-
-
-  ionViewDidLeave() {
-    //Send Data back to home
-  }
 
 
 }
+
