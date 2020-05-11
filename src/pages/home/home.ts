@@ -39,10 +39,10 @@ export class HomePage {
   data:any
   y: any
   loading:any;
-  hausmuellarr:any =[];
-  gruenabfallarr:any= [];
-  sondermuellarr:any = [];
-  sperrmuellarr:any = [];
+  hausmuellarr;
+  gruenabfallarr;
+  sondermuellarr;
+  sperrmuellarr;
 
   constructor(
     public navCtrl: NavController,
@@ -223,7 +223,7 @@ export class HomePage {
     if(data == 404){
       this.showAlertnoData();
     } else {
-      if (this.gruenabfallarr == [] && this.hausmuellarr == [] && this.sondermuellarr == [] && this.sperrmuellarr == []) {
+      if (this.gruenabfallarr == null && this.hausmuellarr == null && this.sondermuellarr == null && this.sperrmuellarr == null) {
         this.jsondata = data.result;
         let markers = new leaflet.layerGroup().addTo(this.map);
         console.log("setMarker");
@@ -246,7 +246,7 @@ export class HomePage {
           console.log("Markers added");
         }
       } else {
-        //this.setFilterMarker();
+        this.setFilterMarker();
       }
     }
     if (this.loading != null) {
