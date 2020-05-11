@@ -30,6 +30,7 @@ export class FilterboxPage {
   namearr: any = [];
   datearr: any = [];
   filterboolean: any;
+  map:any;
 
 
   constructor(
@@ -38,6 +39,7 @@ export class FilterboxPage {
     public datePicker: DatePicker
   ) {
     this.data = this.navParams.get('data');
+    this.map = this.navParams.get('map')
   }
 
   ionViewDidLoad() {
@@ -190,7 +192,8 @@ export class FilterboxPage {
             sperrmuelarr:this.sperrmuellarr,
             gruenabfallarr:this.guenabfallarr,
             sondermuell:this.sondermuellarr,
-            filterbool: this.filterboolean
+            filterbool: this.filterboolean,
+            mapsave: this.map,
           },{},function(e){
             console.log("data pushed");
           }
@@ -198,6 +201,23 @@ export class FilterboxPage {
       }
     }
 
+    back(){
+    this.navCtrl.pop();
+    }
 
+    back2(){
+      this.navCtrl.push(HomePage,
+        {
+          data:this.data,
+          filterbool: this.filterboolean,
+          mapsave: this.map,
+         },
+        {},
+        function(e){
+          console.log("data returned");
+          }
+      );
+    }
 }
+
 

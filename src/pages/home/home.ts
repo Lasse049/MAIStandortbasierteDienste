@@ -40,12 +40,12 @@ export class HomePage {
   data:any
   y: any
   loading:any;
-  hausmuellarr;
-  gruenabfallarr;
-  sondermuellarr;
-  sperrmuellarr;
+  hausmuellarr: any = [];
+  gruenabfallarr: any = [];
+  sondermuellarr: any = [];
+  sperrmuellarr: any = [];
   markers:any;
-  mapinit: boolean = false;
+
 
   constructor(
     public navCtrl: NavController,
@@ -56,7 +56,6 @@ export class HomePage {
     public platform: Platform,
     public navParams: NavParams,
   ) {
-
   }
 
 
@@ -66,7 +65,6 @@ export class HomePage {
    */
   ionViewDidEnter() {
 
-    console.log("mapinit: " + this.mapinit);
     //Create Loading Spinner while App is not ready
     this.loading = this.loadingCtrl.create({
       content: 'Loading App',
@@ -74,17 +72,14 @@ export class HomePage {
     });
 
     //If Map doesnt exist, Load it
-    this.loadmap();
-
-
-    // Call Method GetLocation
-    this.getLocation();
-   /*
     if (this.map == null) {
       this.loadmap();
     }
 
-    */
+
+    // Call Method GetLocation
+    this.getLocation();
+
     }
 
   /***
@@ -161,18 +156,19 @@ export class HomePage {
   }
 
   loadmap() {
-    console.log("mapinit: " + this.mapinit);
-    if(this.mapinit==false) {
+   // if(this.mapinit!=true) {
       //this.map.remove();
       console.log("loading map");
       // Define and add Leaflet Map with OSM TileLayer
-      this.map = leaflet.map("map");
+
+ //   }
+     this.map = new leaflet.map("map"); //Already init oder undefined
       leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attributions: 'OpenStreetMap',
       }).addTo(this.map);
       this.map.setZoom(25);
       this.map.setView([0, 0])
-    }
+
     //this.map.setView([this.lat, this.long]);
     console.log('MapLoadSuccsess');
     console.log("lat: " + this.lat + "long: " + this.long);
@@ -242,7 +238,7 @@ export class HomePage {
     if(data == 404){
       this.showAlertnoData();
     } else {
-      if (this.gruenabfallarr == null && this.hausmuellarr == null && this.sondermuellarr == null && this.sperrmuellarr == null) {
+      if (this.gruenabfallarr[0] == null && this.hausmuellarr[0] == null && this.sondermuellarr[0] == null && this.sperrmuellarr[0] == null) {
         this.jsondata = data.result;
         this.markers = new leaflet.layerGroup().addTo(this.map);
         console.log("setMarker");
@@ -308,6 +304,12 @@ export class HomePage {
     console.log("ANDHERE");
     this.markers.addLayer(this.marker);
     console.log("Markers added");
+
+    if (this.loading != null) {
+      this.loading.dismissAll();
+      this.loading = null;
+    }
+    console.log("filtermarker duchlaufen");
   }
 
 
@@ -332,6 +334,7 @@ export class HomePage {
     this.navCtrl.push(FilterboxPage,
       {
         data:this.jsondata,
+        map:this.map,
       },{},function(e){
         console.log("data pushed");
       }
@@ -374,19 +377,25 @@ export class HomePage {
       this.loading.dismissAll();
       this.loading = null;
     }
-    if (this.map != null){
-      //this.map.remove();
-      // removes complete div container incl map
-    }
     if(this.subscription!=null) {
       this.subscription.unsubscribe();
+    }
+    if(this.map) {
+      //this.map.remove(); // Removes the map completly incl div
     }
 
     //this.map.removeLayer(this.markers);
   }
 
-  /*
-  filter() {
+  simplemethod2(){
+    console.log("its simple for tests")
+  }
+}
+
+
+/**
+ *
+ filter() {
     let alert = this.alertCtrl.create();
 
     alert.setTitle('Anzeigefilter');
@@ -432,44 +441,34 @@ export class HomePage {
   }
 
 
-   */
-  /*
-  filter(data) {
+filter(data) {
 
-    this.jsondata = data.result;
-    // -) Loop and set the array item checked to match current setting
-    let AlertInputs = this.jsondata.filter((Item) => {
-      // add 'checked' to each object in our array
-      Item['checked'] = Item['label'] === this.options.PauseAfter
-      return Item
-    })
-    // -) Setup alert
-    let Alert = this.alertCtrl.create({
-      title: 'Pause After Selection',
-      message: 'Make a selection...',
-      // https://ionicframework.com/docs/components/#alert-radio
-      inputs:
-      AlertInputs,
-      buttons: [{
-        text: 'Ok',
-        handler: (data) => {
-          // INOTE: storing the label, but you can store the index :)
-          this.options.PauseAfter = this.jsondata[data].label
-        }
-      },
-      ]
-    });
-    // Show the alert
-    Alert.present();
-  }
-*/
-
-
-  simplemethod2(){
-    console.log("its simple for tests")
-  }
-
-
+  this.jsondata = data.result;
+  // -) Loop and set the array item checked to match current setting
+  let AlertInputs = this.jsondata.filter((Item) => {
+    // add 'checked' to each object in our array
+    Item['checked'] = Item['label'] === this.options.PauseAfter
+    return Item
+  })
+  // -) Setup alert
+  let Alert = this.alertCtrl.create({
+    title: 'Pause After Selection',
+    message: 'Make a selection...',
+    // https://ionicframework.com/docs/components/#alert-radio
+    inputs:
+    AlertInputs,
+    buttons: [{
+      text: 'Ok',
+      handler: (data) => {
+        // INOTE: storing the label, but you can store the index :)
+        this.options.PauseAfter = this.jsondata[data].label
+      }
+    },
+    ]
+  });
+  // Show the alert
+  Alert.present();
 }
+**/
 
 

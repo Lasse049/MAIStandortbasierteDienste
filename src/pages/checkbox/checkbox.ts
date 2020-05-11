@@ -189,6 +189,10 @@ export class CheckboxPage {
     alert.present();
   }
 
+  back(){
+    this.navCtrl.pop();
+  }
+
   ionViewDidLeave() {
     if(this.sending!=null){
       this.sending.dismissAll();
