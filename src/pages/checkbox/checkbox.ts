@@ -120,7 +120,7 @@ export class CheckboxPage {
       sperrtrash: this.Sperrmuell,
       picture: photo,
     };
-    
+
     this.postsubscription = this.http.post(url, data).subscribe((response) => {
       console.log(response);
       if(response['status'] == 200){

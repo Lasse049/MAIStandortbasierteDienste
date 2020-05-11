@@ -51,29 +51,29 @@ export class HomePage {
   ) {
   }
 
-
+  /***
+   * On Start
+   */
   ionViewDidEnter() {
 
-      this.loading = this.loadingCtrl.create({
-        content: 'Loading App',
-        spinner: 'circles'
-      });
+    //Create Loading Spinner while App is not ready
+    this.loading = this.loadingCtrl.create({
+      content: 'Loading App',
+      spinner: 'circles'
+    });
 
+    // Call Method GetLocation
+    this.getLocation();
 
-      this.getLocation();
-
-      if (this.map == null) {
-        this.loadmap();
-      }
+    //If Map doesnt exist, Load it
+    if (this.map == null) {
+      this.loadmap();
+    }
     }
 
-    //this.getLocation();
-    //this.loadmap();
-    //this.mapisdragged();
-
-
-
-
+  /***
+   * On Start
+   */
   getLocation() {
 
     this.geolocation.getCurrentPosition().then((resp) => {
@@ -271,7 +271,6 @@ export class HomePage {
       }
     );
   }
-
 
   zoomonlocation(){
     this.map.setView([this.lat, this.long], 17);
