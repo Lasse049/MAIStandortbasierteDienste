@@ -34,6 +34,7 @@ export class CheckboxPage {
   sending: any;
   subscriptioncomplete: boolean = false;
   sendingdata: any;
+  postsubscription: any;
 
   constructor(
     public navCtrl: NavController,
@@ -107,7 +108,7 @@ export class CheckboxPage {
     this.sending.present();
 
     const url = "http://igf-srv-lehre.igf.uni-osnabrueck.de:44458/send"
-//  const url = "http://igf-srv-lehre.igf.uni-osnabrueck.de:33859/send"
+//  const url = "http://igf-srv-lehre.igf.uni-osnabrueck.de:33859/send" js 2  44458 für 22
     let data = {
       time: this.timestamp,
       user: this.username,
@@ -120,19 +121,37 @@ export class CheckboxPage {
       picture: photo,
     };
 
-/*
-  this.http.post(url,data)
-    .map(res => res.json())
-    .subscribe(data => {
+    /*
+      this.http.post(url,data)
+        .map(res => res.json())
+        .subscribe(data => {
 
-      }
-    )
-*/
+          }
+        )
+    */
 /////// ERROR KLAPPT; NEXT/COMPLETE NICHT
-    this.http.post(url,data)
+/*
+    this.http.post(url, data).subscribe((res) => {
+      if (res['status'] == 204) {
+        console.log("sucsess");
+      } else {
+        console.log("failed");
+      }
+    });
+  }
+
+
+ */
+
+    this.postsubscription = this.http.post(url,data)
+      .map((res) => {
+        console.log("lol")
+        return res as Object
+      })
     .subscribe
-      ((res) => {
-          console.log("next" + res);
+      ((data) => {
+          console.log("polly")
+          console.log("next" + data);
       },(errorResponse: any) => {
           this.error = true;
           console.log(errorResponse);
@@ -148,6 +167,7 @@ export class CheckboxPage {
       this.showAlertSe();
     }
   }
+
 
   showAlertma() {
     const alert = this.alertCtrl.create({
@@ -178,6 +198,7 @@ export class CheckboxPage {
             this.sending.dismissAll();
             this.sending = null;
           }
+          this.postsubscription.unsubscribe();
           this.navCtrl.pop();
         }
       }]
@@ -197,6 +218,7 @@ export class CheckboxPage {
             this.sending.dismissAll();
             this.sending = null;
           }
+          this.postsubscription.unsubscribe();
         }
       }]
     });
