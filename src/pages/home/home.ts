@@ -215,75 +215,47 @@ export class HomePage {
       console.log("map is null again")
     }
 
-    /*LEAFLET EASY BUTTONCHANGEABLE
-    var stateChangingButton = leaflet.easyButton({
-      states: [{
-        stateName: 'on',        // name the state
-        icon:      '<img src="https://pdxcyclesafetymap.neocities.org/images/blackSkull.svg" style="width:16px">',
-        title:     'zoom to a forest',      // like its title
-        onclick: function(){
-          console.log('buttonClicked');
-          //this.startstopfollow();
-        }
-      }, {
-        stateName: 'off',
-        icon:      '<img src="https://pdxcyclesafetymap.neocities.org/images/blackSkull.svg" style="width:16px">',
-        title:     'zoom to a school',
-        onclick: function(){
-          console.log('buttonClicked');
-          //this.startstopfollow();
-        }
-      }]
-    });
+    // Add custom Button
+    var myControl = leaflet.Control.extend({
+      options: {
+        position: 'topleft'
+      },
+      onAdd: function (map) {
+        container = leaflet.DomUtil.create('control');
+        container.type = "button";
+        container.style.backgroundImage = "url('/assets/icon/clipbluearrow.png')";
+        container.style.backgroundColor = "lightgray";
+        container.style.backgroundSize = '100%';
+        container.style.width = '30px';
+        container.style.height = '30px';
 
-    stateChangingButton.addTo(this.map);
-*/
+        this.map.on("dragstart", function(e) {
+            console.log("Dragging the Map")
+          container.style.backgroundImage = "url('/assets/icon/bigblackarrowclip.png')";
+            this.loconoff = false;
+          }.bind(this)
+        );
 
-/* LEAFLET EASY BUTTON
-    leaflet.easyButton('fa-crosshairs fa-lg', function(btn, map){
-      console.log('buttonClicked');
-    }).addTo(this.map)
-*/
-
- // DAS FUNKTIONIERT KANN ABER NUR LOGGEN / KEINE METHODE AUFRUGEN 
-
-    leaflet.Control.MyControl = leaflet.Control.extend({
-      onAdd: function(map) {
-        var container = leaflet.DomUtil.create('ion-button', 'leaflet-bar my-control');
-        container.innerHTML = 'My Control',
-        container.onclick = function(e){
-          console.log('buttonClicked');
-          this.startstopfollow();
+        container.onclick = function() {
+          if (this.loconoff == true) {
+            container.style.backgroundImage = "url('/assets/icon/bigblackarrowclip.png')";
+            console.log("clicked false")
+            this.startstopfollow();
+            this.loconoff = false;
+          } else if (this.loconoff == false) {
+            container.style.background
+            container.style.backgroundImage = "url('/assets/icon/clipbluearrow.png')";
+            console.log("clicked true")
+            this.startstopfollow();
+            this.loconoff = true;
+          }
         }.bind(this)
         return container;
-      },
-      //ion-button (click)="opencheckbox()"
-      onRemove: function(map) {
-        // Nothing to do here
-      }
+
+
+      }.bind(this)
     });
-
-    leaflet.control.myControl = function(opts) {
-      return new leaflet.Control.MyControl(opts);
-    }
-
-    leaflet.control.myControl({
-      position: 'topright'
-    }).addTo(this.map);
-
-/////////
-
-
-/**
-// ZOOM CONTROL ERWEITERN?
-    leaflet.Control.MyControl = leaflet.Control.extend(onAdd => {
-      leaflet.DomEvent.on(leaflet.DomUtil.get('zomcontrnav'), 'click', function () {
-        console.log("something");
-        this.startstopfollow();
-      });
-      // your new method content
-    });
-**/
+    this.map.addControl(new myControl());
 
 
     this.map.whenReady(function(e){
@@ -293,18 +265,11 @@ export class HomePage {
       }.bind(this)
     );
 
-    this.map.on("dragstart", function(e) {
-        console.log("Dragging the Map")
-        this.loconoff = false;
-      }.bind(this)
-    );
-
     var legend = leaflet.control({position: 'bottomright'});
     legend.onAdd = this.getLegend;
     legend.addTo(this.map);
 
     this.map.invalidateSize();
-
   }
 
   getLegend() {
