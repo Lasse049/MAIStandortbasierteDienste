@@ -13,7 +13,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ProviderPhotoProvider } from '../providers/photo/photo';
 import {FilterboxPage} from "../pages/filterbox/filterbox";
 import { DatePicker } from '@ionic-native/date-picker/';
-
+import 'leaflet-easybutton';
 
 @NgModule({
   declarations: [

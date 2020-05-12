@@ -11,7 +11,7 @@ import {e} from "@angular/core/src/render3";
 import {catchError} from "rxjs/operators";
 import {Platform} from 'ionic-angular';
 import {DatePicker} from "@ionic-native/date-picker";
-
+import 'leaflet-easybutton';
 
 @Component({
   selector: 'page-home',
@@ -196,6 +196,7 @@ export class HomePage {
     }
 
     this.map = leaflet.map("map"); //Already init oder undefined
+
     //this.map.createPane("map");
       leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attributions: 'OpenStreetMap',
@@ -214,6 +215,74 @@ export class HomePage {
       console.log("map is null again")
     }
 
+    /*LEAFLET EASY BUTTONCHANGEABLE
+    var stateChangingButton = leaflet.easyButton({
+      states: [{
+        stateName: 'on',        // name the state
+        icon:      '<img src="https://pdxcyclesafetymap.neocities.org/images/blackSkull.svg" style="width:16px">',
+        title:     'zoom to a forest',      // like its title
+        onclick: function(){
+          console.log('buttonClicked');
+          //this.startstopfollow();
+        }
+      }, {
+        stateName: 'off',
+        icon:      '<img src="https://pdxcyclesafetymap.neocities.org/images/blackSkull.svg" style="width:16px">',
+        title:     'zoom to a school',
+        onclick: function(){
+          console.log('buttonClicked');
+          //this.startstopfollow();
+        }
+      }]
+    });
+
+    stateChangingButton.addTo(this.map);
+*/
+
+/* LEAFLET EASY BUTTON
+    leaflet.easyButton('fa-crosshairs fa-lg', function(btn, map){
+      console.log('buttonClicked');
+    }).addTo(this.map)
+*/
+
+/* // DAS FUNKTIONIERT KANN ABER NUR LOGGEN / KEINE METHODE AUFRUGEN (NOCH)
+    leaflet.Control.MyControl = leaflet.Control.extend({
+      onAdd: function(map) {
+        var container = leaflet.DomUtil.create('ion-button', 'leaflet-bar my-control');
+
+        container.innerHTML = 'My Control';
+        container.onclick = function(){
+          console.log('buttonClicked');
+          //this.startstopfollow();
+        }
+        return container;
+      },
+      //ion-button (click)="opencheckbox()"
+      onRemove: function(map) {
+        // Nothing to do here
+      }
+    });
+
+    leaflet.control.myControl = function(opts) {
+      return new leaflet.Control.MyControl(opts);
+    }
+
+    leaflet.control.myControl({
+      position: 'topright'
+    }).addTo(this.map);
+*/
+
+
+
+/* ZOOM CONTROL ERWEITERN?
+    this.map.control.zoom.extend(onAdd => {
+      leaflet.DomEvent.on(leaflet.DomUtil.get('zomcontrnav'), 'click', function () {
+        this.startstopfollow();
+      });
+      // your new method content
+    });
+
+ */
 
     this.map.whenReady(function(e){
         console.log("Map is ready")
