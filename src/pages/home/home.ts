@@ -199,7 +199,7 @@ export class HomePage {
 
     //this.map.createPane("map");
       leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attributions: 'OpenStreetMap',
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }).addTo(this.map);
       this.map.setZoom(25);
       this.map.setView([0, 0])
@@ -245,16 +245,16 @@ export class HomePage {
     }).addTo(this.map)
 */
 
-/* // DAS FUNKTIONIERT KANN ABER NUR LOGGEN / KEINE METHODE AUFRUGEN (NOCH)
+ // DAS FUNKTIONIERT KANN ABER NUR LOGGEN / KEINE METHODE AUFRUGEN 
+
     leaflet.Control.MyControl = leaflet.Control.extend({
       onAdd: function(map) {
         var container = leaflet.DomUtil.create('ion-button', 'leaflet-bar my-control');
-
-        container.innerHTML = 'My Control';
-        container.onclick = function(){
+        container.innerHTML = 'My Control',
+        container.onclick = function(e){
           console.log('buttonClicked');
-          //this.startstopfollow();
-        }
+          this.startstopfollow();
+        }.bind(this)
         return container;
       },
       //ion-button (click)="opencheckbox()"
@@ -270,19 +270,21 @@ export class HomePage {
     leaflet.control.myControl({
       position: 'topright'
     }).addTo(this.map);
-*/
+
+/////////
 
 
-
-/* ZOOM CONTROL ERWEITERN?
-    this.map.control.zoom.extend(onAdd => {
+/**
+// ZOOM CONTROL ERWEITERN?
+    leaflet.Control.MyControl = leaflet.Control.extend(onAdd => {
       leaflet.DomEvent.on(leaflet.DomUtil.get('zomcontrnav'), 'click', function () {
+        console.log("something");
         this.startstopfollow();
       });
       // your new method content
     });
+**/
 
- */
 
     this.map.whenReady(function(e){
         console.log("Map is ready")
