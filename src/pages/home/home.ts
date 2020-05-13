@@ -273,33 +273,61 @@ export class HomePage {
     // Add custom Button
     var myControl = leaflet.Control.extend({
       options: {
-        position: 'topleft'
+        position: 'topleft',
+        //padding: '0px',
+        //marginLeft: '1000px'
       },
       onAdd: function (map) {
         container = leaflet.DomUtil.create('control');
         container.type = "button";
-        container.style.backgroundImage = "url('/assets/icon/clipbluearrow.png')";
-        container.style.backgroundColor = "lightgray";
+        container.style.backgroundImage = "url('/assets/icon/navpfeilblue.jpg')";
+        container.style.backgroundColor = "primary";
         container.style.backgroundSize = '100%';
-        container.style.width = '30px';
-        container.style.height = '30px';
+        container.style.width = '34px';
+        container.style.height = '34px';
+        container.style.borderStyle = 'solid';
+        container.style.borderWidth = '1px';
+        container.style.borderRadius= '3px';
+        container.style.borderColor = 'grey';
+        //container.style.marginRight = '2000px';
+        //container.position = 'top'
+
+//        container.style.border.style.solid;
+
+/*
+        #btn3{
+          background-color: rgba(255, 255, 255, 0.9);
+          width: 45px;
+          height: 45px;
+          margin-top: 2%;
+          margin-right: 12px;
+          border-style: solid;
+          border-width: 0.5px;
+          border-color: grey;
+          border-radius: 3px;
+        }
+
+ */
 
         this.map.on("dragstart", function(e) {
             console.log("Dragging the Map")
-          container.style.backgroundImage = "url('/assets/icon/bigblackarrowclip.png')";
+          container.style.backgroundImage = "url('/assets/icon/navpfeilblack.jpg')";
+          container.style.backgroundColor = "light";
             this.loconoff = false;
           }.bind(this)
         );
 
         container.onclick = function() {
           if (this.loconoff == true) {
-            container.style.backgroundImage = "url('/assets/icon/bigblackarrowclip.png')";
+            container.style.backgroundImage = "url('/assets/icon/navpfeilblack.jpg')";
+            container.style.backgroundColor = "light";
             console.log("clicked false")
             this.startstopfollow();
             this.loconoff = false;
           } else if (this.loconoff == false) {
             container.style.background
-            container.style.backgroundImage = "url('/assets/icon/clipbluearrow.png')";
+            container.style.backgroundImage = "url('/assets/icon/navpfeilblue.jpg')";
+            container.style.backgroundColor = "primary";
             console.log("clicked true")
             this.startstopfollow();
             this.loconoff = true;
