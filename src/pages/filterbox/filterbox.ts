@@ -203,4 +203,5 @@ export class FilterboxPage {
 
 }
 
-
+//var dateTime = this.data[i].time;
+//var getdateTime = dateTime.split("T",1);

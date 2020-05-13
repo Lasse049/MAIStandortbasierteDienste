@@ -260,18 +260,11 @@ export class HomePage {
    * Calls getDBData() when Map is loaded and ready
    */
   loadmap() {
-   // if(this.mapinit!=true) {
-      //this.map.remove();
-      console.log("loading map");
-      // Define and add Leaflet Map with OSM TileLayer
-
- //   }
     if (this.map != undefined) {
       console.log("map removed")
       this.map.remove();
     }
     this.map = leaflet.map("map"); //Already init oder undefined
-
 
     if(container != null){
       console.log("container");
@@ -282,35 +275,24 @@ export class HomePage {
       filtercontainer._leaflet_id = null;
     }
 
-    var container = leaflet.DomUtil.get('map');
-    var filtercontainer = leaflet.DomUtil.get('map');
 
 
-
-    //this.map.createPane("map");
       leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }).addTo(this.map);
       this.map.setZoom(25);
       this.map.setView([0, 0])
 
-    //this.map.setView([this.lat, this.long]);
-    console.log('MapLoadSuccsess');
-    console.log("lat: " + this.lat + "long: " + this.long);
-    //this.map.createPane("map","map");
 
-    if (this.map!=null){
-      console.log("map is not null")
-    } else {
-      console.log("map is null again")
-    }
+    //Create containers on the Map
+    var container = leaflet.DomUtil.get('map');
+    var filtercontainer = leaflet.DomUtil.get('map');
+    var addcontainer = leaflet.DomUtil.get('map');
 
-    // Add custom Button
+    // Button to follow Location
     var navigationbutton = leaflet.Control.extend({
       options: {
         position: 'topleft',
-        //padding: '0px',
-        //marginLeft: '1000px'
       },
       onAdd: function (map) {
         container = leaflet.DomUtil.create('control');
@@ -324,9 +306,6 @@ export class HomePage {
         container.style.borderWidth = '1px';
         container.style.borderRadius= '3px';
         container.style.borderColor = 'grey';
-        //container.position = 'topright';
-        //container.style.marginRight = '2000px';
-        //container.position = 'top'
 
         container.onclick = function() {
           if (this.loconoff == true) {
@@ -348,11 +327,10 @@ export class HomePage {
       }.bind(this)
     });
 
-    // Add Filterbutton
+    // Button to filter Data
     var filterbutton = leaflet.Control.extend({
       options: {
         position: 'topright',
-
       },
       onAdd: function (map) {
         this.filtercontainer = leaflet.DomUtil.create('control');
@@ -368,11 +346,6 @@ export class HomePage {
         this.filtercontainer.style.borderRadius= '3px';
         this.filtercontainer.style.borderColor = 'grey';
         this.filtercontainer.style.padding = '10px';
-
-        console.log('filterbool')
-        console.log(this.filterbool);
-
-
 
         this.filtercontainer.onclick = function() {
           if (this.filterbool == false) {
@@ -391,37 +364,34 @@ export class HomePage {
       }.bind(this)
     });
 
-
+    // Button to Submit Data
     var addbutton = leaflet.Control.extend({
       options: {
         position: 'bottomleft',
-        //padding: '0px',
-        //marginLeft: '1000px'
       },
       onAdd: function (map) {
-        container = leaflet.DomUtil.create('control');
-        container.type = "button";
-        container.style.backgroundImage = "url('/assets/icon/navpfeilblue.jpg')";
-        container.style.backgroundColor = "primary";
-        container.style.backgroundSize = '100%';
-        container.style.width = '34px';
-        container.style.height = '34px';
-        container.style.borderStyle = 'solid';
-        container.style.borderWidth = '1px';
-        container.style.borderRadius= '3px';
-        container.style.borderColor = 'grey';
-        //container.position = 'topright';
-        //container.style.marginRight = '2000px';
-        //container.position = 'top'
+        addcontainer = leaflet.DomUtil.create('control');
+        addcontainer.type = "button";
+        addcontainer.style.backgroundImage = "url('/assets/icon/navpfeilblue.jpg')";
+        addcontainer.style.backgroundColor = "primary";
+        addcontainer.style.backgroundSize = '100%';
+        addcontainer.style.width = '34px';
+        addcontainer.style.height = '34px';
+        addcontainer.style.borderStyle = 'solid';
+        addcontainer.style.borderWidth = '1px';
+        addcontainer.style.borderRadius= '3px';
+        addcontainer.style.borderColor = 'grey';
 
-        container.onclick = function() {
+        addcontainer.onclick = function() {
             this.opencheckbox();
         }.bind(this)
-        return container;
+        return addcontainer;
       }.bind(this)
     });
 
-
+    // getting called when map is dragged
+    // deactivates updating setview by setting loconoff = false
+    // change ButtonTheme
     this.map.on("dragstart", function(e) {
         console.log("Dragging the Map")
         container.style.backgroundImage = "url('/assets/icon/navpfeilblack.jpg')";
@@ -430,6 +400,8 @@ export class HomePage {
       }.bind(this)
     );
 
+    // Getting called when Map is ready
+    // retrive Data from Database getDBData()
     this.map.whenReady(function(e){
         console.log("Map is ready")
         this.mapinit = true;
@@ -437,6 +409,7 @@ export class HomePage {
       }.bind(this)
     );
 
+    // Adds a legend
     var legend = leaflet.control({position: 'bottomright'});
     legend.onAdd = this.getLegend;
 
@@ -451,8 +424,6 @@ export class HomePage {
   /***
    *
    */
-
-
   getLegend() {
 
     var div = leaflet.DomUtil.create('div', 'info legend');
@@ -476,7 +447,7 @@ export class HomePage {
    * @return data //Database Json Data containing Trash-Objects to be used for Markers on the Map
    */
   getDBData() {
-
+    // Create Loading Spinner
     if (this.loading != null) {
       this.loading.dismissAll();
       this.loading = null;
@@ -487,7 +458,8 @@ export class HomePage {
     });
     this.loading.present();
 
-    console.log("Trying to connect to Server")
+    // run getData() in restProvider
+    // then setMarker()
     this.restProvider.getData()
       .then(data => {
         JSON.stringify(data, null,2);
@@ -501,11 +473,11 @@ export class HomePage {
   }
 
   /***
-   * Gets called when Map is ready in loadmap()
-   * uses restProvider to getData()
-   * returns data to this.dbdata when finished
-   * uses data to initiate setMarker(data)
-   * @return data //Database Json Data containing Trash-Objects to be used for Markers on the Map
+   * Gets called in getDBData() when getData()request finished
+   * @params data JsonData containing Marker Information (this.dbdata)
+   * If No Data - show Alert
+   * If data is not filtered create and show markers - create popups - page load finished
+   * else run setFilterMarker()
    */
   setMarker(data){
     if(data == 404 || data == null || data == undefined){
@@ -549,11 +521,11 @@ export class HomePage {
   }
 
   /***
-   * Gets called when Map is ready in loadmap()
-   * uses restProvider to getData()
-   * returns data to this.dbdata when finished
-   * uses data to initiate setMarker(data)
-   * @return data //Database Json Data containing Trash-Objects to be used for Markers on the Map
+   * Gets called in setMarker() if Filterboolean is true
+   * uses Data from Filterpage which is subscribed on push to the Page
+   * Removes old markers
+   * Creates new Layergroups of markers and ands them on the map
+   * If data is  filtered create and show markers - create popups - page load finished
    */
   setFilterMarker(){
     if(this.markers!=null) {
@@ -566,17 +538,12 @@ export class HomePage {
 
     this.fmarkers = new leaflet.layerGroup().addTo(this.map);
 
-    //this.markers = new leaflet.layerGroup().addTo(this.map);
-    console.log("IMHERE");
-
     this.hausmarker = new leaflet.layerGroup().addTo(this.map);
     this.gruenabfall = new leaflet.layerGroup().addTo(this.map);
     this.sondermuell = new leaflet.layerGroup().addTo(this.map);
     this.spermuell = new leaflet.layerGroup().addTo(this.map);
-    console.log("setfilterMarker");
-    //console.log(this.jsondata);
-    //Markerfarbe
 
+    console.log("setfilterMarker");
 
     if (this.hausmuellarr != undefined) {
       for (let i = 0; i < this.hausmuellarr.length; i++) {
@@ -606,7 +573,6 @@ export class HomePage {
       }
     }
     //this.showBlueDot();
-    console.log("ANDHERE");
     this.fmarkers.addTo(this.map);
     console.log("Markers added");
 
@@ -617,15 +583,13 @@ export class HomePage {
     this.events.unsubscribe('custom-user-events'); // unsubscribe this event
     console.log("filtermarker duchlaufen");
     this.filtercontainer.style.backgroundImage = "url('/assets/icon/filteron.jpg')";
-
-
   }
 
 
-  //var dateTime = this.data[i].time;
-  //var getdateTime = dateTime.split("T",1);
-
-
+  /***
+   * Opens Page to submit Data
+   * pushes params data, coords and time to ChecboxPage
+   */
   opencheckbox(){
     this.navCtrl.push(CheckboxPage,
       {
@@ -639,6 +603,13 @@ export class HomePage {
       );
   }
 
+  /***
+   * Opens Page to filter data
+   * @param data
+   * pushes params data to Filterbox Page
+   * Subscribing returend Data from filterbox.ts
+   * @return filtered data
+   */
   openfilterbox(){
     this.events.subscribe('custom-user-events', (filterdata) => {
       console.log("subscribing filters");
@@ -657,25 +628,19 @@ export class HomePage {
     this.navCtrl.push(FilterboxPage,
       {
         data:this.jsondata,
-        map:this.map,
       },{},function(e){
         console.log("data pushed");
       }
     );
   }
 
-  zoomonlocation(){
-    this.map.setView([this.lat, this.long], 17);
-  }
-
-
-  startstopfollow() {
-    console.log("changebool")
-    this.loconoff = !this.loconoff;
-    this.follownav();
-  }
-
-
+  /***
+   * Opens Page to filter data
+   * @param data
+   * pushes params data to Filterbox Page
+   * Subscribing returend Data from filterbox.ts
+   * @return filtered data
+   */
   showAlertnoData() {
     this.alert = this.alertCtrl.create({
       title: 'Keine Verbindung zum Server!',
@@ -695,7 +660,9 @@ export class HomePage {
     this.alert.present();
   }
 
-
+  /***
+   * Ionic Lifecycle Event when Page closes
+   */
   ionViewDidLeave() {
     console.log("didleave");
     //this.bluedot = null;
@@ -703,21 +670,7 @@ export class HomePage {
       this.loading.dismissAll();
       this.loading = null;
     }
-   /*
-    if(this.locationsubscription!=null) {
-      this.locationsubscription.unsubscribe();
-    }
-
-    */
-    if(this.map) {
-      //this.map.off();
-      //this.map.remove();
-      //this.map.remove(); // Removes the map completly incl div
-    }
-
-    //this.map.removeLayer(this.markers);
   }
-
 }
 
 
