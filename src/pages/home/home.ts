@@ -99,8 +99,8 @@ export class HomePage {
           content: 'No Internet Connection',
           spinner: 'circles'
         });
-        this.loading.present();
       }
+      this.loading.present();
       console.log('network was disconnected');
     });
 
