@@ -420,21 +420,19 @@ export class HomePage {
   /***
    *
    */
+
+
   getLegend() {
 
-    var div = leaflet.DomUtil.create('div', 'info legend'),
-        categories = ['eigener Standort','illegale Müllablagerung'],
-        labels = [],
-        from, to;
+    var div = leaflet.DomUtil.create('div', 'info legend');
 
     div.innerHTML += '<h3>Legende</h3>';
-    
-    for (var i = 0; i < categories.length; i++) {
-        from = categories[i];
-        to = categories[i + 1];
-        labels.push(
-          '<i class="colorcircle"  + "></i> ' + from + (to ? '&ndash;' + to : '+'));
-    }
+    div.innerHTML += '<svg height="20" width="20"> <circle cx="10" cy="10" r="5"' +
+      'style="stroke-width:3; stroke:dodgerblue; fill: dodgerblue;fill-opacity: 0.4"/> </svg>';
+    div.innerHTML += 'Standort' + '<br>';
+
+    div.innerHTML += 'Müllablagerung';
+
     return div;
   }
 
