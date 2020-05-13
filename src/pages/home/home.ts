@@ -392,6 +392,36 @@ export class HomePage {
     });
 
 
+    var addbutton = leaflet.Control.extend({
+      options: {
+        position: 'bottomleft',
+        //padding: '0px',
+        //marginLeft: '1000px'
+      },
+      onAdd: function (map) {
+        container = leaflet.DomUtil.create('control');
+        container.type = "button";
+        container.style.backgroundImage = "url('/assets/icon/navpfeilblue.jpg')";
+        container.style.backgroundColor = "primary";
+        container.style.backgroundSize = '100%';
+        container.style.width = '34px';
+        container.style.height = '34px';
+        container.style.borderStyle = 'solid';
+        container.style.borderWidth = '1px';
+        container.style.borderRadius= '3px';
+        container.style.borderColor = 'grey';
+        //container.position = 'topright';
+        //container.style.marginRight = '2000px';
+        //container.position = 'top'
+
+        container.onclick = function() {
+            this.opencheckbox();
+        }.bind(this)
+        return container;
+      }.bind(this)
+    });
+
+
     this.map.on("dragstart", function(e) {
         console.log("Dragging the Map")
         container.style.backgroundImage = "url('/assets/icon/navpfeilblack.jpg')";
@@ -412,6 +442,8 @@ export class HomePage {
 
     this.map.addControl(new navigationbutton());
     this.map.addControl(new filterbutton());
+    this.map.addControl(new addbutton());
+
     legend.addTo(this.map);
     this.map.invalidateSize();
   }
