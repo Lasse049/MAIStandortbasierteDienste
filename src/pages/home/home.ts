@@ -499,11 +499,10 @@ export class HomePage {
           } else if (this.jsondata[i].sondermuell == true) {
             this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sondermuell');
           }
-          this.bluedot = null;
-          this.showBlueDot();
           this.markers.addLayer(this.marker);
           console.log("Markers added");
         }
+        //this.showBlueDot();
       } else {
         this.setFilterMarker();
       }
@@ -575,8 +574,7 @@ export class HomePage {
         this.fmarkers.addLayer(this.sondermuell);
       }
     }
-    this.bluedot = null;
-    this.showBlueDot();
+    //this.showBlueDot();
     console.log("ANDHERE");
     this.fmarkers.addTo(this.map);
     console.log("Markers added");
