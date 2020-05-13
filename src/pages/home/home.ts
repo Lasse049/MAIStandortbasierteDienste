@@ -391,14 +391,15 @@ export class HomePage {
       } else {
         this.setFilterMarker();
       }
+      if (this.alert!=null){
+        this.alert.dismiss();
+      }
     }
     if (this.loading != null) {
       this.loading.dismissAll();
       this.loading = null;
     }
-    if (this.alert!=null){
-      this.alert.dismiss();
-    }
+
   }
 
   setFilterMarker(){
