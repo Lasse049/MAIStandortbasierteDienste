@@ -357,7 +357,7 @@ export class HomePage {
       onAdd: function (map) {
         this.filtercontainer = leaflet.DomUtil.create('control');
         this.filtercontainer.type = "button";
-        this.filtercontainer.style.icon ='funnel';
+        //this.filtercontainer.style.icon ='funnel';
         this.filtercontainer.style.backgroundImage = "url('/assets/icon/filter2.jpg')";
         this.filtercontainer.style.backgroundColor = "light";
         this.filtercontainer.style.backgroundSize = '100%';
@@ -718,88 +718,6 @@ export class HomePage {
     //this.map.removeLayer(this.markers);
   }
 
-  simplemethod2(){
-    console.log("its simple for tests")
-  }
 }
-
-
-/**
- *
- filter() {
-    let alert = this.alertCtrl.create();
-
-    alert.setTitle('Anzeigefilter');
-
-    alert.addInput({
-      type: 'checkbox',
-      label: 'Sondermüll',
-      value: 'value1',
-
-    });
-
-    alert.addInput({
-      type: 'checkbox',
-      label: 'Hausmüll',
-      value: 'value2',
-
-    });
-
-    alert.addInput({
-      type: 'checkbox',
-      label: 'Grünabfälle',
-      value: 'value3',
-
-    });
-
-    alert.addInput({
-      type: 'checkbox',
-      label: 'Sperrmüll',
-      value: 'value4',
-
-    });
-
-    alert.addButton('Cancel');
-    alert.addButton({
-      text: 'Okay',
-      handler: data => {
-         console.log('Checkbox data:', data);
-         this.testCheckboxOpen = false;
-         this.testCheckboxResult = data;
-       }
-    });
-
-  }
-
-
-filter(data) {
-
-  this.jsondata = data.result;
-  // -) Loop and set the array item checked to match current setting
-  let AlertInputs = this.jsondata.filter((Item) => {
-    // add 'checked' to each object in our array
-    Item['checked'] = Item['label'] === this.options.PauseAfter
-    return Item
-  })
-  // -) Setup alert
-  let Alert = this.alertCtrl.create({
-    title: 'Pause After Selection',
-    message: 'Make a selection...',
-    // https://ionicframework.com/docs/components/#alert-radio
-    inputs:
-    AlertInputs,
-    buttons: [{
-      text: 'Ok',
-      handler: (data) => {
-        // INOTE: storing the label, but you can store the index :)
-        this.options.PauseAfter = this.jsondata[data].label
-      }
-    },
-    ]
-  });
-  // Show the alert
-  Alert.present();
-}
-**/
 
 
