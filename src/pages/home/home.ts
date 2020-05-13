@@ -328,8 +328,6 @@ export class HomePage {
         //container.style.marginRight = '2000px';
         //container.position = 'top'
 
-        //test
-
         container.onclick = function() {
           if (this.loconoff == true) {
             container.style.backgroundImage = "url('/assets/icon/navpfeilblack.jpg')";
@@ -431,7 +429,8 @@ export class HomePage {
     div.innerHTML += '<svg height="20" width="20"> <circle cx="10" cy="10" r="5"' +
       'style="stroke-width:3; stroke:dodgerblue; fill: dodgerblue;fill-opacity: 0.4"/> </svg>';
     div.innerHTML += 'Standort' + '<br>';
-
+    // Hier Bild von Marker
+    div.innerHTML += '<img src="/assets/icon/marker.jpg">';
     div.innerHTML += 'Müllablagerung';
 
     return div;
