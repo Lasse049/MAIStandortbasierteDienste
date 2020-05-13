@@ -573,7 +573,7 @@ export class HomePage {
         this.fmarkers.addLayer(this.sondermuell);
       }
     }
-    this.showBlueDot();
+    //this.showBlueDot();
     console.log("ANDHERE");
     this.fmarkers.addTo(this.map);
     console.log("Markers added");
