@@ -100,13 +100,38 @@ export class FilterboxPage {
       let d = 0;
       let g = 0;
 
+
       console.log(this.finput)
-      if (this.finput != null) {
+      if(this.finput != null && this.fdate != null){
         for (let a = 0; a < this.data.length; a++) {
-          if (this.data[a].username == this.finput) {
+          if (this.data[a].username == this.finput && this.data[a].username == this.fdate) {
             this.namearr[g] = this.data[a];
             g++;
           }
+        }
+      } else {
+        if (this.finput != null) {
+          for (let a = 0; a < this.data.length; a++) {
+            if (this.data[a].username == this.finput) {
+              this.namearr[g] = this.data[a];
+              g++;
+            }
+          }
+        } else {
+          if (this.fdate != null) {
+            for (let a = 0; a < this.data.length; a++) {
+              if (this.data[a].date == this.fdate) {
+                this.namearr[g] = this.data[a];
+                g++;
+              }
+            }
+          }
+        }
+      }
+      if (this.fdate == null && this.finput == null){
+        for (let a = 0; a < this.data.length; a++) {
+          this.namearr[g] = this.data[a];
+          g++;
         }
       }
       console.log(this.namearr)
@@ -127,7 +152,19 @@ export class FilterboxPage {
            this.guenabfallarr.push(this.namearr[i]);
            console.log("gruen");
            console.log(this.guenabfallarr);
-           b++
+
+         };
+         if (this.namearr[i].sondermuellarr == true) {
+           this.sondermuellarr.push(this.namearr[i]);
+           console.log("sonder");
+           console.log(this.sondermuellarr);
+
+         };
+         if (this.namearr[i].spermuell == true) {
+           this.sperrmuellarr.push(this.namearr[i]);
+           console.log("sper");
+           console.log(this.sperrmuellarr);
+
          };
        }
 
