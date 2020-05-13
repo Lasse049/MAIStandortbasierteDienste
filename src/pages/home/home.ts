@@ -52,6 +52,7 @@ export class HomePage {
   connectSubscription: any;
   disconnectSubscription: any;
   alert: any;
+  filtercontainer: any;
 
 
 
@@ -280,7 +281,7 @@ export class HomePage {
     }
 
     // Add custom Button
-    var NavigationButton = leaflet.Control.extend({
+    var navigationbutton = leaflet.Control.extend({
       options: {
         position: 'topleft',
         //padding: '0px',
@@ -324,39 +325,45 @@ export class HomePage {
     });
 
     // Add Filterbutton
-    var Filterbutton = leaflet.Control.extend({
+    var filterbutton = leaflet.Control.extend({
       options: {
         position: 'topright',
 
       },
       onAdd: function (map) {
-        filtercontainer = leaflet.DomUtil.create('control');
-        filtercontainer.type = "button";
-        filtercontainer.style.icon ='funnel';
-        //filtercontainer.style.backgroundImage = "url('/assets/icon/navpfeilblue.jpg')";
-        filtercontainer.style.backgroundColor = "light";
-        filtercontainer.style.backgroundSize = '100%';
-        filtercontainer.style.width = '34px';
-        filtercontainer.style.height = '34px';
-        filtercontainer.style.borderStyle = 'solid';
-        filtercontainer.style.borderWidth = '1px';
-        filtercontainer.style.borderRadius= '3px';
-        filtercontainer.style.borderColor = 'grey';
+        this.filtercontainer = leaflet.DomUtil.create('control');
+        this.filtercontainer.type = "button";
+        this.filtercontainer.style.icon ='funnel';
+        this.filtercontainer.style.backgroundImage = "url('/assets/icon/filter2.jpg')";
+        this.filtercontainer.style.backgroundColor = "light";
+        this.filtercontainer.style.backgroundSize = '100%';
+        this.filtercontainer.style.width = '34px';
+        this.filtercontainer.style.height = '34px';
+        this.filtercontainer.style.borderStyle = 'solid';
+        this.filtercontainer.style.borderWidth = '1px';
+        this.filtercontainer.style.borderRadius= '3px';
+        this.filtercontainer.style.borderColor = 'grey';
+        this.filtercontainer.style.padding = '10px';
 
-        filtercontainer.onclick = function() {
+        console.log('filterbool')
+        console.log(this.filterbool);
+
+
+
+        this.filtercontainer.onclick = function() {
           if (this.filterbool == false) {
-           // filtercontainer.style.backgroundImage = "url('/assets/icon/navpfeilblack.jpg')";
-            filtercontainer.style.backgroundColor = "light";
+            //filtercontainer.style.backgroundImage = "url('/assets/icon/filter2.jpg')";
+            this.filtercontainer.style.backgroundColor = "light";
             console.log("clicked false")
             this.openfilterbox();
           } else if (this.filterbool == true) {
-          //  filtercontainer.style.backgroundImage = "url('/assets/icon/navpfeilblue.jpg')";
+            //filtercontainer.style.backgroundImage = "url('/assets/icon/filteron.jpg')";
             filtercontainer.style.backgroundColor = "primary";
             console.log("clicked true")
             this.openfilterbox();
           }
         }.bind(this)
-        return filtercontainer;
+        return this.filtercontainer;
       }.bind(this)
     });
 
@@ -379,8 +386,8 @@ export class HomePage {
     var legend = leaflet.control({position: 'bottomright'});
     legend.onAdd = this.getLegend;
 
-    this.map.addControl(new NavigationButton());
-    this.map.addControl(new Filterbutton());
+    this.map.addControl(new navigationbutton());
+    this.map.addControl(new filterbutton());
     legend.addTo(this.map);
     this.map.invalidateSize();
   }
@@ -520,6 +527,8 @@ export class HomePage {
     }
     this.events.unsubscribe('custom-user-events'); // unsubscribe this event
     console.log("filtermarker duchlaufen");
+    this.filtercontainer.style.backgroundImage = "url('/assets/icon/filteron.jpg')";
+
   }
 
 
