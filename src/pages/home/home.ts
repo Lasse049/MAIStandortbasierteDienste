@@ -211,7 +211,7 @@ export class HomePage {
       this.bluedot.addTo(this.map);
       console.log("added bluedot");
     } else {
-     // console.log("moving bluedot");
+      console.log("moving bluedot");
       let latlng = leaflet.latLng(this.lat, this.long);
 
       this.bluedot.setLatLng(latlng);
@@ -449,6 +449,8 @@ export class HomePage {
           } else if (this.jsondata[i].sondermuell == true) {
             this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sondermuell');
           }
+          this.bluedot = null;
+          this.showBlueDot();
           this.markers.addLayer(this.marker);
           console.log("Markers added");
         }
@@ -516,6 +518,8 @@ export class HomePage {
         this.fmarkers.addLayer(this.sondermuell);
       }
     }
+    this.bluedot = null;
+    this.showBlueDot();
     console.log("ANDHERE");
     this.fmarkers.addTo(this.map);
     console.log("Markers added");
@@ -527,6 +531,7 @@ export class HomePage {
     this.events.unsubscribe('custom-user-events'); // unsubscribe this event
     console.log("filtermarker duchlaufen");
     this.filtercontainer.style.backgroundImage = "url('/assets/icon/filteron.jpg')";
+
 
   }
 
@@ -606,13 +611,18 @@ export class HomePage {
 
 
   ionViewDidLeave() {
+    console.log("didleave");
+    //this.bluedot = null;
     if (this.loading != null) {
       this.loading.dismissAll();
       this.loading = null;
     }
+   /*
     if(this.locationsubscription!=null) {
       this.locationsubscription.unsubscribe();
     }
+
+    */
     if(this.map) {
       //this.map.off();
       //this.map.remove();
