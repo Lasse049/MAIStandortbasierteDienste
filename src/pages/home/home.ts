@@ -692,6 +692,7 @@ export class HomePage {
 
   /***
    * Ionic Lifecycle Event when Page closes
+   * dismiss all loading
    */
   ionViewDidLeave() {
     console.log("didleave");
