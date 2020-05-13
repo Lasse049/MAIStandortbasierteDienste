@@ -501,7 +501,7 @@ export class HomePage {
           this.markers.addLayer(this.marker);
           console.log("Markers added");
         }
-        this.showBlueDot();
+        //this.showBlueDot();
       } else {
         this.setFilterMarker();
       }
