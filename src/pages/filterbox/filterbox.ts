@@ -143,24 +143,24 @@ export class FilterboxPage {
       // NameArry Hausmuell was?
       //this.namearr = JSON.parse(JSON.stringify(this.namearr));
        for (let i = 0; i < this.namearr.length; i++) {
-         if (this.namearr[i].hausmuell== true) {
+         if (this.namearr[i].hausmuell== true && this.fHausmuell == true) {
            this.hausmuellarr.push(this.namearr[i]);
            console.log("hausmuellarr");
            console.log(this.hausmuellarr);
          }
-         if (this.namearr[i].gruenabfall == true) {
+         if (this.namearr[i].gruenabfall == true && this.fGruenabfall == true) {
            this.guenabfallarr.push(this.namearr[i]);
            console.log("gruen");
            console.log(this.guenabfallarr);
 
          };
-         if (this.namearr[i].sondermuellarr == true) {
+         if (this.namearr[i].sondermuellarr == true && this.fSondermuell == true) {
            this.sondermuellarr.push(this.namearr[i]);
            console.log("sonder");
            console.log(this.sondermuellarr);
 
          };
-         if (this.namearr[i].spermuell == true) {
+         if (this.namearr[i].spermuell == true && this.fSperrmuell == true) {
            this.sperrmuellarr.push(this.namearr[i]);
            console.log("sper");
            console.log(this.sperrmuellarr);
