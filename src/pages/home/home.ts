@@ -338,7 +338,7 @@ export class HomePage {
 
       }.bind(this)
     });
-    this.map.addControl(new myControl());
+
 
 
     this.map.whenReady(function(e){
@@ -350,8 +350,9 @@ export class HomePage {
 
     var legend = leaflet.control({position: 'bottomright'});
     legend.onAdd = this.getLegend;
+    
+    this.map.addControl(new myControl());
     legend.addTo(this.map);
-
     this.map.invalidateSize();
   }
 
