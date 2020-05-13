@@ -244,13 +244,22 @@ export class HomePage {
       console.log("map removed")
       this.map.remove();
     }
-    var container = leaflet.DomUtil.get('map');
+    this.map = leaflet.map("map"); //Already init oder undefined
+
+
     if(container != null){
       console.log("container");
       container._leaflet_id = null;
     }
+    if(filtercontainer != null){
+      console.log("filtercontainer");
+      filtercontainer._leaflet_id = null;
+    }
 
-    this.map = leaflet.map("map"); //Already init oder undefined
+    var container = leaflet.DomUtil.get('map');
+    var filtercontainer = leaflet.DomUtil.get('map');
+
+
 
     //this.map.createPane("map");
       leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -271,7 +280,7 @@ export class HomePage {
     }
 
     // Add custom Button
-    var myControl = leaflet.Control.extend({
+    var NavigationButton = leaflet.Control.extend({
       options: {
         position: 'topleft',
         //padding: '0px',
@@ -289,33 +298,10 @@ export class HomePage {
         container.style.borderWidth = '1px';
         container.style.borderRadius= '3px';
         container.style.borderColor = 'grey';
+        //container.position = 'topright';
         //container.style.marginRight = '2000px';
         //container.position = 'top'
 
-//        container.style.border.style.solid;
-
-/*
-        #btn3{
-          background-color: rgba(255, 255, 255, 0.9);
-          width: 45px;
-          height: 45px;
-          margin-top: 2%;
-          margin-right: 12px;
-          border-style: solid;
-          border-width: 0.5px;
-          border-color: grey;
-          border-radius: 3px;
-        }
-
- */
-
-        this.map.on("dragstart", function(e) {
-            console.log("Dragging the Map")
-          container.style.backgroundImage = "url('/assets/icon/navpfeilblack.jpg')";
-          container.style.backgroundColor = "light";
-            this.loconoff = false;
-          }.bind(this)
-        );
 
         container.onclick = function() {
           if (this.loconoff == true) {
@@ -334,12 +320,54 @@ export class HomePage {
           }
         }.bind(this)
         return container;
+      }.bind(this)
+    });
 
+    // Add Filterbutton
+    var Filterbutton = leaflet.Control.extend({
+      options: {
+        position: 'topright',
 
+      },
+      onAdd: function (map) {
+        filtercontainer = leaflet.DomUtil.create('control');
+        filtercontainer.type = "button";
+        filtercontainer.style.icon ='funnel';
+        //filtercontainer.style.backgroundImage = "url('/assets/icon/navpfeilblue.jpg')";
+        filtercontainer.style.backgroundColor = "light";
+        filtercontainer.style.backgroundSize = '100%';
+        filtercontainer.style.width = '34px';
+        filtercontainer.style.height = '34px';
+        filtercontainer.style.borderStyle = 'solid';
+        filtercontainer.style.borderWidth = '1px';
+        filtercontainer.style.borderRadius= '3px';
+        filtercontainer.style.borderColor = 'grey';
+
+        filtercontainer.onclick = function() {
+          if (this.filterbool == false) {
+           // filtercontainer.style.backgroundImage = "url('/assets/icon/navpfeilblack.jpg')";
+            filtercontainer.style.backgroundColor = "light";
+            console.log("clicked false")
+            this.openfilterbox();
+          } else if (this.filterbool == true) {
+          //  filtercontainer.style.backgroundImage = "url('/assets/icon/navpfeilblue.jpg')";
+            filtercontainer.style.backgroundColor = "primary";
+            console.log("clicked true")
+            this.openfilterbox();
+          }
+        }.bind(this)
+        return filtercontainer;
       }.bind(this)
     });
 
 
+    this.map.on("dragstart", function(e) {
+        console.log("Dragging the Map")
+        container.style.backgroundImage = "url('/assets/icon/navpfeilblack.jpg')";
+        container.style.backgroundColor = "light";
+        this.loconoff = false;
+      }.bind(this)
+    );
 
     this.map.whenReady(function(e){
         console.log("Map is ready")
@@ -350,8 +378,9 @@ export class HomePage {
 
     var legend = leaflet.control({position: 'bottomright'});
     legend.onAdd = this.getLegend;
-    
-    this.map.addControl(new myControl());
+
+    this.map.addControl(new NavigationButton());
+    this.map.addControl(new Filterbutton());
     legend.addTo(this.map);
     this.map.invalidateSize();
   }
