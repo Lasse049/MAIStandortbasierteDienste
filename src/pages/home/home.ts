@@ -74,6 +74,12 @@ export class HomePage {
    * On Start
    */
   ionViewDidEnter() {
+    // Prevent loss of Blue dot by Page changes by removing it from the map and setting it null
+    if(this.map!= null && this.bluedot!=null) {
+      this.map.removeLayer(this.bluedot);
+      this.bluedot = null;
+    }
+
     //Create and present Loading Spinner
     this.loading = this.loadingCtrl.create({
       content: 'Checking Internet Connection',
@@ -162,12 +168,14 @@ export class HomePage {
    * Calls getDBData() when Map is loaded and ready
    */
   loadmap() {
+    // Save remove Map if existent
     if (this.map != undefined) {
       console.log("map removed")
       this.map.remove();
     }
-    this.map = leaflet.map("map"); //Already init oder undefined
 
+
+    // Save remove old containers if existent
     if(container != null){
       console.log("container");
       container._leaflet_id = null;
@@ -176,17 +184,21 @@ export class HomePage {
       console.log("filtercontainer");
       filtercontainer._leaflet_id = null;
     }
+    if(addcontainer != null){
+      console.log("filtercontainer");
+      addcontainer._leaflet_id = null;
+    }
 
+    // Define and add Leaflet Map using Open Street Map
+    this.map = leaflet.map("map"); //Already init oder undefined
+    leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(this.map);
+    // set  initial zoom and view
+    this.map.setZoom(25);
+    this.map.setView([0, 0])
 
-
-      leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-      }).addTo(this.map);
-      this.map.setZoom(25);
-      this.map.setView([0, 0])
-
-
-    //Create containers on the Map
+    //Create containers for buttons on the Map
     var container = leaflet.DomUtil.get('map');
     var filtercontainer = leaflet.DomUtil.get('map');
     var addcontainer = leaflet.DomUtil.get('map');
@@ -209,19 +221,15 @@ export class HomePage {
         container.style.borderRadius= '3px';
         container.style.borderColor = 'grey';
 
+        // Onclick change Button style and change boolean this.loconoff
         container.onclick = function() {
           if (this.loconoff == true) {
             container.style.backgroundImage = "url('/assets/icon/navpfeilblack.jpg')";
             container.style.backgroundColor = "light";
-            console.log("clicked false")
-            this.startstopfollow();
             this.loconoff = false;
           } else if (this.loconoff == false) {
-            container.style.background
             container.style.backgroundImage = "url('/assets/icon/navpfeilblue.jpg')";
             container.style.backgroundColor = "primary";
-            console.log("clicked true")
-            this.startstopfollow();
             this.loconoff = true;
           }
         }.bind(this)
@@ -249,16 +257,13 @@ export class HomePage {
         this.filtercontainer.style.borderColor = 'grey';
         this.filtercontainer.style.padding = '10px';
 
+
         this.filtercontainer.onclick = function() {
           if (this.filterbool == false) {
-            //filtercontainer.style.backgroundImage = "url('/assets/icon/filter2.jpg')";
             this.filtercontainer.style.backgroundColor = "light";
-            console.log("clicked false")
             this.openfilterbox();
           } else if (this.filterbool == true) {
-            //filtercontainer.style.backgroundImage = "url('/assets/icon/filteron.jpg')";
             filtercontainer.style.backgroundColor = "primary";
-            console.log("clicked true")
             this.openfilterbox();
           }
         }.bind(this)
@@ -393,29 +398,32 @@ export class HomePage {
    * @param this.long Longitude of Users Position
    * @param this.bluedot Blue Dot (Leaflet Circle Marker) showing Users Location on the Map
    */
-  showBlueDot(){
+  showBlueDot() {
+    if (this.lat != null && this.long != null) {
+      if (this.bluedot == null) {
+        console.log("no bluedot");
+        console.log('Creating Dot Options');
+        const bluedotoptions = {
+          color: '#1e90ff',
+          fillColor: '#1e90ff',
+          fillOpacity: 0.5,
+          radius: 5
+        }
+        this.bluedot = leaflet.circleMarker([this.lat, this.long], bluedotoptions);
+        this.bluedot.addTo(this.map);
+        console.log("added bluedot");
+      } else {
+        console.log("moving bluedot");
+        let latlng = leaflet.latLng(this.lat, this.long);
 
-    if(this.bluedot == null){
-      console.log("no bluedot");
-      console.log('Creating Dot Options');
-      const bluedotoptions = {
-        color: '#1e90ff',
-        fillColor: '#1e90ff',
-        fillOpacity: 0.5,
-        radius: 5
+        this.bluedot.setLatLng(latlng);
+        //.addTo(this.map);
+        //this.bluedot.addTo(this.map);
       }
-      this.bluedot = leaflet.circleMarker([this.lat, this.long],bluedotoptions);
-      this.bluedot.addTo(this.map);
-      console.log("added bluedot");
+      this.bluedot.bindPopup('You are here' + '<br>' + 'Latitude: ' + this.lat + '</br>' + 'Longitude: ' + this.long + '</br>');
     } else {
-      console.log("moving bluedot");
-      let latlng = leaflet.latLng(this.lat, this.long);
-
-      this.bluedot.setLatLng(latlng);
-      //.addTo(this.map);
-      //this.bluedot.addTo(this.map);
+    console.log("no location");
     }
-    this.bluedot.bindPopup('You are here'+'<br>'+ 'Latitude: ' + this.lat + '</br>' + 'Longitude: ' + this.long + '</br>');
   }
 
 
@@ -479,9 +487,11 @@ export class HomePage {
    * else run setFilterMarker()
    */
   setMarker(data){
+    // if data is empty throw error with an Alert
     if(data == 404 || data == null || data == undefined){
       this.showAlertnoData();
     } else {
+      // data is not empty. if its not filtered go ahead and set markers
       if (this.filterbool==false) {
         this.jsondata = data.result;
         this.markers = new leaflet.layerGroup().addTo(this.map);
@@ -502,16 +512,20 @@ export class HomePage {
             this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sondermuell');
           }
           this.markers.addLayer(this.marker);
-          console.log("Markers added");
         }
+        console.log("DefaultMarkersadded");
         //this.showBlueDot();
+        // Data is filtered, dont do anything but run setFilterMarker()
       } else {
         this.setFilterMarker();
       }
+
+      // Dismiss alerts as program finished with succsess
       if (this.alert!=null){
         this.alert.dismiss();
       }
     }
+    // Dismiss loading spinner as program finished
     if (this.loading != null) {
       this.loading.dismissAll();
       this.loading = null;
@@ -536,8 +550,9 @@ export class HomePage {
       this.marker = null;
     }
 
+    // Create Layer groups
     this.fmarkers = new leaflet.layerGroup().addTo(this.map);
-
+    // Create Sub-Layer groups
     this.hausmarker = new leaflet.layerGroup().addTo(this.map);
     this.gruenabfall = new leaflet.layerGroup().addTo(this.map);
     this.sondermuell = new leaflet.layerGroup().addTo(this.map);
@@ -545,6 +560,7 @@ export class HomePage {
 
     console.log("setfilterMarker");
 
+    // run through Array if its not undefined. set markers, bind popups, add to layergroup fmakers
     if (this.hausmuellarr != undefined) {
       for (let i = 0; i < this.hausmuellarr.length; i++) {
         this.hausmarker = new leaflet.marker([this.hausmuellarr[i].latitude, this.hausmuellarr[i].longitude]);
@@ -572,18 +588,29 @@ export class HomePage {
         this.fmarkers.addLayer(this.sondermuell);
       }
     }
-    this.map.removeLayer(this.bluedot);
-
-    //this.showBlueDot();
+    // Add Layergroup Filteredmakers fmakers to map
     this.fmarkers.addTo(this.map);
-    console.log("Markers added");
 
+    // Remove old BlueDot and add a new one so its gone with the old map
+    // prevents blue dot loss on page changes home-filterbox
+    //this.getLocation();
+    //this.followLocation();
+    //this.showBlueDot();
+    //this.bluedot.addTo(this.map);
+    //this.getLocation();
+    //this.bluedot = leaflet.circleMarker([this.lat, this.long], bluedotoptions);
+
+    console.log("fMarkers added");
+
+    // Done, dismiss loading spinner
     if (this.loading != null) {
       this.loading.dismissAll();
       this.loading = null;
     }
+    // unsubscribe event to collect data from filter
     this.events.unsubscribe('custom-user-events'); // unsubscribe this event
-    console.log("filtermarker duchlaufen");
+
+    // Set Filterbutton Image on used status (blue)
     this.filtercontainer.style.backgroundImage = "url('/assets/icon/filteron.jpg')";
   }
 
