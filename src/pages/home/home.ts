@@ -52,10 +52,6 @@ export class HomePage {
   alert: any; // Alert Window
   filtercontainer: any; //Filterbutton
 
-
-
-
-
   constructor(
     public navCtrl: NavController,
     public geolocation: Geolocation,
@@ -66,20 +62,13 @@ export class HomePage {
     public navParams: NavParams,
     public events: Events,
     public network: Network,
-    // Fehlermeldung ignorieren
   ) {
 
   }
 
-  /***
-   * FYI
-   * Aktuelle Serverdatei: server22.js
-   * run mit: ionic serve / ionic cordova run android/browser
-   * (Network check ist drin - bitte mal testen)
-   * Filter added, neue arrays/layergroups könnten eingefärbt werden
-   * Buttons added - style fehlt noch etwas
-   * Welche Fehler treten auf die wir abfangen müssen?
-   */
+//todo Felix: Filter, Popups, Style, Fehler abfangen, Kommentieren, Fehler abfangen, Text
+//todo Tristan: Legende, Permission, Style, Fehler abfangen, Kommentieren, Fehler abfangen, Text
+//todo Lasse: Kommentieren, Style, Fehler abfangen,Text
 
   /***
    * On Start
@@ -143,6 +132,7 @@ export class HomePage {
     }
   }
 
+
   /***
    * Dismiss Spinners - Create Load App Spinner
    * Starts the Application by running loadmap() and getLocation()
@@ -158,98 +148,10 @@ export class HomePage {
     });
     this.loading.present();
     this.loadmap();
-    this.getLocation();
+    //this.getLocation();
   }
 
-  /***
-   * Get the Initial Position of the User
-   * Starts showBlueDot() to display user position on the map
-   * Starts followLocation() to keep watching Users Location changes
-   */
-  getLocation() {
 
-    this.geolocation.getCurrentPosition().then((resp) => {
-      this.lat = resp.coords.latitude;
-      this.long = resp.coords.longitude;
-      this.timestamp = resp.timestamp;
-      // initial View
-      this.map.setView([this.lat, this.long]);
-      this.showBlueDot();
-      this.followLocation();
-    }).catch((error) => {
-      console.log('Error getting location', error);
-    });
-
-  }
-
-  /***
-   * Get the Updated Position of the User by subcribing changes of watch using Geolocation
-   * Starts showBlueDot() to display/update user position on the map
-   * Starts follownav () to keep watching Users Location changes
-   */
-  followLocation() {
-    this.watch = this.geolocation.watchPosition();
-    this.locationsubscription = this.watch.subscribe((data) => {
-
-      this.lat = data.coords.latitude
-      this.long = data.coords.longitude
-      this.timestamp = data.timestamp;
-
-      //console.log('Location found at: ' + this.lat + " ; " + this.long);
-
-      this.showBlueDot();
-      this.follownav();
-
-    });
-  }
-
-  /***
-   * Creates or moves a Blue dot displaying the users position on the map
-   * @param this.lat Latitude of Users Position
-   * @param this.long Longitude of Users Position
-   * @param this.bluedot Blue Dot (Leaflet Circle Marker) showing Users Location on the Map
-   */
-  showBlueDot(){
-
-    if(this.bluedot == null){
-      console.log("no bluedot");
-      console.log('Creating Dot Options');
-      const bluedotoptions = {
-        color: '#1e90ff',
-        fillColor: '#1e90ff',
-        fillOpacity: 0.5,
-        radius: 5
-      }
-      this.bluedot = leaflet.circleMarker([this.lat, this.long],bluedotoptions);
-      this.bluedot.addTo(this.map);
-      console.log("added bluedot");
-    } else {
-      console.log("moving bluedot");
-      let latlng = leaflet.latLng(this.lat, this.long);
-
-      this.bluedot.setLatLng(latlng);
-      //.addTo(this.map);
-      //this.bluedot.addTo(this.map);
-    }
-    this.bluedot.bindPopup('You are here'+'<br>'+ 'Latitude: ' + this.lat + '</br>' + 'Longitude: ' + this.long + '</br>');
-  }
-
-  /***
-   * Gets called on Location changes by followLocation() this.watch/thislocationsubsciption
-   * @param this.loconoff Boolean indicating if MapView will update on Users position or not
-   * @param Changes NavigationButtonColor if required
-   */
-  follownav() {
-    //console.log(this.loconoff)
-    if (this.loconoff) {
-      //console.log("Follow GPS is on")
-      this.buttonColor = "primary";
-      this.map.setView([this.lat, this.long]);
-    } else {
-      //console.log("Follow GPS is OFF")
-       this.buttonColor = "light";
-    }
-  }
 
   /***
    * Gets called on startApp()
@@ -405,6 +307,7 @@ export class HomePage {
     this.map.whenReady(function(e){
         console.log("Map is ready")
         this.mapinit = true;
+        this.getLocation();
         this.getDBData();
       }.bind(this)
     );
@@ -420,6 +323,7 @@ export class HomePage {
     legend.addTo(this.map);
     this.map.invalidateSize();
   }
+
 
   /***
    *
@@ -438,6 +342,100 @@ export class HomePage {
 
     return div;
   }
+
+
+  /***
+   * Get the Initial Position of the User
+   * Starts showBlueDot() to display user position on the map
+   * Starts followLocation() to keep watching Users Location changes
+   */
+  getLocation() {
+
+    this.geolocation.getCurrentPosition().then((resp) => {
+      this.lat = resp.coords.latitude;
+      this.long = resp.coords.longitude;
+      this.timestamp = resp.timestamp;
+      // initial View
+      this.map.setView([this.lat, this.long]);
+      this.showBlueDot();
+      this.followLocation();
+    }).catch((error) => {
+      console.log('Error getting location', error);
+    });
+  }
+
+
+  /***
+   * Get the Updated Position of the User by subcribing changes of watch using Geolocation
+   * Starts showBlueDot() to display/update user position on the map
+   * Starts follownav () to keep watching Users Location changes
+   */
+  followLocation() {
+    this.watch = this.geolocation.watchPosition();
+    this.locationsubscription = this.watch.subscribe((data) => {
+
+      this.lat = data.coords.latitude
+      this.long = data.coords.longitude
+      this.timestamp = data.timestamp;
+
+      //console.log('Location found at: ' + this.lat + " ; " + this.long);
+
+      this.showBlueDot();
+      this.follownav();
+
+    });
+  }
+
+
+  /***
+   * Creates or moves a Blue dot displaying the users position on the map
+   * @param this.lat Latitude of Users Position
+   * @param this.long Longitude of Users Position
+   * @param this.bluedot Blue Dot (Leaflet Circle Marker) showing Users Location on the Map
+   */
+  showBlueDot(){
+
+    if(this.bluedot == null){
+      console.log("no bluedot");
+      console.log('Creating Dot Options');
+      const bluedotoptions = {
+        color: '#1e90ff',
+        fillColor: '#1e90ff',
+        fillOpacity: 0.5,
+        radius: 5
+      }
+      this.bluedot = leaflet.circleMarker([this.lat, this.long],bluedotoptions);
+      this.bluedot.addTo(this.map);
+      console.log("added bluedot");
+    } else {
+      console.log("moving bluedot");
+      let latlng = leaflet.latLng(this.lat, this.long);
+
+      this.bluedot.setLatLng(latlng);
+      //.addTo(this.map);
+      //this.bluedot.addTo(this.map);
+    }
+    this.bluedot.bindPopup('You are here'+'<br>'+ 'Latitude: ' + this.lat + '</br>' + 'Longitude: ' + this.long + '</br>');
+  }
+
+
+  /***
+   * Gets called on Location changes by followLocation() this.watch/thislocationsubsciption
+   * @param this.loconoff Boolean indicating if MapView will update on Users position or not
+   * @param Changes NavigationButtonColor if required
+   */
+  follownav() {
+    //console.log(this.loconoff)
+    if (this.loconoff) {
+      //console.log("Follow GPS is on")
+      this.buttonColor = "primary";
+      this.map.setView([this.lat, this.long]);
+    } else {
+      //console.log("Follow GPS is OFF")
+      this.buttonColor = "light";
+    }
+  }
+
 
   /***
    * Gets called when Map is ready in loadmap()
@@ -471,6 +469,7 @@ export class HomePage {
         return (data)
       });
   }
+
 
   /***
    * Gets called in getDBData() when getData()request finished
@@ -519,6 +518,7 @@ export class HomePage {
     }
 
   }
+
 
   /***
    * Gets called in setMarker() if Filterboolean is true
@@ -572,6 +572,8 @@ export class HomePage {
         this.fmarkers.addLayer(this.sondermuell);
       }
     }
+    this.map.removeLayer(this.bluedot);
+
     //this.showBlueDot();
     this.fmarkers.addTo(this.map);
     console.log("Markers added");
@@ -602,6 +604,7 @@ export class HomePage {
       }
       );
   }
+
 
   /***
    * Opens Page to filter data
