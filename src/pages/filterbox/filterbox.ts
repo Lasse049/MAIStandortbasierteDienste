@@ -132,6 +132,7 @@ export class FilterboxPage {
        }
 
     }
+    // fitlerbool sollte nur true sein wenn auch gefilter wurde
     this.filterboolean=true;
     let filterdata = {
       hausmuellarr:this.hausmuellarr,

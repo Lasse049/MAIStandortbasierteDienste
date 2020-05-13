@@ -17,41 +17,40 @@ import {Network} from "@ionic-native/network/";
 export class HomePage {
 
   //Class Variables
-  map: any;
-  lat: any;
-  long: any;
-  coords: any;
-  dbdata: any;
-  jsondata: any;
-  marker: any;
-  timestamp: any;
-  geopoint: any;
-  loconoff: boolean = true;
-  buttonColor: any;
-  watch: any;
-  locationsubscription: any;
-  bluedot: any;
-  testCheckboxResult: any;
-  testCheckboxOpen: any;
-  options: any
-  data:any
-  loading:any;
-  hausmuellarr: any = [];
-  gruenabfallarr: any = [];
-  sondermuellarr: any = [];
-  sperrmuellarr: any = [];
-  filterbool: boolean = false;
-  markers:any;
-  dataFromOtherPage: any = null;
-  hausmarker: any;
-  gruenabfall: any;
-  sondermuell: any;
-  spermuell: any;
-  fmarkers: any;
-  fmarker: any;
-  connectSubscription: any;
-  disconnectSubscription: any;
-  alert: any;
+  map: any; // Leaflet Map
+  lat: any; // Latitude of User Position Coords
+  long: any; // Longitude of User Position Coords
+  coords: any; // Coordinations of User Position
+  dbdata: any; // Data received form Databank containing Illegal Trash
+  jsondata: any; // Data received form Databank containing Illegal Trash
+  marker: any; // Markers to be placed on the map
+  timestamp: any; // Timestamp of USer Position Coords
+  loconoff: boolean = true; // Boolean for updating Map view
+  buttonColor: any; // ?? // Redundant Button
+  watch: any; // Keeps watching user Position
+  locationsubscription: any; // Subsription of watch
+  bluedot: any; // The BlueDot showing users position
+  testCheckboxResult: any; //?
+  testCheckboxOpen: any; //?
+  options: any //?
+  data:any //?
+  loading:any; // Loading Spinner Animation
+  hausmuellarr: any = []; // Filtered Array from DB Data
+  gruenabfallarr: any = []; // Filtered Array from DB Data
+  sondermuellarr: any = []; // Filtered Array from DB Data
+  sperrmuellarr: any = []; // Filtered Array from DB Data
+  filterbool: boolean = false; // Indicates if Data was filtered
+  markers:any; // Markers
+  dataFromOtherPage: any = null; // Filtered Data Object
+  hausmarker: any; // Layergroup single marker
+  gruenabfall: any; // Layergroup single marker
+  sondermuell: any; // Layergroup single marker
+  spermuell: any; // Layergroup single marker
+  fmarkers: any; //Layergroup of all Markers
+  connectSubscription: any; // Network Connection subscription
+  disconnectSubscription: any; // Network Disconnection subscription
+  alert: any; // Alert Window
+  filtercontainer: any; //Filterbutton
 
 
 
@@ -75,11 +74,10 @@ export class HomePage {
   /***
    * FYI
    * Aktuelle Serverdatei: server22.js
-   * run mit: ionic cordova run android/browser
-   * ionic serve geht nichtmehr weil plugins jetzt platformabhängig installiert werden
+   * run mit: ionic serve / ionic cordova run android/browser
    * (Network check ist drin - bitte mal testen)
    * Filter added, neue arrays/layergroups könnten eingefärbt werden
-   * Button added (oben links), sieht kacke aus.
+   * Buttons added - style fehlt noch etwas
    * Welche Fehler treten auf die wir abfangen müssen?
    */
 
@@ -87,12 +85,16 @@ export class HomePage {
    * On Start
    */
   ionViewDidEnter() {
+    //Create and present Loading Spinner
     this.loading = this.loadingCtrl.create({
       content: 'Checking Internet Connection',
       spinner: 'circles'
     });
-// watch network for a disconnection
+    this.loading.present();
+
+    // Watch Network for Disconnection
     this.disconnectSubscription = this.network.onDisconnect().subscribe(() => {
+      //delete old LoadingSpinners, create new one, present it
       if (this.loading != null) {
         this.loading.dismissAll();
         this.loading = null;
@@ -105,17 +107,16 @@ export class HomePage {
       console.log('network was disconnected');
     });
 
-    // stop disconnect watch
-    //disconnectSubscription.unsubscribe();
 
-
-// watch network for a connection
+    // Watch Network for Re-Connection
     this.connectSubscription = this.network.onConnect().subscribe(() => {
+      //Dismiss Loading Spinner
       console.log('network connected!');
       if (this.loading != null) {
         this.loading.dismissAll();
         this.loading = null;
       }
+      //Wait 2 seconds and (re)start the App
       setTimeout(() => {
         if (this.network.type != 'none') {
           this.startApp();
@@ -125,7 +126,7 @@ export class HomePage {
     });
 
 
-
+    // Start App if Network is Connected. Else Show Spinner no Connection
     console.log("networktype");
     console.log(this.network.type);
     if(this.network.type == 'none'){
@@ -140,12 +141,12 @@ export class HomePage {
     } else {
       this.startApp()
     }
-    // stop connect watch
-    //disconnectSubscription.unsubscribe();
-    //connectSubscription.unsubscribe();
-
   }
 
+  /***
+   * Dismiss Spinners - Create Load App Spinner
+   * Starts the Application by running loadmap() and getLocation()
+   */
   startApp(){
     if (this.loading != null) {
       this.loading.dismissAll();
@@ -161,7 +162,9 @@ export class HomePage {
   }
 
   /***
-   * On Start
+   * Get the Initial Position of the User
+   * Starts showBlueDot() to display user position on the map
+   * Starts followLocation() to keep watching Users Location changes
    */
   getLocation() {
 
@@ -173,13 +176,17 @@ export class HomePage {
       this.map.setView([this.lat, this.long]);
       this.showBlueDot();
       this.followLocation();
-
     }).catch((error) => {
       console.log('Error getting location', error);
     });
 
   }
 
+  /***
+   * Get the Updated Position of the User by subcribing changes of watch using Geolocation
+   * Starts showBlueDot() to display/update user position on the map
+   * Starts follownav () to keep watching Users Location changes
+   */
   followLocation() {
     this.watch = this.geolocation.watchPosition();
     this.locationsubscription = this.watch.subscribe((data) => {
@@ -196,6 +203,12 @@ export class HomePage {
     });
   }
 
+  /***
+   * Creates or moves a Blue dot displaying the users position on the map
+   * @param this.lat Latitude of Users Position
+   * @param this.long Longitude of Users Position
+   * @param this.bluedot Blue Dot (Leaflet Circle Marker) showing Users Location on the Map
+   */
   showBlueDot(){
 
     if(this.bluedot == null){
@@ -211,7 +224,7 @@ export class HomePage {
       this.bluedot.addTo(this.map);
       console.log("added bluedot");
     } else {
-     // console.log("moving bluedot");
+      console.log("moving bluedot");
       let latlng = leaflet.latLng(this.lat, this.long);
 
       this.bluedot.setLatLng(latlng);
@@ -221,6 +234,11 @@ export class HomePage {
     this.bluedot.bindPopup('You are here'+'<br>'+ 'Latitude: ' + this.lat + '</br>' + 'Longitude: ' + this.long + '</br>');
   }
 
+  /***
+   * Gets called on Location changes by followLocation() this.watch/thislocationsubsciption
+   * @param this.loconoff Boolean indicating if MapView will update on Users position or not
+   * @param Changes NavigationButtonColor if required
+   */
   follownav() {
     //console.log(this.loconoff)
     if (this.loconoff) {
@@ -233,6 +251,14 @@ export class HomePage {
     }
   }
 
+  /***
+   * Gets called on startApp()
+   * Creates a Leaflet Map
+   * Adds Containers/Buttons on the Map (Navigation, Filter...)
+   * Event Listener OnDrag turns off updating the Mapview on Location changes
+   * Adds a Legend on the Map
+   * Calls getDBData() when Map is loaded and ready
+   */
   loadmap() {
    // if(this.mapinit!=true) {
       //this.map.remove();
@@ -280,7 +306,7 @@ export class HomePage {
     }
 
     // Add custom Button
-    var NavigationButton = leaflet.Control.extend({
+    var navigationbutton = leaflet.Control.extend({
       options: {
         position: 'topleft',
         //padding: '0px',
@@ -324,39 +350,45 @@ export class HomePage {
     });
 
     // Add Filterbutton
-    var Filterbutton = leaflet.Control.extend({
+    var filterbutton = leaflet.Control.extend({
       options: {
         position: 'topright',
 
       },
       onAdd: function (map) {
-        filtercontainer = leaflet.DomUtil.create('control');
-        filtercontainer.type = "button";
-        filtercontainer.style.icon ='funnel';
-        //filtercontainer.style.backgroundImage = "url('/assets/icon/navpfeilblue.jpg')";
-        filtercontainer.style.backgroundColor = "light";
-        filtercontainer.style.backgroundSize = '100%';
-        filtercontainer.style.width = '34px';
-        filtercontainer.style.height = '34px';
-        filtercontainer.style.borderStyle = 'solid';
-        filtercontainer.style.borderWidth = '1px';
-        filtercontainer.style.borderRadius= '3px';
-        filtercontainer.style.borderColor = 'grey';
+        this.filtercontainer = leaflet.DomUtil.create('control');
+        this.filtercontainer.type = "button";
+        this.filtercontainer.style.icon ='funnel';
+        this.filtercontainer.style.backgroundImage = "url('/assets/icon/filter2.jpg')";
+        this.filtercontainer.style.backgroundColor = "light";
+        this.filtercontainer.style.backgroundSize = '100%';
+        this.filtercontainer.style.width = '34px';
+        this.filtercontainer.style.height = '34px';
+        this.filtercontainer.style.borderStyle = 'solid';
+        this.filtercontainer.style.borderWidth = '1px';
+        this.filtercontainer.style.borderRadius= '3px';
+        this.filtercontainer.style.borderColor = 'grey';
+        this.filtercontainer.style.padding = '10px';
 
-        filtercontainer.onclick = function() {
+        console.log('filterbool')
+        console.log(this.filterbool);
+
+
+
+        this.filtercontainer.onclick = function() {
           if (this.filterbool == false) {
-           // filtercontainer.style.backgroundImage = "url('/assets/icon/navpfeilblack.jpg')";
-            filtercontainer.style.backgroundColor = "light";
+            //filtercontainer.style.backgroundImage = "url('/assets/icon/filter2.jpg')";
+            this.filtercontainer.style.backgroundColor = "light";
             console.log("clicked false")
             this.openfilterbox();
           } else if (this.filterbool == true) {
-          //  filtercontainer.style.backgroundImage = "url('/assets/icon/navpfeilblue.jpg')";
+            //filtercontainer.style.backgroundImage = "url('/assets/icon/filteron.jpg')";
             filtercontainer.style.backgroundColor = "primary";
             console.log("clicked true")
             this.openfilterbox();
           }
         }.bind(this)
-        return filtercontainer;
+        return this.filtercontainer;
       }.bind(this)
     });
 
@@ -379,28 +411,52 @@ export class HomePage {
     var legend = leaflet.control({position: 'bottomright'});
     legend.onAdd = this.getLegend;
 
-    this.map.addControl(new NavigationButton());
-    this.map.addControl(new Filterbutton());
+    this.map.addControl(new navigationbutton());
+    this.map.addControl(new filterbutton());
     legend.addTo(this.map);
     this.map.invalidateSize();
   }
 
+  /***
+   *
+   */
   getLegend() {
 
-    var div = leaflet.DomUtil.create('div', 'legend');
+    var div = leaflet.DomUtil.create('div', 'info legend'),
+        categories = ['eigener Standort','illegale Müllablagerung'],
+        labels = [],
+        from, to;
 
     div.innerHTML += '<h3>Legende</h3>';
-    div.innerHTML += '<svg height="20" width="20"> <circle cx="10" cy="10" r="5"' +
-      'style="stroke-width:3; stroke:dodgerblue; fill: dodgerblue;fill-opacity: 0.4"/> </svg>';
-    div.innerHTML += 'Standort' + '<br>';
-
-    div.innerHTML += 'Müllablagerung';
-
+    
+    for (var i = 0; i < categories.length; i++) {
+        from = categories[i];
+        to = categories[i + 1];
+        labels.push(
+          '<i class="colorcircle"  + "></i> ' + from + (to ? '&ndash;' + to : '+'));
+    }
     return div;
   }
 
+  /***
+   * Gets called when Map is ready in loadmap()
+   * uses restProvider to getData()
+   * returns data to this.dbdata when finished
+   * uses data to initiate setMarker(data)
+   * @return data //Database Json Data containing Trash-Objects to be used for Markers on the Map
+   */
   getDBData() {
+
+    if (this.loading != null) {
+      this.loading.dismissAll();
+      this.loading = null;
+    }
+    this.loading = this.loadingCtrl.create({
+      content: 'Getting Server Data',
+      spinner: 'circles'
+    });
     this.loading.present();
+
     console.log("Trying to connect to Server")
     this.restProvider.getData()
       .then(data => {
@@ -414,6 +470,13 @@ export class HomePage {
       });
   }
 
+  /***
+   * Gets called when Map is ready in loadmap()
+   * uses restProvider to getData()
+   * returns data to this.dbdata when finished
+   * uses data to initiate setMarker(data)
+   * @return data //Database Json Data containing Trash-Objects to be used for Markers on the Map
+   */
   setMarker(data){
     if(data == 404 || data == null || data == undefined){
       this.showAlertnoData();
@@ -426,7 +489,7 @@ export class HomePage {
 
         for (let i = 0; i < this.jsondata.length; i++) {
           //Markerfarbe
-          this.marker = new leaflet.marker([this.jsondata[i].latitude, this.jsondata[i].longitude],{color: 477034});
+          this.marker = new leaflet.marker([this.jsondata[i].latitude, this.jsondata[i].longitude],{color: 583470});
 
           if (this.jsondata[i].hausmuell == true) {
             this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Hausmuell');
@@ -437,6 +500,8 @@ export class HomePage {
           } else if (this.jsondata[i].sondermuell == true) {
             this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sondermuell');
           }
+          this.bluedot = null;
+          this.showBlueDot();
           this.markers.addLayer(this.marker);
           console.log("Markers added");
         }
@@ -454,6 +519,13 @@ export class HomePage {
 
   }
 
+  /***
+   * Gets called when Map is ready in loadmap()
+   * uses restProvider to getData()
+   * returns data to this.dbdata when finished
+   * uses data to initiate setMarker(data)
+   * @return data //Database Json Data containing Trash-Objects to be used for Markers on the Map
+   */
   setFilterMarker(){
     if(this.markers!=null) {
       this.map.removeLayer(this.markers);
@@ -475,6 +547,7 @@ export class HomePage {
     console.log("setfilterMarker");
     //console.log(this.jsondata);
     //Markerfarbe
+
 
     if (this.hausmuellarr != undefined) {
       for (let i = 0; i < this.hausmuellarr.length; i++) {
@@ -503,6 +576,8 @@ export class HomePage {
         this.fmarkers.addLayer(this.sondermuell);
       }
     }
+    this.bluedot = null;
+    this.showBlueDot();
     console.log("ANDHERE");
     this.fmarkers.addTo(this.map);
     console.log("Markers added");
@@ -513,6 +588,9 @@ export class HomePage {
     }
     this.events.unsubscribe('custom-user-events'); // unsubscribe this event
     console.log("filtermarker duchlaufen");
+    this.filtercontainer.style.backgroundImage = "url('/assets/icon/filteron.jpg')";
+
+
   }
 
 
@@ -591,13 +669,18 @@ export class HomePage {
 
 
   ionViewDidLeave() {
+    console.log("didleave");
+    //this.bluedot = null;
     if (this.loading != null) {
       this.loading.dismissAll();
       this.loading = null;
     }
+   /*
     if(this.locationsubscription!=null) {
       this.locationsubscription.unsubscribe();
     }
+
+    */
     if(this.map) {
       //this.map.off();
       //this.map.remove();
