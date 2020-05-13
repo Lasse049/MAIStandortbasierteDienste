@@ -76,11 +76,10 @@ export class HomePage {
   /***
    * FYI
    * Aktuelle Serverdatei: server22.js
-   * run mit: ionic cordova run android/browser
-   * ionic serve geht nichtmehr weil plugins jetzt platformabhängig installiert werden
+   * run mit: ionic serve / ionic cordova run android/browser
    * (Network check ist drin - bitte mal testen)
    * Filter added, neue arrays/layergroups könnten eingefärbt werden
-   * Button added (oben links), sieht kacke aus.
+   * Buttons added - style fehlt noch etwas
    * Welche Fehler treten auf die wir abfangen müssen?
    */
 
