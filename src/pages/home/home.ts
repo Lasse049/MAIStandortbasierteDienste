@@ -49,6 +49,8 @@ export class HomePage {
   spermuell: any;
   fmarkers: any;
   fmarker: any;
+  connectSubscription: any;
+  disconnectSubscription: any;
 
 
 
@@ -89,12 +91,14 @@ export class HomePage {
       spinner: 'circles'
     });
 // watch network for a disconnection
-    let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
-      if (this.loading == null) {
-      this.loading = this.loadingCtrl.create({
-        content: 'No Internet Connection',
-        spinner: 'circles'
-      });
+    this.disconnectSubscription = this.network.onDisconnect().subscribe(() => {
+      if (this.loading != null) {
+        this.loading.dismissAll();
+        this.loading = null;
+        this.loading = this.loadingCtrl.create({
+          content: 'No Internet Connection',
+          spinner: 'circles'
+        });
       }
       console.log('network was disconnected :-(');
     });
@@ -104,35 +108,12 @@ export class HomePage {
 
 
 // watch network for a connection
-    let connectSubscription = this.network.onConnect().subscribe(() => {
+    this.connectSubscription = this.network.onConnect().subscribe(() => {
       console.log('network connected!');
       if (this.loading != null) {
         this.loading.dismissAll();
         this.loading = null;
       }
-
-      if(this.network.type === 'none'){
-        if (this.loading == null) {
-          this.loading = this.loadingCtrl.create({
-            content: 'No Internet Connection',
-            spinner: 'circles'
-          });
-          console.log("no connection")
-        }
-      } else {
-        if (this.loading != null) {
-          this.loading.dismissAll();
-          this.loading = null;
-        }
-        this.loading = this.loadingCtrl.create({
-          content: 'Loading App',
-          spinner: 'circles'
-        });
-        this.loadmap();
-        this.getLocation();
-      }
-
-
       setTimeout(() => {
         if (this.network.type != 'unknown') {
           //this.startapp();
@@ -140,13 +121,39 @@ export class HomePage {
         }
       }, 2000);
     });
+
+
+
     console.log("networktype");
     console.log(this.network.type);
-
+    if(this.network.type === 'none'){
+      if (this.loading == null) {
+        this.loading = this.loadingCtrl.create({
+          content: 'No Internet Connection',
+          spinner: 'circles'
+        });
+        console.log("no connection")
+      }
+    } else {
+      this.startApp()
+    }
     // stop connect watch
+    //disconnectSubscription.unsubscribe();
     //connectSubscription.unsubscribe();
 
+  }
 
+  startApp(){
+    if (this.loading != null) {
+      this.loading.dismissAll();
+      this.loading = null;
+    }
+    this.loading = this.loadingCtrl.create({
+      content: 'Loading App',
+      spinner: 'circles'
+    });
+    this.loadmap();
+    this.getLocation();
   }
 
   /***
@@ -515,7 +522,8 @@ export class HomePage {
             this.loading.dismissAll();
             this.loading = null;
           }
-          this.platform.exitApp()
+          // Close App
+          //this.platform.exitApp()
         }
       }]
     });
