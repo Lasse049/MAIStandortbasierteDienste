@@ -29,7 +29,7 @@ export class HomePage {
   loconoff: boolean = true;
   buttonColor: any;
   watch: any;
-  subscription: any;
+  locationsubscription: any;
   bluedot: any;
   testCheckboxResult: any;
   testCheckboxOpen: any;
@@ -51,6 +51,7 @@ export class HomePage {
   fmarker: any;
   connectSubscription: any;
   disconnectSubscription: any;
+  alert: any;
 
 
 
@@ -95,11 +96,11 @@ export class HomePage {
       if (this.loading != null) {
         this.loading.dismissAll();
         this.loading = null;
-        this.loading = this.loadingCtrl.create({
-          content: 'No Internet Connection',
-          spinner: 'circles'
-        });
       }
+      this.loading = this.loadingCtrl.create({
+        content: 'No Internet Connection',
+        spinner: 'circles'
+      });
       this.loading.present();
       console.log('network was disconnected');
     });
@@ -181,7 +182,7 @@ export class HomePage {
 
   followLocation() {
     this.watch = this.geolocation.watchPosition();
-    this.subscription = this.watch.subscribe((data) => {
+    this.locationsubscription = this.watch.subscribe((data) => {
 
       this.lat = data.coords.latitude
       this.long = data.coords.longitude
@@ -395,6 +396,9 @@ export class HomePage {
       this.loading.dismissAll();
       this.loading = null;
     }
+    if (this.alert!=null){
+      this.alert.dismiss();
+    }
   }
 
   setFilterMarker(){
@@ -515,7 +519,7 @@ export class HomePage {
 
 
   showAlertnoData() {
-    const alert = this.alertCtrl.create({
+    this.alert = this.alertCtrl.create({
       title: 'Keine Verbindung zum Server!',
       subTitle: 'App nur eingeschränkt nutzbar.',
       buttons: [{
@@ -530,7 +534,7 @@ export class HomePage {
         }
       }]
     });
-    alert.present();
+    this.alert.present();
   }
 
 
@@ -539,8 +543,8 @@ export class HomePage {
       this.loading.dismissAll();
       this.loading = null;
     }
-    if(this.subscription!=null) {
-      this.subscription.unsubscribe();
+    if(this.locationsubscription!=null) {
+      this.locationsubscription.unsubscribe();
     }
     if(this.map) {
       //this.map.off();
