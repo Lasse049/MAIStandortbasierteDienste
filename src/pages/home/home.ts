@@ -90,7 +90,7 @@ export class HomePage {
       content: 'Checking Internet Connection',
       spinner: 'circles'
     });
-    this.loading.present();
+    //this.loading.present();
 
     // Watch Network for Disconnection
     this.disconnectSubscription = this.network.onDisconnect().subscribe(() => {
