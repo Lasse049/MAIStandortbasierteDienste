@@ -99,8 +99,9 @@ export class HomePage {
           content: 'No Internet Connection',
           spinner: 'circles'
         });
+        this.loading.present();
       }
-      console.log('network was disconnected :-(');
+      console.log('network was disconnected');
     });
 
     // stop disconnect watch
@@ -116,8 +117,8 @@ export class HomePage {
       }
       setTimeout(() => {
         if (this.network.type != 'unknown') {
-          //this.startapp();
-          console.log("have connection")
+          this.startApp();
+          console.log("have connection");
         }
       }, 2000);
     });
@@ -132,6 +133,7 @@ export class HomePage {
           content: 'No Internet Connection',
           spinner: 'circles'
         });
+        this.loading.present();
         console.log("no connection")
       }
     } else {
@@ -152,6 +154,7 @@ export class HomePage {
       content: 'Loading App',
       spinner: 'circles'
     });
+    this.loading.present();
     this.loadmap();
     this.getLocation();
   }
