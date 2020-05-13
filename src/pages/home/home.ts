@@ -328,6 +328,7 @@ export class HomePage {
         //container.style.marginRight = '2000px';
         //container.position = 'top'
 
+        //test
 
         container.onclick = function() {
           if (this.loconoff == true) {
