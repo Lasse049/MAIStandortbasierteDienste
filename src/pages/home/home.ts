@@ -116,7 +116,7 @@ export class HomePage {
         this.loading = null;
       }
       setTimeout(() => {
-        if (this.network.type != 'unknown') {
+        if (this.network.type != 'none') {
           this.startApp();
           console.log("have connection");
         }
@@ -127,7 +127,7 @@ export class HomePage {
 
     console.log("networktype");
     console.log(this.network.type);
-    if(this.network.type === 'none'){
+    if(this.network.type == 'none'){
       if (this.loading == null) {
         this.loading = this.loadingCtrl.create({
           content: 'No Internet Connection',
