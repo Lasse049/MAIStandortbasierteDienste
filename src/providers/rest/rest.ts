@@ -13,11 +13,15 @@ import {of} from "rxjs/observable/of";
 @Injectable()
 export class RestProvider {
 
+  // Server URL:PORT/METHOD
   //dburl:string = "http://igf-srv-lehre.igf.uni-osnabrueck.de:33859/getData";
   dburl:string = "http://igf-srv-lehre.igf.uni-osnabrueck.de:44458/getData";
   constructor(public http: HttpClient, public alertCtrl: AlertController) {
   }
-//20000
+
+  // Sends a getData request and waits 30s for an answer. if no answer create a 404 item
+  // If answering, resolve data (and give it to home)
+  // on Error show alert
   public  getData() {
     return new Promise(resolve => {
       this.http.get(this.dburl)
@@ -35,8 +39,7 @@ export class RestProvider {
     });
   }
 
-
-  // Alert sollte nicht hier hin - in home ts
+  // Alert 
   public showAlertData() {
     const alert = this.alertCtrl.create({
       title: 'Server Fehler!',
