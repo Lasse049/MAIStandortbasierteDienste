@@ -1,17 +1,14 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {Events, LoadingController, NavController, NavParams} from 'ionic-angular';
-
 import leaflet from 'leaflet';
 import { Geolocation } from '@ionic-native/geolocation';
 import {RestProvider} from "../../providers/rest/rest";
 import {CheckboxPage} from "../checkbox/checkbox";
 import {FilterboxPage} from "../filterbox/filterbox";
 import { AlertController } from 'ionic-angular';
-import {e} from "@angular/core/src/render3";
-import {catchError} from "rxjs/operators";
 import {Platform} from 'ionic-angular';
-import {DatePicker} from "@ionic-native/date-picker";
-import 'leaflet-easybutton';
+import {Network} from "@ionic-native/network/";
+
 
 @Component({
   selector: 'page-home',
@@ -65,45 +62,92 @@ export class HomePage {
     public loadingCtrl: LoadingController,
     public platform: Platform,
     public navParams: NavParams,
-    public events: Events
+    public events: Events,
+    public network: Network,
+    // Fehlermeldung ignorieren
   ) {
+
   }
 
-
+  /***
+   * FYI
+   * Aktuelle Serverdatei: server22.js
+   * run mit: ionic cordova run android/browser
+   * ionic serve geht nichtmehr weil plugins jetzt platformabhängig installiert werden
+   * (Network check ist drin - bitte mal testen)
+   * Filter added, neue arrays/layergroups könnten eingefärbt werden
+   * Button added (oben links), sieht kacke aus.
+   * Welche Fehler treten auf die wir abfangen müssen?
+   */
 
   /***
    * On Start
    */
   ionViewDidEnter() {
     this.loading = this.loadingCtrl.create({
-      content: 'Loading App',
+      content: 'Checking Internet Connection',
       spinner: 'circles'
     });
+// watch network for a disconnection
+    let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
+      if (this.loading == null) {
+      this.loading = this.loadingCtrl.create({
+        content: 'No Internet Connection',
+        spinner: 'circles'
+      });
+      }
+      console.log('network was disconnected :-(');
+    });
 
-    this.loadmap();
-    //Create Loading Spinner while App is not ready
-
-
-    //If Map doesnt exist, Load it
-    if (this.map == null) {
-      console.log("map is null")
-      //this.loadmap();
-    }
-
-
-    // Call Method GetLocation
-    this.getLocation();
-
-    console.log(this.hausmuellarr);
-    console.log(this.gruenabfallarr);
-    console.log(this.sperrmuellarr);
-    console.log(this.sondermuellarr);
-    console.log(this.filterbool);
+    // stop disconnect watch
+    //disconnectSubscription.unsubscribe();
 
 
+// watch network for a connection
+    let connectSubscription = this.network.onConnect().subscribe(() => {
+      console.log('network connected!');
+      if (this.loading != null) {
+        this.loading.dismissAll();
+        this.loading = null;
+      }
+
+      if(this.network.type === 'none'){
+        if (this.loading == null) {
+          this.loading = this.loadingCtrl.create({
+            content: 'No Internet Connection',
+            spinner: 'circles'
+          });
+          console.log("no connection")
+        }
+      } else {
+        if (this.loading != null) {
+          this.loading.dismissAll();
+          this.loading = null;
+        }
+        this.loading = this.loadingCtrl.create({
+          content: 'Loading App',
+          spinner: 'circles'
+        });
+        this.loadmap();
+        this.getLocation();
+      }
 
 
-    }
+      setTimeout(() => {
+        if (this.network.type != 'unknown') {
+          //this.startapp();
+          console.log("have connection")
+        }
+      }, 2000);
+    });
+    console.log("networktype");
+    console.log(this.network.type);
+
+    // stop connect watch
+    //connectSubscription.unsubscribe();
+
+
+  }
 
   /***
    * On Start
@@ -261,7 +305,7 @@ export class HomePage {
     this.map.whenReady(function(e){
         console.log("Map is ready")
         this.mapinit = true;
-        this.maplodedsetmarker();
+        this.getDBData();
       }.bind(this)
     );
 
@@ -290,12 +334,6 @@ export class HomePage {
     }
 
     return div;
-  }
-
-
-  maplodedsetmarker(){
-    this.getDBData();
-    console.log("Map Loaded. Getting DB Data")
   }
 
   getDBData() {
@@ -407,6 +445,7 @@ export class HomePage {
       this.loading.dismissAll();
       this.loading = null;
     }
+    this.events.unsubscribe('custom-user-events'); // unsubscribe this event
     console.log("filtermarker duchlaufen");
   }
 
@@ -440,20 +479,6 @@ export class HomePage {
       this.filterbool = filterdata.filterbool;
       this.jsondata = filterdata.origindata;
       console.log("Received data: " + filterdata);
-
-
-      console.log(this.hausmuellarr);
-      console.log(this.gruenabfallarr);
-      console.log(this.sperrmuellarr);
-      console.log(this.sondermuellarr);
-      console.log(this.filterbool);
-      /*
-        hausmuellarr:this.hausmuellarr,
-        sperrmuelarr:this.sperrmuellarr,
-        gruenabfallarr:this.guenabfallarr,
-        sondermuell:this.sondermuellarr,
-        console.log(filterdata);
-        */
       console.log(filterdata);
       //this.events.unsubscribe('custom-user-events'); // unsubscribe this event
     })
