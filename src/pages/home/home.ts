@@ -387,20 +387,14 @@ export class HomePage {
 
   getLegend() {
 
-    var div = leaflet.DomUtil.create('div', 'info legend'),
-        categories = ['eigener Standort','illegale Müllablagerung'],
-        labels = [],
-        from, to;
+    var div = leaflet.DomUtil.create('div', 'legend');
 
     div.innerHTML += '<h3>Legende</h3>';
+    div.innerHTML += '<svg height="20" width="20"> <circle cx="10" cy="10" r="5"' +
+      'style="stroke-width:3; stroke:dodgerblue; fill: dodgerblue;fill-opacity: 0.4"/> </svg>';
+    div.innerHTML += 'Standort' + '<br>';
 
-
-    for (var i = 0; i < categories.length; i++) {
-        from = categories[i];
-        to = categories[i + 1];
-        labels.push(
-          '<i class="colorcircle"  + "></i> ' + from + (to ? '&ndash;' + to : '+'));
-    }
+    div.innerHTML += 'Müllablagerung';
 
     return div;
   }
@@ -432,7 +426,7 @@ export class HomePage {
 
         for (let i = 0; i < this.jsondata.length; i++) {
           //Markerfarbe
-          this.marker = new leaflet.marker([this.jsondata[i].latitude, this.jsondata[i].longitude],{color: 583470});
+          this.marker = new leaflet.marker([this.jsondata[i].latitude, this.jsondata[i].longitude],{color: 477034});
 
           if (this.jsondata[i].hausmuell == true) {
             this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Hausmuell');
@@ -481,7 +475,6 @@ export class HomePage {
     console.log("setfilterMarker");
     //console.log(this.jsondata);
     //Markerfarbe
-
 
     if (this.hausmuellarr != undefined) {
       for (let i = 0; i < this.hausmuellarr.length; i++) {
