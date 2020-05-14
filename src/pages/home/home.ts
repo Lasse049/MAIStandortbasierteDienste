@@ -167,6 +167,7 @@ export class HomePage {
     if (this.map != undefined) {
       console.log("map removed")
       this.map.remove();
+      this.map=null;
     }
 
 
@@ -322,7 +323,7 @@ export class HomePage {
         console.log("Map is ready")
         this.mapinit = true;
         this.getLocation();
-        this.getDBData();
+      this.getDBData();
       }.bind(this)
     );
 
@@ -370,6 +371,7 @@ export class HomePage {
       this.long = resp.coords.longitude;
       this.timestamp = resp.timestamp;
       // initial View
+      this.map.setZoom(17);
       this.map.setView([this.lat, this.long]);
       this.showBlueDot();
       this.followLocation();
