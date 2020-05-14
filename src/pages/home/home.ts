@@ -51,7 +51,7 @@ export class HomePage {
   disconnectSubscription: any; // Network Disconnection subscription
   alert: any; // Alert Window
   filtercontainer: any; //Filterbutton
-  markerarr: any = [];
+  //markerarr: any = [];
 
   constructor(
     public navCtrl: NavController,
@@ -535,21 +535,21 @@ export class HomePage {
 */         for (let i = 0; i < this.jsondata.length; i++) {
             //Markerfarbe
             this.marker = new leaflet.marker([this.jsondata[i].latitude, this.jsondata[i].longitude], {color: 583470});
-            this.markerarr = null
+            let markerarr = [];
             if (this.jsondata[i].hausmuell == true) {
-              this.markerarr.push('Hausmüll');
+              markerarr.push('Hausmüll');
             }
             if (this.jsondata[i].gruenabfall == true) {
-              this.markerarr.push('Grünabfall');
+              markerarr.push('Grünabfall');
             }
             if (this.jsondata[i].sperrmuell == true) {
-              this.markerarr.push('Sperrmüll');
+              markerarr.push('Sperrmüll');
             }
             if (this.jsondata[i].sondermuell == true) {
-              this.markerarr.push('Sondermüll');
+              markerarr.push('Sondermüll');
             }
 
-            this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + this.markerarr);
+            this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + markerarr);
           }
 
 
