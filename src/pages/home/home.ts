@@ -274,20 +274,22 @@ export class HomePage {
     // Button to Submit Data
     var addbutton = leaflet.Control.extend({
       options: {
-        position: 'bottomleft',
+        position: 'bottomright',
       },
       onAdd: function (map) {
         addcontainer = leaflet.DomUtil.create('control');
         addcontainer.type = "button";
-        addcontainer.style.backgroundImage = "url('/assets/icon/navpfeilblue.jpg')";
+        addcontainer.style.backgroundImage = "url('/assets/icon/add_blue.jpg')";
         addcontainer.style.backgroundColor = "primary";
         addcontainer.style.backgroundSize = '100%';
-        addcontainer.style.width = '34px';
-        addcontainer.style.height = '34px';
+        addcontainer.style.width = '70px';
+        addcontainer.style.height = '70px';
         addcontainer.style.borderStyle = 'solid';
-        addcontainer.style.borderWidth = '1px';
+        addcontainer.style.borderWidth = '0px';
         addcontainer.style.borderRadius= '3px';
         addcontainer.style.borderColor = 'grey';
+        addcontainer.style.marginLeft = '10px';
+        addcontainer.style.marginBottom = '10px';
 
         addcontainer.onclick = function() {
             this.opencheckbox();
@@ -318,7 +320,7 @@ export class HomePage {
     );
 
     // Adds a legend
-    var legend = leaflet.control({position: 'bottomright'});
+    var legend = leaflet.control({position: 'bottomleft'});
     legend.onAdd = this.getLegend;
 
     this.map.addControl(new navigationbutton());
