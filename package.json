@@ -83,8 +83,12 @@
       },
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-geolocation": {},
-      "cordova-plugin-advanced-http": {},
-      "cordova-plugin-camera": {},
+      "cordova-plugin-advanced-http": {
+        "OKHTTP_VERSION": "3.10.0"
+      },
+      "cordova-plugin-camera": {
+        "ANDROID_SUPPORT_V4_VERSION": "27.+"
+      },
       "cordova-plugin-datepicker": {},
       "cordova-plugin-android-permissions": {},
       "cordova-plugin-network-information": {}

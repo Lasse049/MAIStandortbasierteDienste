@@ -493,89 +493,100 @@ export class HomePage {
    * else run setFilterMarker()
    */
   setMarker(data){
+    if(this.markers!=null) {
+      this.map.removeLayer(this.markers);
+      this.markers = null;
+    }
     // if data is empty throw error with an Alert
     if(data == 404 || data == null || data == undefined){
       this.showAlertnoData();
     } else {
-      // data is not empty. if its not filtered go ahead and set markers
+      // data is not empty. if its not filtered run setDefaultMarker and give data
       if (this.filterbool==false) {
-        this.jsondata = data.result;
-        this.markers = new leaflet.layerGroup().addTo(this.map);
-        console.log("setMarker");
-        console.log(this.jsondata);
-
-        for (let i = 0; i < this.jsondata.length; i++) {
-          //Markerfarbe
-          this.marker = new leaflet.marker([this.jsondata[i].latitude, this.jsondata[i].longitude],{color: 583470});
-
-          if (this.jsondata[i].hausmuell == true) {
-            this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Hausmuell');
-          } else if (this.jsondata[i].gruenabfall == true) {
-            this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Gruenabfall');
-          } else if (this.jsondata[i].sperrmuell == true) {
-            this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sperrmuell');
-          } else if ( this.jsondata[i].sondermuell == true) {
-            this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sondermuell');
-          }
-/*
-          if (this.jsondata[i].hausmuell == true && this.jsondata[i].gruenabfall == false && this.jsondata[i].sperrmuell == false && this.jsondata[i].sondermuell == false) {
-            this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Hausmuell');
-          } else if (this.jsondata[i].hausmuell == false && this.jsondata[i].gruenabfall == true && this.jsondata[i].sperrmuell == false && this.jsondata[i].sondermuell == false) {
-            this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Gruenabfall');
-          } else if ((this.jsondata[i].hausmuell == false && this.jsondata[i].gruenabfall == false && this.jsondata[i].sperrmuell == true && this.jsondata[i].sondermuell == false)) {
-            this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sperrmuell');
-          } else if ((this.jsondata[i].hausmuell == false && this.jsondata[i].gruenabfall == false && this.jsondata[i].sperrmuell == false && this.jsondata[i].sondermuell == true)) {
-            this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sondermuell');
-          //}//else if ((this.jsondata[i].hausmuell == true && this.jsondata[i].gruenabfall == true && this.jsondata[i].sperrmuell == false && this.jsondata[i].sondermuell == false)) {
-            //this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Hausmüll' + '<br>' + ' Grünabfall');
-          //}else if ((this.jsondata[i].hausmuell == false && this.jsondata[i].gruenabfall == false && this.jsondata[i].sperrmuell == false && this.jsondata[i].sondermuell == false)) {
-           // this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sondermuell');
-          }
-
-*/         for (let i = 0; i < this.jsondata.length; i++) {
-            //Markerfarbe
-            this.marker = new leaflet.marker([this.jsondata[i].latitude, this.jsondata[i].longitude], {color: 583470});
-            let markerarr = [];
-            if (this.jsondata[i].hausmuell == true) {
-              markerarr.push('Hausmüll');
-            }
-            if (this.jsondata[i].gruenabfall == true) {
-              markerarr.push('Grünabfall');
-            }
-            if (this.jsondata[i].sperrmuell == true) {
-              markerarr.push('Sperrmüll');
-            }
-            if (this.jsondata[i].sondermuell == true) {
-              markerarr.push('Sondermüll');
-            }
-
-            this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + markerarr);
-          }
-
-
-
-
-          this.markers.addLayer(this.marker);
-        }
-        console.log("DefaultMarkersadded");
-        //this.showBlueDot();
-        // Data is filtered, dont do anything but run setFilterMarker()
+        this.setDefaultMarker(data)
+        // else if Data is filtered run setFilterMarker (data is received from event listener)
       } else {
         this.setFilterMarker();
       }
 
+      // Done, dismiss loading spinner
+      if (this.loading != null) {
+        this.loading.dismissAll();
+        this.loading = null;
+      }
       // Dismiss alerts as program finished with succsess
       if (this.alert!=null){
         this.alert.dismiss();
       }
     }
-    // Dismiss loading spinner as program finished
-    if (this.loading != null) {
-      this.loading.dismissAll();
-      this.loading = null;
-    }
-
   }
+
+
+  /***
+   * Gets called in setMarker() if Filterboolean is false
+   * @param data jsondata containing Trash information from getDBData() / setMarker()
+   * Removes old markers
+   * Creates new Layergroups of markers with popups and ands them on the map
+   */
+  setDefaultMarker(data){
+    this.jsondata = data.result;
+    this.markers = new leaflet.layerGroup().addTo(this.map);
+    console.log("setMarker");
+    console.log(this.jsondata);
+
+    for (let i = 0; i < this.jsondata.length; i++) {
+      //Markerfarbe
+      this.marker = new leaflet.marker([this.jsondata[i].latitude, this.jsondata[i].longitude],{color: 583470});
+
+      if (this.jsondata[i].hausmuell == true) {
+        this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Hausmuell');
+      } else if (this.jsondata[i].gruenabfall == true) {
+        this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Gruenabfall');
+      } else if (this.jsondata[i].sperrmuell == true) {
+        this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sperrmuell');
+      } else if ( this.jsondata[i].sondermuell == true) {
+        this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sondermuell');
+      }
+      /*
+                if (this.jsondata[i].hausmuell == true && this.jsondata[i].gruenabfall == false && this.jsondata[i].sperrmuell == false && this.jsondata[i].sondermuell == false) {
+                  this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Hausmuell');
+                } else if (this.jsondata[i].hausmuell == false && this.jsondata[i].gruenabfall == true && this.jsondata[i].sperrmuell == false && this.jsondata[i].sondermuell == false) {
+                  this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Gruenabfall');
+                } else if ((this.jsondata[i].hausmuell == false && this.jsondata[i].gruenabfall == false && this.jsondata[i].sperrmuell == true && this.jsondata[i].sondermuell == false)) {
+                  this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sperrmuell');
+                } else if ((this.jsondata[i].hausmuell == false && this.jsondata[i].gruenabfall == false && this.jsondata[i].sperrmuell == false && this.jsondata[i].sondermuell == true)) {
+                  this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sondermuell');
+                //}//else if ((this.jsondata[i].hausmuell == true && this.jsondata[i].gruenabfall == true && this.jsondata[i].sperrmuell == false && this.jsondata[i].sondermuell == false)) {
+                  //this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Hausmüll' + '<br>' + ' Grünabfall');
+                //}else if ((this.jsondata[i].hausmuell == false && this.jsondata[i].gruenabfall == false && this.jsondata[i].sperrmuell == false && this.jsondata[i].sondermuell == false)) {
+                 // this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sondermuell');
+                }
+
+      */         for (let i = 0; i < this.jsondata.length; i++) {
+        //Markerfarbe
+        this.marker = new leaflet.marker([this.jsondata[i].latitude, this.jsondata[i].longitude], {color: 583470});
+        let markerarr = [];
+        if (this.jsondata[i].hausmuell == true) {
+          markerarr.push('Hausmüll');
+        }
+        if (this.jsondata[i].gruenabfall == true) {
+          markerarr.push('Grünabfall');
+        }
+        if (this.jsondata[i].sperrmuell == true) {
+          markerarr.push('Sperrmüll');
+        }
+        if (this.jsondata[i].sondermuell == true) {
+          markerarr.push('Sondermüll');
+        }
+
+        this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + markerarr);
+      }
+      this.markers.addLayer(this.marker);
+    }
+    console.log("DefaultMarkersadded");
+  }
+
+
 
 
   /***
@@ -586,14 +597,6 @@ export class HomePage {
    * If data is  filtered create and show markers - create popups - page load finished
    */
   setFilterMarker(){
-    if(this.markers!=null) {
-      this.map.removeLayer(this.markers);
-      this.markers = null;
-    }
-    if(this.marker!=null){
-      this.marker = null;
-    }
-
     // Create Layer groups
     this.fmarkers = new leaflet.layerGroup().addTo(this.map);
     // Create Sub-Layer groups
@@ -649,11 +652,7 @@ export class HomePage {
 
     console.log("fMarkers added");
 
-    // Done, dismiss loading spinner
-    if (this.loading != null) {
-      this.loading.dismissAll();
-      this.loading = null;
-    }
+
     // unsubscribe event to collect data from filter
     this.events.unsubscribe('custom-user-events'); // unsubscribe this event
 

@@ -126,7 +126,9 @@ export class FilterboxPage {
         } else {
           if (this.fdate != null) {
             for (let a = 0; a < this.data.length; a++) {
-              if (this.data[a].time == this.fdate) {
+              var dateTime = this.data[a].time;
+              var getdateTime = dateTime.split("T",1);
+              if (getdateTime == this.fdate) {
              // if (this.fdate.compareTo(this.data[a].time) == 0){
                 this.namearr[g] = this.data[a];
                 g++;
