@@ -244,7 +244,7 @@ export class HomePage {
         this.filtercontainer = leaflet.DomUtil.create('control');
         this.filtercontainer.type = "button";
         //this.filtercontainer.style.icon ='funnel';
-        this.filtercontainer.style.backgroundImage = "url('/assets/icon/funnel.svg')";
+        this.filtercontainer.style.backgroundImage = "url('/assets/icon/funnel-outline.svg')";
         this.filtercontainer.style.backgroundColor = "light";
         this.filtercontainer.style.backgroundSize = '100%';
         this.filtercontainer.style.width = '50px';
@@ -262,10 +262,12 @@ export class HomePage {
         this.filtercontainer.onclick = function() {
           if(this.jsondata != null){
           if (this.filterbool == false) {
-            this.filtercontainer.style.backgroundColor = "light";
+            this.filtercontainer.style.backgroundImage = "url('/assets/icon/funnel-outline.svg')";
+            //this.filtercontainer.style.backgroundColor = "light";
             this.openfilterbox();
           } else if (this.filterbool == true) {
-            filtercontainer.style.backgroundColor = "primary";
+            this.filtercontainer.style.backgroundImage = "url('/assets/icon/funnel.svg')";
+            //filtercontainer.style.backgroundColor = "primary";
             this.openfilterbox();
           }
         }else{
