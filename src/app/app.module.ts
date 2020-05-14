@@ -15,6 +15,7 @@ import {FilterboxPage} from "../pages/filterbox/filterbox";
 import { DatePicker } from '@ionic-native/date-picker/';
 import {Network} from "@ionic-native/network/";
 import { Camera } from '@ionic-native/camera';
+import { AndroidPermissions } from '@ionic-native/android-permissions';
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import { Camera } from '@ionic-native/camera';
     DatePicker,
     Network,
     Camera,
+    AndroidPermissions
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

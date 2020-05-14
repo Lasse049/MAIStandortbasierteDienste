@@ -343,7 +343,7 @@ export class HomePage {
 
     var div = leaflet.DomUtil.create('div', 'info legend');
 
-    div.innerHTML += '<h3 style="margin-top: 0.2">Legende</h3>';
+    div.innerHTML += '<h3>Legende</h3>';
     //div.innerHTML += '<font size="3" style="display: block; line-height: 28px; margin-bottom: 6px"><b>Legende</b></font>';
     div.innerHTML += '<svg height="28" width="20" style="display: block; float: left"> <circle cx="10" cy="14" r="6"' +
       'style="stroke-width:3; stroke:#1e90ff; fill: #1e90ff;fill-opacity: 0.4"/> </svg> ' +

@@ -4,7 +4,7 @@ import {Injectable} from '@angular/core';
 
 import {CameraPhoto, CameraResultType, CameraSource, Capacitor, FilesystemDirectory, Plugins} from '@capacitor/core';
 import {Platform} from 'ionic-angular';
-
+import { AndroidPermissions } from '@ionic-native/android-permissions';
 const { Camera, Filesystem, Storage } = Plugins;
 
 
@@ -26,15 +26,27 @@ export class ProviderPhotoProvider {
   //Loading Photos
   private PHOTO_STORAGE: string = "photos";
 
-  private platform: Platform;
+  //private platform: Platform;
+  //public androidPermissions: any;
 
   constructor(
     public http: HttpClient,
-    platform: Platform,
+    public platform: Platform,
+    public androidPermissions: AndroidPermissions
   ) {
-
+    if (this.platform.is('cordova')) {
+      this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.CAMERA).then(
+        result => console.log('Has permission?',result.hasPermission),
+        err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.CAMERA)
+      );
+      this.androidPermissions.requestPermissions([this.androidPermissions.PERMISSION.CAMERA, this.androidPermissions.PERMISSION.GET_ACCOUNTS]);
+      console.log("requested permission")
+    } else {
+      // You're testing in browser, do nothing or mock the plugins' behaviour.
+      console.log("not using cordova")
+    }
     this.platform = platform;
-    console.log('Hello ProviderPhotoProvider Provider');
+    console.log('Hello Photo Provider');
   }
 
 
@@ -131,7 +143,7 @@ export class ProviderPhotoProvider {
     const reader = new FileReader;
     reader.onerror = reject;
     reader.onload = () => {
-        resolve(reader.result);
+      resolve(reader.result);
     };
     reader.readAsDataURL(blob);
   });
