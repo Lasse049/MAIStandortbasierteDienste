@@ -535,16 +535,16 @@ export class HomePage {
 
       let markerarr = [];
       if (this.jsondata[i].hausmuell == true) {
-        markerarr.push(' Hausmüll');
+        markerarr.push('<br> Hausmüll');
       }
       if (this.jsondata[i].gruenabfall == true) {
-        markerarr.push(' Grünabfall');
+        markerarr.push('<br> Grünabfall');
       }
       if (this.jsondata[i].sperrmuell == true) {
-        markerarr.push(' Sperrmüll');
+        markerarr.push('<br> Sperrmüll');
       }
       if (this.jsondata[i].sondermuell == true) {
-        markerarr.push(' Sondermüll');
+        markerarr.push('<br> Sondermüll');
       }
       //this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Gemeldet von: ' + this.jsondata[i].username + '<br>' + markerarr);
       this.marker.bindPopup('<b>Vorgefundene Abfallarten:</b> ' + markerarr + '<br> <b>Gemeldet von: </b> ' + this.jsondata[i].username);
