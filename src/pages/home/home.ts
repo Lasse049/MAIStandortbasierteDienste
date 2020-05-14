@@ -338,12 +338,12 @@ export class HomePage {
     var div = leaflet.DomUtil.create('div', 'info legend');
 
     div.innerHTML += '<h3>Legende</h3>';
-    div.innerHTML += '<svg height="20" width="20"> <circle cx="10" cy="10" r="5"' +
-      'style="stroke-width:3; stroke:#1e90ff; fill: #1e90ff;fill-opacity: 0.4"/> </svg>';
-    div.innerHTML += 'Standort' + '<br>';
-    // Hier Bild von Marker
-    div.innerHTML += '<img src="/assets/icon/marker-icon-2x-blue.png">';
-    div.innerHTML += 'Müllablagerung';
+    //div.innerHTML += '<font size="3" style="display: block; line-height: 28px; margin-bottom: 6px"><b>Legende</b></font>';
+    div.innerHTML += '<svg height="28" width="20" style="display: block; float: left"> <circle cx="10" cy="14" r="6"' +
+      'style="stroke-width:3; stroke:#1e90ff; fill: #1e90ff;fill-opacity: 0.4"/> </svg> ' +
+      '<font size="2" style="display: block; line-height: 28px; margin-left: 30px">Standort</font>';
+    div.innerHTML += '<img style="margin-right: 12px""; src="/assets/icon/marker-icon-2x-blue.png"> ' +
+      '<font size="2">Müllablagerung</font>';
 
     return div;
   }
