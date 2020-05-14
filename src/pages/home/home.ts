@@ -546,16 +546,9 @@ export class HomePage {
       if (this.jsondata[i].sondermuell == true) {
         markerarr.push(' Sondermüll');
       }
-      if (this.jsondata[i].hausmuell == true) {
-        this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Hausmuell');
-      } else if (this.jsondata[i].gruenabfall == true) {
-        this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Gruenabfall');
-      } else if (this.jsondata[i].sperrmuell == true) {
-        this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sperrmuell');
-      } else if ( this.jsondata[i].sondermuell == true) {
-        this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sondermuell');
-      }
-      this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + markerarr);
+      //this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Gemeldet von: ' + this.jsondata[i].username + '<br>' + markerarr);
+      this.marker.bindPopup('Vorgefundene Abfallarten: ' + markerarr + '<br> Gemeldet von: ' + this.jsondata[i].username);
+
       this.markers.addLayer(this.marker);
     }
     console.log("DefaultMarkersadded");
@@ -711,7 +704,14 @@ export class HomePage {
     this.alert = this.alertCtrl.create({
       title: 'Keine Verbindung zum Server!',
       subTitle: 'App nur eingeschränkt nutzbar.',
-      buttons: [{
+      buttons: [
+        {
+          text: 'Retry',
+          handler: () => {
+            this.dismissLoading()
+            this.startApp()
+          }
+        },{
         text: 'OK',
         handler: () => {
           this.dismissLoading()
