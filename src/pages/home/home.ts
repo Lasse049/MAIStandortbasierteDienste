@@ -547,7 +547,7 @@ export class HomePage {
         markerarr.push(' Sondermüll');
       }
       //this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Gemeldet von: ' + this.jsondata[i].username + '<br>' + markerarr);
-      this.marker.bindPopup('Vorgefundene Abfallarten: ' + markerarr + '<br> Gemeldet von: ' + this.jsondata[i].username);
+      this.marker.bindPopup('<b>Vorgefundene Abfallarten:</b> ' + markerarr + '<br> <b>Gemeldet von: </b> ' + this.jsondata[i].username);
 
       this.markers.addLayer(this.marker);
     }
