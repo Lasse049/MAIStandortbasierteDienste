@@ -21,32 +21,25 @@ export class HomePage {
   lat: any; // Latitude of User Position Coords
   long: any; // Longitude of User Position Coords
   coords: any; // Coordinations of User Position
-  dbdata: any; // Data received form Databank containing Illegal Trash
   jsondata: any; // Data received form Databank containing Illegal Trash
-  marker: any; // Markers to be placed on the map
   timestamp: any; // Timestamp of USer Position Coords
   loconoff: boolean = true; // Boolean for updating Map view
-  buttonColor: any; // ?? // Redundant Button
   watch: any; // Keeps watching user Position
   locationsubscription: any; // Subsription of watch
   bluedot: any; // The BlueDot showing users position
-  testCheckboxResult: any; //?
-  testCheckboxOpen: any; //?
-  options: any //?
-  data:any //?
   loading:any; // Loading Spinner Animation
   hausmuellarr: any = []; // Filtered Array from DB Data
   gruenabfallarr: any = []; // Filtered Array from DB Data
   sondermuellarr: any = []; // Filtered Array from DB Data
   sperrmuellarr: any = []; // Filtered Array from DB Data
   filterbool: boolean = false; // Indicates if Data was filtered
-  markers:any; // Markers
+  markers:any; // Markers Layer Group
   dataFromOtherPage: any = null; // Filtered Data Object
   hausmarker: any; // Layergroup single marker
   gruenabfall: any; // Layergroup single marker
   sondermuell: any; // Layergroup single marker
   spermuell: any; // Layergroup single marker
-  fmarkers: any; //Layergroup of all Markers
+  fmarkers: any; //Layergroup of all Filtered Markers
   connectSubscription: any; // Network Connection subscription
   disconnectSubscription: any; // Network Disconnection subscription
   alert: any; // Alert Window
@@ -424,8 +417,6 @@ export class HomePage {
         let latlng = leaflet.latLng(this.lat, this.long);
 
         this.bluedot.setLatLng(latlng);
-        //.addTo(this.map);
-        //this.bluedot.addTo(this.map);
       }
       this.bluedot.bindPopup('You are here' + '<br>' + 'Latitude: ' + this.lat + '</br>' + 'Longitude: ' + this.long + '</br>');
     } else {
@@ -443,12 +434,10 @@ export class HomePage {
     //console.log(this.loconoff)
     if (this.loconoff) {
       //console.log("Follow GPS is on")
-      this.buttonColor = "primary";
       this.map.setZoom(17);
       this.map.setView([this.lat, this.long]);
     } else {
       //console.log("Follow GPS is OFF")
-      this.buttonColor = "light";
     }
   }
 
@@ -475,7 +464,6 @@ export class HomePage {
       .then(data => {
         JSON.stringify(data, null,2);
         console.log(data);
-        this.dbdata = data;
 
         this.setMarker(data);
 
@@ -486,7 +474,7 @@ export class HomePage {
 
   /***
    * Gets called in getDBData() when getData()request finished
-   * @params data JsonData containing Marker Information (this.dbdata)
+   * @params data JsonData containing Marker Information
    * If No Data - show Alert
    * If data is not filtered create and show markers - create popups - page load finished
    * else run setFilterMarker()
@@ -534,10 +522,10 @@ export class HomePage {
     console.log(this.jsondata);
 
 
-
+    //addcontainer.style.backgroundImage = ;
     for (let i = 0; i < this.jsondata.length; i++) {
       //Markerfarbe
-      this.marker = new leaflet.marker([this.jsondata[i].latitude, this.jsondata[i].longitude]);
+      let onemarker = new leaflet.marker([this.jsondata[i].latitude, this.jsondata[i].longitude]);
 
       let markerarr = [];
       if (this.jsondata[i].hausmuell == true) {
@@ -553,8 +541,8 @@ export class HomePage {
         markerarr.push('<br> Sondermüll');
       }
       //this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Gemeldet von: ' + this.jsondata[i].username + '<br>' + markerarr);
-      this.marker.bindPopup('<b>Vorgefundene Abfallarten:</b> ' + markerarr + '<br> <b>Gemeldet von: </b> ' + this.jsondata[i].username);
-      this.markers.addLayer(this.marker);
+      onemarker.bindPopup('<b>Vorgefundene Abfallarten:</b> ' + markerarr + '<br> <b>Gemeldet von: </b> ' + this.jsondata[i].username);
+      this.markers.addLayer(onemarker);
     }
     console.log("DefaultMarkersadded");
   }
@@ -614,17 +602,7 @@ export class HomePage {
     // Add Layergroup Filteredmakers fmakers to map
     this.fmarkers.addTo(this.map);
 
-    // Remove old BlueDot and add a new one so its gone with the old map
-    // prevents blue dot loss on page changes home-filterbox
-    //this.getLocation();
-    //this.followLocation();
-    //this.showBlueDot();
-    //this.bluedot.addTo(this.map);
-    //this.getLocation();
-    //this.bluedot = leaflet.circleMarker([this.lat, this.long], bluedotoptions);
-
     console.log("fMarkers added");
-
 
     // unsubscribe event to collect data from filter
     this.events.unsubscribe('custom-user-events'); // unsubscribe this event
