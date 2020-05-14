@@ -418,7 +418,7 @@ export class HomePage {
 
         this.bluedot.setLatLng(latlng);
       }
-      this.bluedot.bindPopup('You are here' + '<br>' + 'Latitude: ' + this.lat + '</br>' + 'Longitude: ' + this.long + '</br>');
+      this.bluedot.bindPopup(' <b> Ihre Position:  </b>' + '<br>' + 'Latitude: ' + this.lat + '</br>' + 'Longitude: ' + this.long + '</br>');
     } else {
     console.log("no location");
     }

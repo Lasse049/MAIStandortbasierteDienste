@@ -58,7 +58,7 @@ export class ProviderPhotoProvider {
         resultType: CameraResultType.Uri,
         //resultType: CameraResultType.DataUrl,
         source: CameraSource.Camera,
-        quality: 20,
+        quality: 10,
       });
 
       const savedImageFile = await this.savePicture(capturedPhoto)
