@@ -616,7 +616,7 @@ export class HomePage {
     this.events.unsubscribe('custom-user-events'); // unsubscribe this event
 
     // Set Filterbutton Image on used status (blue)
-    this.filtercontainer.style.backgroundImage = "url('/assets/icon/filteron.jpg')";
+    this.filtercontainer.style.backgroundImage = "url('/assets/icon/funnel.svg')";
   }
 
 
