@@ -695,7 +695,7 @@ export class HomePage {
       this.hausmuellarr = filterdata.hausmuellarr;
       this.gruenabfallarr = filterdata.gruenabfallarr;
       this.sperrmuellarr = filterdata.sperrmuelarr;
-      this.sondermuellarr = filterdata.sondermuell;
+      this.sondermuellarr = filterdata.sondermuellarr;
       this.filterbool = filterdata.filterbool;
       this.jsondata = filterdata.origindata;
       console.log("Received data: " + filterdata);
