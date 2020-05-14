@@ -78,7 +78,7 @@ export class CheckboxPage {
     console.log("data64: " + data64);
     if (data64 != null){
       console.log("data64 is not null: " + data64);
-    this.picture= "data:image/jpeg;base64,"+ data64;
+    //this.picture= "data:image/jpeg;base64,"+ data64;
     }
 
     if (this.username == null) {
@@ -90,7 +90,7 @@ export class CheckboxPage {
     if ( this.username!= null) {
       if (this.Hausmuell == true || this.Gruenabfall == true || this.Sperrmuell == true || this.Sondermuell || true) {
        if (this.longitude != null && this.latitude != null) {
-         this.sendtoserver(this.picture);
+         this.sendtoserver(data64);
         }
       }
     }
