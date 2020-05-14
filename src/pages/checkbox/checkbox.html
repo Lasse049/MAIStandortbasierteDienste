@@ -39,24 +39,18 @@
     </ion-item>
 
   </ion-list>
-  <button ion-button round outline (click)="send()">Absenden</button>
-  <button ion-button round outline (click)="back()">Zurück</button>
+  <button ion-button round outline (click)="send()" style="margin-bottom: 60px">Absenden</button>
+  <button ion-button round outline (click)="back()" style="margin-bottom: 60px">Zurück</button>
 
-  <button ion-button round outline icon name="camera" (click)="photoProvider.addNewToGallery()">Foto aufnehmen</button>
+  <!-- <button ion-button round outline icon name="camera" (click)="photoProvider.addNewToGallery()">Foto aufnehmen</button> -->
+  <input type="image" src="/assets/icon/camera.svg" width="50px" height="60px" style="margin-left: 20px;" (click)="photoProvider.addNewToGallery()">
 
+  <!--<div>
 
-  <!-- <ion-fab-button (click)="photoProvider.addNewToGallery()">
-    <ion-icon name="camera"></ion-icon>
-  </ion-fab-button> -->
+    <form class="innerdiv" style="margin-right: 20px; margin-bottom: 10px">
+      <input type="image" src="/assets/icon/camera.svg" width="50px" height="60px" (click)="photoProvider.addNewToGallery()">
+    </form>
 
-  <!-- <ion-content>
-    <ion-grid> Aufgenommenes Foto:
-      <ion-row>
-      <ion-col size="6" *ngFor="let photo of photoProvider.photos; index as position">
-          <ion-img src="{{ photo.base64 ? photo.base64 : photo.webviewPath }}"></ion-img>
-      </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-content> -->
+  </div> -->
 
 </ion-content>

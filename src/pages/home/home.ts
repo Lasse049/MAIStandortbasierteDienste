@@ -249,15 +249,16 @@ export class HomePage {
         this.filtercontainer.style.backgroundImage = "url('/assets/icon/lines.svg')";
         this.filtercontainer.style.backgroundColor = "light";
         this.filtercontainer.style.backgroundSize = '100%';
-        this.filtercontainer.style.width = '70px';
-        this.filtercontainer.style.height = '70px';
+        this.filtercontainer.style.width = '50px';
+        this.filtercontainer.style.height = '50px';
         this.filtercontainer.style.borderStyle = 'solid';
-        this.filtercontainer.style.borderWidth = '1px';
+        this.filtercontainer.style.borderWidth = '0px';
         this.filtercontainer.style.borderRadius= '3px';
         this.filtercontainer.style.borderColor = 'grey';
         this.filtercontainer.style.padding = '10px';
-        this.filtercontainer.style.marginLeft = '10px';
+        this.filtercontainer.style.marginLeft = '0px';
         this.filtercontainer.style.marginBottom = '10px';
+        this.filtercontainer.style.marginRight = '18px';
 
 
         this.filtercontainer.onclick = function() {
