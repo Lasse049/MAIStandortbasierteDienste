@@ -562,7 +562,9 @@ export class HomePage {
                  // this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sondermuell');
                 }
 
-      */         for (let i = 0; i < this.jsondata.length; i++) {
+      */
+
+      for (let i = 0; i < this.jsondata.length; i++) {
         //Markerfarbe
         this.marker = new leaflet.marker([this.jsondata[i].latitude, this.jsondata[i].longitude], {color: 583470});
         let markerarr = [];
