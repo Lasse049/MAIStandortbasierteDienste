@@ -16,9 +16,6 @@ import {Network} from "@ionic-native/network/";
 })
 export class HomePage {
 
-  //DIESE VERSION
-
-
   //Class Variables
   map: any; // Leaflet Map
   lat: any; // Latitude of User Position Coords
