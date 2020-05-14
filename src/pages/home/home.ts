@@ -241,13 +241,13 @@ export class HomePage {
     // Button to filter Data
     var filterbutton = leaflet.Control.extend({
       options: {
-        position: 'bottomright',
+        position: 'topright',
       },
       onAdd: function (map) {
         this.filtercontainer = leaflet.DomUtil.create('control');
         this.filtercontainer.type = "button";
         //this.filtercontainer.style.icon ='funnel';
-        this.filtercontainer.style.backgroundImage = "url('/assets/icon/lines.svg')";
+        this.filtercontainer.style.backgroundImage = "url('/assets/icon/funnel.svg')";
         this.filtercontainer.style.backgroundColor = "light";
         this.filtercontainer.style.backgroundSize = '100%';
         this.filtercontainer.style.width = '50px';
@@ -324,7 +324,7 @@ export class HomePage {
     );
 
     // Adds a legend
-    var legend = leaflet.control({position: 'topright'});
+    var legend = leaflet.control({position: 'bottomleft'});
     legend.onAdd = this.getLegend;
 
     this.map.addControl(new navigationbutton());
@@ -343,7 +343,7 @@ export class HomePage {
 
     var div = leaflet.DomUtil.create('div', 'info legend');
 
-    div.innerHTML += '<h3>Legende</h3>';
+    div.innerHTML += '<h3 style="margin-top: 0.2">Legende</h3>';
     //div.innerHTML += '<font size="3" style="display: block; line-height: 28px; margin-bottom: 6px"><b>Legende</b></font>';
     div.innerHTML += '<svg height="28" width="20" style="display: block; float: left"> <circle cx="10" cy="14" r="6"' +
       'style="stroke-width:3; stroke:#1e90ff; fill: #1e90ff;fill-opacity: 0.4"/> </svg> ' +
