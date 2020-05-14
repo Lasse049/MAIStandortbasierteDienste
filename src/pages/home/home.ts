@@ -211,8 +211,8 @@ export class HomePage {
       onAdd: function (map) {
         container = leaflet.DomUtil.create('control');
         container.type = "button";
-        container.style.backgroundImage = "url('/assets/icon/navpfeilblue.jpg')";
-        container.style.backgroundColor = "primary";
+        container.style.backgroundImage = "url('/assets/icon/bxs-navigation.svg')";
+        container.style.backgroundColor = "white";
         container.style.backgroundSize = '100%';
         container.style.width = '34px';
         container.style.height = '34px';
@@ -224,12 +224,12 @@ export class HomePage {
         // Onclick change Button style and change boolean this.loconoff
         container.onclick = function() {
           if (this.loconoff == true) {
-            container.style.backgroundImage = "url('/assets/icon/navpfeilblack.jpg')";
-            container.style.backgroundColor = "light";
+            container.style.backgroundImage = "url('/assets/icon/bx-navigation.svg')";
+            //container.style.backgroundColor = "light";
             this.loconoff = false;
           } else if (this.loconoff == false) {
-            container.style.backgroundImage = "url('/assets/icon/navpfeilblue.jpg')";
-            container.style.backgroundColor = "primary";
+            container.style.backgroundImage = "url('/assets/icon/bxs-navigation.svg')";
+            //container.style.backgroundColor = "primary";
             this.loconoff = true;
           }
         }.bind(this)
@@ -240,22 +240,24 @@ export class HomePage {
     // Button to filter Data
     var filterbutton = leaflet.Control.extend({
       options: {
-        position: 'topright',
+        position: 'bottomright',
       },
       onAdd: function (map) {
         this.filtercontainer = leaflet.DomUtil.create('control');
         this.filtercontainer.type = "button";
         //this.filtercontainer.style.icon ='funnel';
-        this.filtercontainer.style.backgroundImage = "url('/assets/icon/filter2.jpg')";
+        this.filtercontainer.style.backgroundImage = "url('/assets/icon/lines.svg')";
         this.filtercontainer.style.backgroundColor = "light";
         this.filtercontainer.style.backgroundSize = '100%';
-        this.filtercontainer.style.width = '34px';
-        this.filtercontainer.style.height = '34px';
+        this.filtercontainer.style.width = '70px';
+        this.filtercontainer.style.height = '70px';
         this.filtercontainer.style.borderStyle = 'solid';
         this.filtercontainer.style.borderWidth = '1px';
         this.filtercontainer.style.borderRadius= '3px';
         this.filtercontainer.style.borderColor = 'grey';
         this.filtercontainer.style.padding = '10px';
+        this.filtercontainer.style.marginLeft = '10px';
+        this.filtercontainer.style.marginBottom = '10px';
 
 
         this.filtercontainer.onclick = function() {
@@ -279,7 +281,7 @@ export class HomePage {
       onAdd: function (map) {
         addcontainer = leaflet.DomUtil.create('control');
         addcontainer.type = "button";
-        addcontainer.style.backgroundImage = "url('/assets/icon/add_blue.jpg')";
+        addcontainer.style.backgroundImage = "url('/assets/icon/add.svg')";
         addcontainer.style.backgroundColor = "primary";
         addcontainer.style.backgroundSize = '100%';
         addcontainer.style.width = '70px';
@@ -303,8 +305,8 @@ export class HomePage {
     // change ButtonTheme
     this.map.on("dragstart", function(e) {
         console.log("Dragging the Map")
-        container.style.backgroundImage = "url('/assets/icon/navpfeilblack.jpg')";
-        container.style.backgroundColor = "light";
+        container.style.backgroundImage = "url('/assets/icon/bx-navigation.svg')";
+        container.style.backgroundColor = "white";
         this.loconoff = false;
       }.bind(this)
     );
@@ -320,14 +322,14 @@ export class HomePage {
     );
 
     // Adds a legend
-    var legend = leaflet.control({position: 'bottomleft'});
+    var legend = leaflet.control({position: 'topright'});
     legend.onAdd = this.getLegend;
 
     this.map.addControl(new navigationbutton());
-    this.map.addControl(new filterbutton());
     this.map.addControl(new addbutton());
-
+    this.map.addControl(new filterbutton());
     legend.addTo(this.map);
+
     this.map.invalidateSize();
   }
 
