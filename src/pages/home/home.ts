@@ -91,10 +91,7 @@ export class HomePage {
     // Watch Network for Disconnection
     this.disconnectSubscription = this.network.onDisconnect().subscribe(() => {
       //delete old LoadingSpinners, create new one, present it
-      if (this.loading != null) {
-        this.loading.dismissAll();
-        this.loading = null;
-      }
+      this.dismissLoading()
       this.loading = this.loadingCtrl.create({
         content: 'No Internet Connection',
         spinner: 'circles'
@@ -108,10 +105,7 @@ export class HomePage {
     this.connectSubscription = this.network.onConnect().subscribe(() => {
       //Dismiss Loading Spinner
       console.log('network connected!');
-      if (this.loading != null) {
-        this.loading.dismissAll();
-        this.loading = null;
-      }
+      this.dismissLoading();
       //Wait 2 seconds and (re)start the App
       setTimeout(() => {
         if (this.network.type != 'none') {
@@ -145,10 +139,7 @@ export class HomePage {
    * Starts the Application by running loadmap() and getLocation()
    */
   startApp(){
-    if (this.loading != null) {
-      this.loading.dismissAll();
-      this.loading = null;
-    }
+    this.dismissLoading();
     this.loading = this.loadingCtrl.create({
       content: 'Loading App',
       spinner: 'circles'
@@ -263,6 +254,7 @@ export class HomePage {
 
 
         this.filtercontainer.onclick = function() {
+          if(this.jsondata != null){
           if (this.filterbool == false) {
             this.filtercontainer.style.backgroundColor = "light";
             this.openfilterbox();
@@ -270,7 +262,10 @@ export class HomePage {
             filtercontainer.style.backgroundColor = "primary";
             this.openfilterbox();
           }
-        }.bind(this)
+        }else{
+            this.showAlertnoData();
+          }}
+        .bind(this)
         return this.filtercontainer;
       }.bind(this)
     });
@@ -460,10 +455,7 @@ export class HomePage {
    */
   getDBData() {
     // Create Loading Spinner
-    if (this.loading != null) {
-      this.loading.dismissAll();
-      this.loading = null;
-    }
+    this.dismissLoading();
     this.loading = this.loadingCtrl.create({
       content: 'Getting Server Data',
       spinner: 'circles'
@@ -493,33 +485,33 @@ export class HomePage {
    * else run setFilterMarker()
    */
   setMarker(data){
+    //remove old markers if existent
     if(this.markers!=null) {
       this.map.removeLayer(this.markers);
       this.markers = null;
     }
-    // if data is empty throw error with an Alert
-    if(data == 404 || data == null || data == undefined){
-      this.showAlertnoData();
-    } else {
-      // data is not empty. if its not filtered run setDefaultMarker and give data
-      if (this.filterbool==false) {
-        this.setDefaultMarker(data)
-        // else if Data is filtered run setFilterMarker (data is received from event listener)
+    // if data wasnt filtered before
+    if (this.filterbool==false) {
+      // if data is empty throw error with an Alert
+      if(data == 404 || data == null || data == undefined){
+        this.showAlertnoData();
       } else {
-        this.setFilterMarker();
+        // not filtered, data no empty or error, set markers
+        this.setDefaultMarker(data)
+        // Dismiss alerts as program finished with succsess
+        this.dismissAlert();
       }
-
-      // Done, dismiss loading spinner
-      if (this.loading != null) {
-        this.loading.dismissAll();
-        this.loading = null;
-      }
+    } else {
+      // this.filterbool == true, set filtered markers
+      this.setFilterMarker();
       // Dismiss alerts as program finished with succsess
-      if (this.alert!=null){
-        this.alert.dismiss();
-      }
+      this.dismissAlert();
     }
-  }
+    // Program finished and shows data or alert. dismiss loading spinner
+    this.dismissLoading();
+    }
+
+
 
 
   /***
@@ -712,6 +704,21 @@ export class HomePage {
     );
   }
 
+  dismissLoading(){
+    if (this.loading != null) {
+      this.loading.dismissAll();
+      this.loading = null;
+    }
+  }
+
+  dismissAlert(){
+    // Dismiss alerts as program finished with succsess
+    if (this.alert!=null){
+      this.alert.dismiss();
+    }
+  }
+
+
   /***
    * Opens Page to filter data
    * @param data
@@ -726,10 +733,7 @@ export class HomePage {
       buttons: [{
         text: 'OK',
         handler: () => {
-          if (this.loading != null) {
-            this.loading.dismissAll();
-            this.loading = null;
-          }
+          this.dismissLoading()
           // Close App
           //this.platform.exitApp()
         }
@@ -745,10 +749,7 @@ export class HomePage {
   ionViewDidLeave() {
     console.log("didleave");
     //this.bluedot = null;
-    if (this.loading != null) {
-      this.loading.dismissAll();
-      this.loading = null;
-    }
+    this.dismissLoading();
   }
 }
 

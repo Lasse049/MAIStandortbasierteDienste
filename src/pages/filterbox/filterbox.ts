@@ -183,7 +183,7 @@ export class FilterboxPage {
          };
        }
     }
-    // fitlerbool sollte nur true sein wenn auch gefilter wurde
+    // fitlerbool sollte nur true sein wenn auch gefilter wurde und daten nicht null/leer sind!!
     this.filterboolean=true;
     let filterdata = {
       hausmuellarr:this.hausmuellarr,

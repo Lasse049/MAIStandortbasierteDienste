@@ -7,8 +7,7 @@ import {of} from "rxjs/observable/of";
 /*
   Generated class for the RestProvider provider.
 
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
+VOR ABGABE AUF 30.000 setzten!!! 30000
 */
 @Injectable()
 export class RestProvider {
@@ -25,7 +24,7 @@ export class RestProvider {
   public  getData() {
     return new Promise(resolve => {
       this.http.get(this.dburl)
-        .pipe(timeout(30000), catchError(error => of(404)))
+        .pipe(timeout(10000), catchError(error => of(404)))
         .subscribe(data => {
         resolve(data);
         console.log(data);
@@ -39,7 +38,7 @@ export class RestProvider {
     });
   }
 
-  // Alert 
+  // Alert
   public showAlertData() {
     const alert = this.alertCtrl.create({
       title: 'Server Fehler!',
