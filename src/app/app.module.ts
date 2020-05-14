@@ -14,6 +14,7 @@ import { ProviderPhotoProvider } from '../providers/photo/photo';
 import {FilterboxPage} from "../pages/filterbox/filterbox";
 import { DatePicker } from '@ionic-native/date-picker/';
 import {Network} from "@ionic-native/network/";
+import { Camera } from '@ionic-native/camera';
 
 
 @NgModule({
@@ -44,6 +45,7 @@ import {Network} from "@ionic-native/network/";
     ProviderPhotoProvider,
     DatePicker,
     Network,
+    Camera,
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
