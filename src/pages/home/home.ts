@@ -614,7 +614,7 @@ export class HomePage {
       for (let i = 0; i < this.hausmuellarr.length; i++) {
         this.hausmarker = new leaflet.marker([this.hausmuellarr[i].latitude, this.hausmuellarr[i].longitude]);
         this.hausmarker.bindPopup('<br>' + this.hausmuellarr[i].time + ' <br> Username: ' + this.hausmuellarr[i].username + '<br>' + ' Hausmuell');
-        this.fmarkers.addLayer(this.hausmarker,{color: 0o00000});
+        this.fmarkers.addLayer(this.hausmarker,{color: 0o00000}); // WENN FARBE ÄNDERN DANN WEITER OBEN BEI NEW LEAFLET LAYER GROUP
       }
     }
     console.log('okayklappt')
