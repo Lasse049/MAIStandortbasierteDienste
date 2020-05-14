@@ -339,10 +339,10 @@ export class HomePage {
 
     div.innerHTML += '<h3>Legende</h3>';
     div.innerHTML += '<svg height="20" width="20"> <circle cx="10" cy="10" r="5"' +
-      'style="stroke-width:3; stroke:dodgerblue; fill: dodgerblue;fill-opacity: 0.4"/> </svg>';
+      'style="stroke-width:3; stroke:#1e90ff; fill: #1e90ff;fill-opacity: 0.4"/> </svg>';
     div.innerHTML += 'Standort' + '<br>';
     // Hier Bild von Marker
-    div.innerHTML += '<img src="/assets/icon/marker.jpg">';
+    div.innerHTML += '<img src="/assets/icon/marker-icon-2x-blue.png">';
     div.innerHTML += 'Müllablagerung';
 
     return div;
