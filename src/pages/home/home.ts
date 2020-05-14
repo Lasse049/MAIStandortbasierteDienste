@@ -91,10 +91,7 @@ export class HomePage {
     // Watch Network for Disconnection
     this.disconnectSubscription = this.network.onDisconnect().subscribe(() => {
       //delete old LoadingSpinners, create new one, present it
-      if (this.loading != null) {
-        this.loading.dismissAll();
-        this.loading = null;
-      }
+      this.dismissLoading()
       this.loading = this.loadingCtrl.create({
         content: 'No Internet Connection',
         spinner: 'circles'
@@ -108,10 +105,7 @@ export class HomePage {
     this.connectSubscription = this.network.onConnect().subscribe(() => {
       //Dismiss Loading Spinner
       console.log('network connected!');
-      if (this.loading != null) {
-        this.loading.dismissAll();
-        this.loading = null;
-      }
+      this.dismissLoading();
       //Wait 2 seconds and (re)start the App
       setTimeout(() => {
         if (this.network.type != 'none') {
@@ -145,10 +139,7 @@ export class HomePage {
    * Starts the Application by running loadmap() and getLocation()
    */
   startApp(){
-    if (this.loading != null) {
-      this.loading.dismissAll();
-      this.loading = null;
-    }
+    this.dismissLoading();
     this.loading = this.loadingCtrl.create({
       content: 'Loading App',
       spinner: 'circles'
@@ -195,9 +186,12 @@ export class HomePage {
     leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(this.map);
+
+
+
     // set  initial zoom and view
-    this.map.setZoom(25);
-    this.map.setView([0, 0])
+    this.map.setZoom(6);
+    this.map.setView([51.163361, 10.447683])
 
     //Create containers for buttons on the Map
     var container = leaflet.DomUtil.get('map');
@@ -263,6 +257,7 @@ export class HomePage {
 
 
         this.filtercontainer.onclick = function() {
+          if(this.jsondata != null){
           if (this.filterbool == false) {
             this.filtercontainer.style.backgroundColor = "light";
             this.openfilterbox();
@@ -270,7 +265,10 @@ export class HomePage {
             filtercontainer.style.backgroundColor = "primary";
             this.openfilterbox();
           }
-        }.bind(this)
+        }else{
+            this.showAlertnoData();
+          }}
+        .bind(this)
         return this.filtercontainer;
       }.bind(this)
     });
@@ -384,7 +382,6 @@ export class HomePage {
   followLocation() {
     this.watch = this.geolocation.watchPosition();
     this.locationsubscription = this.watch.subscribe((data) => {
-
       this.lat = data.coords.latitude
       this.long = data.coords.longitude
       this.timestamp = data.timestamp;
@@ -443,6 +440,7 @@ export class HomePage {
     if (this.loconoff) {
       //console.log("Follow GPS is on")
       this.buttonColor = "primary";
+      this.map.setZoom(17);
       this.map.setView([this.lat, this.long]);
     } else {
       //console.log("Follow GPS is OFF")
@@ -460,10 +458,7 @@ export class HomePage {
    */
   getDBData() {
     // Create Loading Spinner
-    if (this.loading != null) {
-      this.loading.dismissAll();
-      this.loading = null;
-    }
+    this.dismissLoading();
     this.loading = this.loadingCtrl.create({
       content: 'Getting Server Data',
       spinner: 'circles'
@@ -493,33 +488,33 @@ export class HomePage {
    * else run setFilterMarker()
    */
   setMarker(data){
+    //remove old markers if existent
     if(this.markers!=null) {
       this.map.removeLayer(this.markers);
       this.markers = null;
     }
-    // if data is empty throw error with an Alert
-    if(data == 404 || data == null || data == undefined){
-      this.showAlertnoData();
-    } else {
-      // data is not empty. if its not filtered run setDefaultMarker and give data
-      if (this.filterbool==false) {
-        this.setDefaultMarker(data)
-        // else if Data is filtered run setFilterMarker (data is received from event listener)
+    // if data wasnt filtered before
+    if (this.filterbool==false) {
+      // if data is empty throw error with an Alert
+      if(data == 404 || data == null || data == undefined){
+        this.showAlertnoData();
       } else {
-        this.setFilterMarker();
+        // not filtered, data no empty or error, set markers
+        this.setDefaultMarker(data)
+        // Dismiss alerts as program finished with succsess
+        this.dismissAlert();
       }
-
-      // Done, dismiss loading spinner
-      if (this.loading != null) {
-        this.loading.dismissAll();
-        this.loading = null;
-      }
+    } else {
+      // this.filterbool == true, set filtered markers
+      this.setFilterMarker();
       // Dismiss alerts as program finished with succsess
-      if (this.alert!=null){
-        this.alert.dismiss();
-      }
+      this.dismissAlert();
     }
-  }
+    // Program finished and shows data or alert. dismiss loading spinner
+    this.dismissLoading();
+    }
+
+
 
 
   /***
@@ -538,51 +533,22 @@ export class HomePage {
       //Markerfarbe
       this.marker = new leaflet.marker([this.jsondata[i].latitude, this.jsondata[i].longitude],{color: 583470});
 
+      let markerarr = [];
       if (this.jsondata[i].hausmuell == true) {
-        this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Hausmuell');
-      } else if (this.jsondata[i].gruenabfall == true) {
-        this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Gruenabfall');
-      } else if (this.jsondata[i].sperrmuell == true) {
-        this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sperrmuell');
-      } else if ( this.jsondata[i].sondermuell == true) {
-        this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sondermuell');
+        markerarr.push(' Hausmüll');
       }
-      /*
-                if (this.jsondata[i].hausmuell == true && this.jsondata[i].gruenabfall == false && this.jsondata[i].sperrmuell == false && this.jsondata[i].sondermuell == false) {
-                  this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Hausmuell');
-                } else if (this.jsondata[i].hausmuell == false && this.jsondata[i].gruenabfall == true && this.jsondata[i].sperrmuell == false && this.jsondata[i].sondermuell == false) {
-                  this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Gruenabfall');
-                } else if ((this.jsondata[i].hausmuell == false && this.jsondata[i].gruenabfall == false && this.jsondata[i].sperrmuell == true && this.jsondata[i].sondermuell == false)) {
-                  this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sperrmuell');
-                } else if ((this.jsondata[i].hausmuell == false && this.jsondata[i].gruenabfall == false && this.jsondata[i].sperrmuell == false && this.jsondata[i].sondermuell == true)) {
-                  this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sondermuell');
-                //}//else if ((this.jsondata[i].hausmuell == true && this.jsondata[i].gruenabfall == true && this.jsondata[i].sperrmuell == false && this.jsondata[i].sondermuell == false)) {
-                  //this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Hausmüll' + '<br>' + ' Grünabfall');
-                //}else if ((this.jsondata[i].hausmuell == false && this.jsondata[i].gruenabfall == false && this.jsondata[i].sperrmuell == false && this.jsondata[i].sondermuell == false)) {
-                 // this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + ' Sondermuell');
-                }
-
-      */
-
-      for (let i = 0; i < this.jsondata.length; i++) {
-        //Markerfarbe
-        this.marker = new leaflet.marker([this.jsondata[i].latitude, this.jsondata[i].longitude], {color: 583470});
-        let markerarr = [];
-        if (this.jsondata[i].hausmuell == true) {
-          markerarr.push('Hausmüll');
-        }
-        if (this.jsondata[i].gruenabfall == true) {
-          markerarr.push('Grünabfall');
-        }
-        if (this.jsondata[i].sperrmuell == true) {
-          markerarr.push('Sperrmüll');
-        }
-        if (this.jsondata[i].sondermuell == true) {
-          markerarr.push('Sondermüll');
-        }
-
-        this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Username: ' + this.jsondata[i].username + '<br>' + markerarr);
+      if (this.jsondata[i].gruenabfall == true) {
+        markerarr.push(' Grünabfall');
       }
+      if (this.jsondata[i].sperrmuell == true) {
+        markerarr.push(' Sperrmüll');
+      }
+      if (this.jsondata[i].sondermuell == true) {
+        markerarr.push(' Sondermüll');
+      }
+      //this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Gemeldet von: ' + this.jsondata[i].username + '<br>' + markerarr);
+      this.marker.bindPopup('<b>Vorgefundene Abfallarten:</b> ' + markerarr + '<br> <b>Gemeldet von: </b> ' + this.jsondata[i].username);
+
       this.markers.addLayer(this.marker);
     }
     console.log("DefaultMarkersadded");
@@ -712,6 +678,21 @@ export class HomePage {
     );
   }
 
+  dismissLoading(){
+    if (this.loading != null) {
+      this.loading.dismissAll();
+      this.loading = null;
+    }
+  }
+
+  dismissAlert(){
+    // Dismiss alerts as program finished with succsess
+    if (this.alert!=null){
+      this.alert.dismiss();
+    }
+  }
+
+
   /***
    * Opens Page to filter data
    * @param data
@@ -723,13 +704,17 @@ export class HomePage {
     this.alert = this.alertCtrl.create({
       title: 'Keine Verbindung zum Server!',
       subTitle: 'App nur eingeschränkt nutzbar.',
-      buttons: [{
+      buttons: [
+        {
+          text: 'Retry',
+          handler: () => {
+            this.dismissLoading()
+            this.startApp()
+          }
+        },{
         text: 'OK',
         handler: () => {
-          if (this.loading != null) {
-            this.loading.dismissAll();
-            this.loading = null;
-          }
+          this.dismissLoading()
           // Close App
           //this.platform.exitApp()
         }
@@ -745,10 +730,7 @@ export class HomePage {
   ionViewDidLeave() {
     console.log("didleave");
     //this.bluedot = null;
-    if (this.loading != null) {
-      this.loading.dismissAll();
-      this.loading = null;
-    }
+    this.dismissLoading();
   }
 }
 
