@@ -24,7 +24,7 @@ export class RestProvider {
   public  getData() {
     return new Promise(resolve => {
       this.http.get(this.dburl)
-        .pipe(timeout(10000), catchError(error => of(404)))
+        .pipe(timeout(30000), catchError(error => of(404)))
         .subscribe(data => {
         resolve(data);
         console.log(data);
