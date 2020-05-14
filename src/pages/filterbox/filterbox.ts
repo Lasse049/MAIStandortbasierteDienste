@@ -5,6 +5,7 @@ import {root} from "rxjs/util/root";
 //import { DatePicker } from '@ionic-native/date-picker';
 import { AlertController } from 'ionic-angular';
 import { DatePicker } from '@ionic-native/date-picker';
+import set = Reflect.set;
 
 
 
@@ -14,24 +15,24 @@ import { DatePicker } from '@ionic-native/date-picker';
   templateUrl: 'filterbox.html',
 })
 export class FilterboxPage {
-  fHausmuell: boolean;
-  fSondermuell: boolean;
-  fGruenabfall: boolean;
-  fSperrmuell: boolean;
-  root: any;
-  finput: any;
-  fdate: any;
-  data: any;
+  fHausmuell: boolean; // filter boolean for Hausmüll
+  fSondermuell: boolean; // filter boolean for Sondermüll
+  fGruenabfall: boolean; // filter boolean for Grünabfall
+  fSperrmuell: boolean; // filter boolean for Sperrmüll
+  root: any; // for the way back to the homepage
+  finput: any; // usernamefilterinput
+  fdate: any; //datefilterinput
+  data: any; //Data of Server got from homepage
   data2: any = [];
-  hausmuellarr: any = [];
-  sperrmuellarr: any = [];
-  sondermuellarr: any = [];
-  guenabfallarr: any = [];
-  namearr: any = [];
+  hausmuellarr: any = []; // Array for only Hausmülldata
+  sperrmuellarr: any = []; // Array for only Sperrmüll
+  sondermuellarr: any = [];// Array for only Sondermüll
+  guenabfallarr: any = []; // Array for only Grünabfall
+  namearr: any = []; // Array to filter Data by username oder date
   datearr: any = [];
-  filterboolean: any;
-  originialdata:any;
-
+  filterboolean: any;// boolean for recognising if there is some filter working
+  originialdata:any; // orginaldata from the server
+ b:boolean
 
   constructor(
     public navCtrl: NavController,
@@ -89,22 +90,27 @@ export class FilterboxPage {
   }
 
    */
-  filter2() {
+  parseDate(date){
+    for (let a = 0; a < 10; a++){
+          this.namearr[a] = this.data.date[a];
+    }
+  }
+  filter2() {                                             //Filterfunktion - started when Button is clicked
     // braucht die nächste zeile wirklich?
     //this.data = JSON.parse(JSON.stringify(this.data));
     console.log('button works')
     // console.log('namearr' + this.namearr)
     //if(this.finput!=null|| ){
-    if (this.data != null) {
-      let b = 0;
+    if (this.data != null) {                             // Only works when there are data from the Server
+
       let d = 0;
-      let g = 0;
+      let g = 0;                                         // counting Variable
 
 
       console.log(this.finput)
-      if(this.finput != null && this.fdate != null){
+      if(this.finput != null && this.fdate != null){     // if there is an input for username and date
         for (let a = 0; a < this.data.length; a++) {
-          if (this.data[a].username == this.finput && this.data[a].username == this.fdate) {
+          if (this.data[a].username == this.finput && this.data[a].time == this.fdate) {
             this.namearr[g] = this.data[a];
             g++;
           }
@@ -120,7 +126,8 @@ export class FilterboxPage {
         } else {
           if (this.fdate != null) {
             for (let a = 0; a < this.data.length; a++) {
-              if (this.data[a].date == this.fdate) {
+              if (this.data[a].time == this.fdate) {
+             // if (this.fdate.compareTo(this.data[a].time) == 0){
                 this.namearr[g] = this.data[a];
                 g++;
               }
@@ -139,35 +146,40 @@ export class FilterboxPage {
 
       console.log(this.datearr)
 
+      if(((this.fdate != null ||this.finput != null)||(this.finput != undefined || this.fdate == undefined)) && (this.fSperrmuell == undefined || this.fSperrmuell == false) && (this.fHausmuell == undefined || this.fHausmuell == false) && (this.fGruenabfall == undefined || this.fGruenabfall == false) && (this.fSperrmuell == undefined|| this.fSperrmuell == false)){
+        this.fHausmuell = true;
+        this.fSperrmuell = true;
+        this.fGruenabfall = true;
+        this.fSondermuell  = true;
 
+      }
       // NameArry Hausmuell was?
       //this.namearr = JSON.parse(JSON.stringify(this.namearr));
        for (let i = 0; i < this.namearr.length; i++) {
-         if (this.namearr[i].hausmuell== true && this.fHausmuell == true) {
+         if (this.namearr[i].hausmuell== true && this.fHausmuell == true && this.fHausmuell != undefined) {
            this.hausmuellarr.push(this.namearr[i]);
            console.log("hausmuellarr");
            console.log(this.hausmuellarr);
          }
-         if (this.namearr[i].gruenabfall == true && this.fGruenabfall == true) {
+         if (this.namearr[i].gruenabfall == true && this.fGruenabfall == true && this.fGruenabfall != undefined) {
            this.guenabfallarr.push(this.namearr[i]);
            console.log("gruen");
            console.log(this.guenabfallarr);
 
          };
-         if (this.namearr[i].sondermuellarr == true && this.fSondermuell == true) {
+         if (this.namearr[i].sondermuell == true && this.fSondermuell == true && this.fSondermuell != undefined) {
            this.sondermuellarr.push(this.namearr[i]);
            console.log("sonder");
            console.log(this.sondermuellarr);
 
          };
-         if (this.namearr[i].spermuell == true && this.fSperrmuell == true) {
+         if (this.namearr[i].sperrmuell == true && this.fSperrmuell == true && this.fSperrmuell != undefined) {
            this.sperrmuellarr.push(this.namearr[i]);
            console.log("sper");
            console.log(this.sperrmuellarr);
 
          };
        }
-
     }
     // fitlerbool sollte nur true sein wenn auch gefilter wurde
     this.filterboolean=true;
@@ -175,7 +187,7 @@ export class FilterboxPage {
       hausmuellarr:this.hausmuellarr,
       sperrmuelarr:this.sperrmuellarr,
       gruenabfallarr:this.guenabfallarr,
-      sondermuell:this.sondermuellarr,
+      sondermuellarr:this.sondermuellarr,
       filterbool: this.filterboolean,
       origindata: this.originialdata
     };
