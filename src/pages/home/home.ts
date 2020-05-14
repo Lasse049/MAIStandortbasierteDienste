@@ -536,9 +536,11 @@ export class HomePage {
     console.log("setMarker");
     console.log(this.jsondata);
 
+
+
     for (let i = 0; i < this.jsondata.length; i++) {
       //Markerfarbe
-      this.marker = new leaflet.marker([this.jsondata[i].latitude, this.jsondata[i].longitude],{color: 583470});
+      this.marker = new leaflet.marker([this.jsondata[i].latitude, this.jsondata[i].longitude]);
 
       let markerarr = [];
       if (this.jsondata[i].hausmuell == true) {
@@ -555,7 +557,6 @@ export class HomePage {
       }
       //this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Gemeldet von: ' + this.jsondata[i].username + '<br>' + markerarr);
       this.marker.bindPopup('<b>Vorgefundene Abfallarten:</b> ' + markerarr + '<br> <b>Gemeldet von: </b> ' + this.jsondata[i].username);
-
       this.markers.addLayer(this.marker);
     }
     console.log("DefaultMarkersadded");
@@ -587,7 +588,7 @@ export class HomePage {
       for (let i = 0; i < this.hausmuellarr.length; i++) {
         this.hausmarker = new leaflet.marker([this.hausmuellarr[i].latitude, this.hausmuellarr[i].longitude]);
         this.hausmarker.bindPopup('<br>' + this.hausmuellarr[i].time + ' <br> Username: ' + this.hausmuellarr[i].username + '<br>' + ' Hausmuell');
-        this.fmarkers.addLayer(this.hausmarker,{color: 0o00000}); // WENN FARBE ÄNDERN DANN WEITER OBEN BEI NEW LEAFLET LAYER GROUP
+        this.fmarkers.addLayer(this.hausmarker);
       }
     }
     console.log('okayklappt')
