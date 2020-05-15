@@ -167,9 +167,9 @@ export class HomePage {
       console.log("container");
       container._leaflet_id = null;
     }
-    if(filtercontainer != null){
+    if(this.filtercontainer != null){
       console.log("filtercontainer");
-      filtercontainer._leaflet_id = null;
+      this.filtercontainer._leaflet_id = null;
     }
     if(addcontainer != null){
       console.log("filtercontainer");
