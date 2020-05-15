@@ -501,7 +501,6 @@ export class HomePage {
       if(data == 404 || data == null || data == undefined){
         console.log("404nodata");
         this.dismissLoading();
-        this.dismissLoading();
         this.dismissAlert();
         this.showAlertnoData();
       } else {
@@ -520,6 +519,7 @@ export class HomePage {
       // Program finished and shows data or alert. dismiss loading spinner
       this.dismissLoading();
     }
+    this.dismissLoading();
     }
 
 
