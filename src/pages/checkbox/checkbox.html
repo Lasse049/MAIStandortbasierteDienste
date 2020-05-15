@@ -33,10 +33,13 @@
       <ion-checkbox [(ngModel)]="Sperrmuell" (ionChange)="updateSperrmuell()"></ion-checkbox>
     </ion-item>
   </ion-list>
-<br>
+
   <p margin-left="2%"> Aufgefundenen Müll mit Foto dokumentieren (optional)</p>
   <input type="image" src="/assets/icon/camera.svg" width="50px" height="60px" style="margin-left: 20%;" (click)="onclickmethode()"  id="machen">
-  <input type="image" src="/assets/icon/camera-off.svg" width="50px" height="60px" style="margin-right: 20%; display: none" (click)="photoProvider.removePicturePath()" onclick="gemacht.style.display='none';" id="gemacht">
+  <input type="image" src="/assets/icon/camera-off.svg" width="50px" height="60px" style="margin-left: 40%; display: none" (click)="photoProvider.removePicturePath()" onclick="gemacht.style.display='none';" id="gemacht">
+<br>
+<br>
+<br>
 <br>
     <button ion-button round outline (click)="back()" size="large" style="margin-left:10%">Zurück</button>
     <button ion-button round outline (click)="send()" size="large" style="margin-left:20%">Abenden</button>
