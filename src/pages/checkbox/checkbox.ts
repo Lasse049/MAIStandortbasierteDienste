@@ -220,12 +220,14 @@ export class CheckboxPage {
 
   back(){
     this.navCtrl.pop();
+    this.photoProvider.removePicturePath().then();
   }
 
   ionViewDidLeave() {
     if(this.sending!=null){
       this.sending.dismissAll();
       this.sending = null;
+      this.photoProvider.removePicturePath().then();
     }
     //Send Data back to home
   }
