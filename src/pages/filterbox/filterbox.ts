@@ -161,9 +161,12 @@ export class FilterboxPage {
        }
     }
     // fitlerbool nur true wenn auch gefilter wurde und daten nicht null/leer sind!!
-    if ((this.hausmuellarr != undefined ||this.hausmuellarr != null)||(this.guenabfallarr != undefined ||this.guenabfallarr != null)||(this.sondermuellarr != undefined ||this.sondermuellarr != null)||(this.sperrmuellarr != undefined ||this.sperrmuellarr != null)){
-      this.filterboolean=true;
-    };
+    // if ((this.hausmuellarr == undefined ||this.hausmuellarr == null)&&(this.guenabfallarr == undefined ||this.guenabfallarr == null)&&(this.sondermuellarr == undefined ||this.sondermuellarr == null)&&(this.sperrmuellarr == undefined ||this.sperrmuellarr == null)){
+    if(this.hausmuellarr.length== 0 && this.guenabfallarr.length == 0 && this.sondermuellarr.length == 0 && this.sperrmuellarr.length == 0) {
+    this.filterboolean=false;
+    } else {
+      this.filterboolean = true;
+    }
 
     let filterdata = {
       hausmuellarr:this.hausmuellarr,
