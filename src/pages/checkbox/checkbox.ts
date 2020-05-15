@@ -70,8 +70,8 @@ export class CheckboxPage {
   }
 
 
-  onclickmethode(){
-    this.photoProvider.addNewToGallery();
+  async onclickmethode(){
+    await this.photoProvider.addNewToGallery();
     console.log("onclickstart")
     const emptypic = document.getElementById('machen');
     const fullpic = document.getElementById('gemacht');
@@ -105,7 +105,6 @@ export class CheckboxPage {
     console.log("data64: " + data64);
     if (data64 != null){
       console.log("data64 is not null: " + data64);
-    //this.picture= "data:image/jpeg;base64,"+ data64;
     }
 
     if (this.username == null) {

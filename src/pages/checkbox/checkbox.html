@@ -44,7 +44,7 @@
 
   <!-- Problem Button entsteht auch wenn auf TakePicture gedrückt wird und Camera geschlossen wird, ohne ein Foto zu machen -->
   <input type="image" src="/assets/icon/camera.svg" width="50px" height="60px" style="margin-left: 20px;" (click)="onclickmethode()"  id="machen">
-  <input type="image" src="/assets/icon/camera-off.svg" width="50px" height="60px" style="margin-left: 10px; display: none" (click)="photoProvider.removePicturePath()" id="gemacht">
+  <input type="image" src="/assets/icon/camera-off.svg" width="50px" height="60px" style="margin-left: 10px; display: none" (click)="photoProvider.removePicturePath()" onclick="gemacht.style.display='none';" id="gemacht">
 <!--
 
   onclick="gemacht.style.display='inline';"
