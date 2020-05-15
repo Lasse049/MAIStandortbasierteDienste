@@ -66,7 +66,11 @@ export class HomePage {
 //todo Lasse: Kommentieren, Style, Fehler abfangen,Text
 
   /***
-   * On Start
+   * Fired when page loades.
+   * Checks Internet Connection
+   * Subscribes Noetwork Connection/Disconnection
+   * Shows Loading Spinner or DC
+   * Stats the App with startApp()
    */
   ionViewDidEnter() {
 
@@ -116,6 +120,7 @@ export class HomePage {
         console.log("no connection")
       }
     } else {
+      //Start the App
       this.startApp()
     }
   }
@@ -123,9 +128,10 @@ export class HomePage {
 
   /***
    * Dismiss Spinners - Create Load App Spinner
-   * Starts the Application by running loadmap() and getLocation()
+   * Starts the Application by running loadmap()
    */
   startApp(){
+    // Dismiss loading to prevent Errors, create and present Loading Spinner
     this.dismissLoading();
     this.loading = this.loadingCtrl.create({
       content: 'Lade...',
@@ -133,15 +139,12 @@ export class HomePage {
     });
     this.loading.present();
     this.loadmap();
-    //this.getLocation();
   }
-
-
 
   /***
    * Gets called on startApp()
    * Creates a Leaflet Map
-   * Adds Containers/Buttons on the Map (Navigation, Filter...)
+   * Adds Containers/Buttons on the Map (Navigation, Filter, Add)
    * Event Listener OnDrag turns off updating the Mapview on Location changes
    * Adds a Legend on the Map
    * Calls getDBData() when Map is loaded and ready
@@ -153,31 +156,23 @@ export class HomePage {
       if(this.bluedot!=null) {
         this.map.removeLayer(this.bluedot);
         this.bluedot = null;
-        console.log("bluedot removed on loadmap");
       }
-      console.log("map removed");
       this.map.remove();
       this.map=null;
-
     }
-
-
     // Save remove old containers if existent
     if(container != null){
-      console.log("container");
       container._leaflet_id = null;
     }
     if(this.filtercontainer != null){
-      console.log("filtercontainer");
       this.filtercontainer._leaflet_id = null;
     }
     if(addcontainer != null){
-      console.log("filtercontainer");
       addcontainer._leaflet_id = null;
     }
 
     // Define and add Leaflet Map using Open Street Map
-    this.map = leaflet.map("map"); //Already init oder undefined
+    this.map = leaflet.map("map");
     leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(this.map);
@@ -185,8 +180,8 @@ export class HomePage {
     // try run showBlueDot in case location is there already
     this.showBlueDot();
 
-
     // set  initial zoom and view if no location found yet
+    // use middle of germany
     if (this.lat == null || this.lat == undefined) {
       this.map.setZoom(6);
       this.map.setView([51.163361, 10.447683])
@@ -195,17 +190,19 @@ export class HomePage {
       this.map.setView([this.lat, this.long]);
     }
 
-    //Create containers for buttons on the Map
+    //Create containers for buttons on the Map using leaflet domutil
     var container = leaflet.DomUtil.get('map');
     this.filtercontainer = leaflet.DomUtil.get('map');
     var addcontainer = leaflet.DomUtil.get('map');
 
-    // Button to follow Location
+    // Create a Button to follow Location
+    // Active ImageButton State is blue, inactive white
     var navigationbutton = leaflet.Control.extend({
       options: {
         position: 'topleft',
       },
       onAdd: function (map) {
+        //Create a Container (Button) on the map using leaflet DomUtil
         container = leaflet.DomUtil.create('control');
         container.type = "button";
         container.style.backgroundImage = "url('/assets/icon/bxs-navigation.svg')";
@@ -222,11 +219,9 @@ export class HomePage {
         container.onclick = function() {
           if (this.loconoff == true) {
             container.style.backgroundImage = "url('/assets/icon/bx-navigation.svg')";
-            //container.style.backgroundColor = "light";
             this.loconoff = false;
           } else if (this.loconoff == false) {
             container.style.backgroundImage = "url('/assets/icon/bxs-navigation.svg')";
-            //container.style.backgroundColor = "primary";
             this.loconoff = true;
           }
         }.bind(this)
@@ -234,15 +229,15 @@ export class HomePage {
       }.bind(this)
     });
 
-    // Button to filter Data
+    // Create a Button to filter Data
     var filterbutton = leaflet.Control.extend({
       options: {
         position: 'topright',
       },
       onAdd: function (map) {
+        //Create a Container (Button) on the map using leaflet DomUtil
         this.filtercontainer = leaflet.DomUtil.create('control');
         this.filtercontainer.type = "button";
-        //this.filtercontainer.style.icon ='funnel';
         this.filtercontainer.style.backgroundImage = "url('/assets/icon/funnel-outline.svg')";
         this.filtercontainer.style.backgroundColor = "light";
         this.filtercontainer.style.backgroundSize = '100%';
@@ -257,19 +252,21 @@ export class HomePage {
         this.filtercontainer.style.marginBottom = '10px';
         this.filtercontainer.style.marginRight = '18px';
 
-
+        //onclick open filter box
+        //prevents loading filter page if no data is found/no connection to server established
+        //Change container (Button) Theme to show if data was filtered or not
         this.filtercontainer.onclick = function() {
           if(this.jsondata != null){
+            //data is there, go and filter data
           if (this.filterbool == false|| this.filterbool == undefined) {
             this.filtercontainer.style.backgroundImage = "url('/assets/icon/funnel-outline.svg')";
-            //this.filtercontainer.style.backgroundColor = "light";
             this.openfilterbox();
           } else if (this.filterbool == true) {
             this.filtercontainer.style.backgroundImage = "url('/assets/icon/funnel.svg')";
-            //filtercontainer.style.backgroundColor = "primary";
             this.openfilterbox();
           }
         }else{
+            // No Data to filter, do not run filter page
             this.dismissAlert();
             this.showAlertnoData();
           }}
@@ -278,12 +275,13 @@ export class HomePage {
       }.bind(this)
     });
 
-    // Button to Submit Data
+    // Create a Button to Submit Data
     var addbutton = leaflet.Control.extend({
       options: {
         position: 'bottomright',
       },
       onAdd: function (map) {
+        //Create a Container (Button) on the map using leaflet DomUtil
         addcontainer = leaflet.DomUtil.create('control');
         addcontainer.type = "button";
         addcontainer.style.backgroundImage = "url('/assets/icon/add.svg')";
@@ -298,6 +296,7 @@ export class HomePage {
         addcontainer.style.marginLeft = '10px';
         addcontainer.style.marginBottom = '10px';
 
+        // Onclick open Add page (opencheckboxpage)
         addcontainer.onclick = function() {
             this.opencheckbox();
         }.bind(this)
@@ -317,6 +316,7 @@ export class HomePage {
     );
 
     // Getting called when Map is ready
+    // Map is ready -> get Location
     // retrive Data from Database getDBData()
     this.map.whenReady(function(e){
         console.log("Map is ready")
@@ -326,21 +326,23 @@ export class HomePage {
       }.bind(this)
     );
 
-    // Adds a legend
+    // Adds a legend on the Map
     var legend = leaflet.control({position: 'bottomleft'});
     legend.onAdd = this.getLegend;
 
+    // Add all Creations on the Map
     this.map.addControl(new navigationbutton());
     this.map.addControl(new addbutton());
     this.map.addControl(new filterbutton());
     legend.addTo(this.map);
 
+    // Refresh the Map
     this.map.invalidateSize();
   }
 
 
   /***
-   *
+   **************************************************************
    */
   getLegend() {
 
@@ -362,20 +364,29 @@ export class HomePage {
    * Get the Initial Position of the User
    * Starts showBlueDot() to display user position on the map
    * Starts followLocation() to keep watching Users Location changes
+   * @param this.lat Geolocation Latitude
+   * @param this.long Geolocation Longitude
+   * @param this.timestamp Geolocation Timestamp
+   * @param map The Map
    */
   getLocation() {
-
+    //Requests the Current Position of the User and responds with coordinates and timestamp
     this.geolocation.getCurrentPosition().then((resp) => {
+      // On Sucsess
       this.lat = resp.coords.latitude;
       this.long = resp.coords.longitude;
       this.timestamp = resp.timestamp;
-      // initial View
+
+      // set initial View on coords
       this.map.setZoom(17);
       this.map.setView([this.lat, this.long]);
+
+      // Start Method to Display a blue dot(circle) on the map and get position updates
       this.showBlueDot();
       this.followLocation();
+
+      // No Location? Do nothing. Cant show a blue dot or follow nothing
     }).catch((error) => {
-      console.log('Error getting location', error);
     });
   }
 
@@ -383,20 +394,21 @@ export class HomePage {
   /***
    * Get the Updated Position of the User by subcribing changes of watch using Geolocation
    * Starts showBlueDot() to display/update user position on the map
-   * Starts follownav () to keep watching Users Location changes
+   * Starts follownav () to enable automatic map view updates on location changes
    */
   followLocation() {
+      // Watch and Subscribe Location Changes
       this.watch = this.geolocation.watchPosition();
       this.locationsubscription = this.watch.subscribe((data) => {
-      this.lat = data.coords.latitude
-      this.long = data.coords.longitude
-      this.timestamp = data.timestamp;
 
-      //console.log('Location found at: ' + this.lat + " ; " + this.long);
+        // Keep updating Location Params
+        this.lat = data.coords.latitude
+        this.long = data.coords.longitude
+        this.timestamp = data.timestamp;
 
-      this.showBlueDot();
-      this.follownav();
-
+        // Move Bluedot and check if Mapview needs an update
+        this.showBlueDot();
+        this.follownav();
     });
   }
 
