@@ -75,7 +75,7 @@ export class HomePage {
       //delete old LoadingSpinners, create new one, present it
       this.dismissLoading()
       this.loading = this.loadingCtrl.create({
-        content: 'No Internet Connection',
+        content: 'Keine Internetverbindung!',
         spinner: 'circles'
       });
       this.loading.present();
@@ -109,7 +109,7 @@ export class HomePage {
     if(this.network.type == 'none'){
       if (this.loading == null) {
         this.loading = this.loadingCtrl.create({
-          content: 'No Internet Connection',
+          content: 'Keine Internetverbindung!',
           spinner: 'circles'
         });
         this.loading.present();
@@ -128,7 +128,7 @@ export class HomePage {
   startApp(){
     this.dismissLoading();
     this.loading = this.loadingCtrl.create({
-      content: 'Loading App',
+      content: 'Lade...',
       spinner: 'circles'
     });
     this.loading.present();
