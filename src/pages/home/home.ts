@@ -32,7 +32,7 @@ export class HomePage {
   gruenabfallarr: any = []; // Filtered Array from DB Data
   sondermuellarr: any = []; // Filtered Array from DB Data
   sperrmuellarr: any = []; // Filtered Array from DB Data
-  filterbool: boolean = false; // Indicates if Data was filtered
+  filterbool: boolean; // Indicates if Data was filtered
   markers:any; // Markers Layer Group
   dataFromOtherPage: any = null; // Filtered Data Object
   hausmarker: any; // Layergroup single marker
@@ -484,8 +484,11 @@ export class HomePage {
       this.markers = null;
     }
     // if data wasnt filtered before
-    if (this.filterbool==false) {
+    if (this.filterbool==false || this.filterbool == undefined) {
       // if data is empty throw error with an Alert
+      if(this.filterbool== false){
+        this.showAlertnofilter();
+      }
       if(data == 404 || data == null || data == undefined){
         console.log("404nodata");
         this.dismissLoading();
@@ -708,7 +711,25 @@ export class HomePage {
     // Present the alert
     this.alert.present();
   }
-  
+  showAlertnofilter() {
+    // remove alert if existent
+    this.dismissAlert();
+    // create new alert
+    this.alert = this.alertCtrl.create({
+      title: 'Filterfehler!',
+      subTitle: 'Die Daten konnten nach den von Ihnen eingegbenen Kriterien nicht gefiltert werden.',
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+          }
+        }]
+    });
+
+
+    // Present the alert
+    this.alert.present();
+  }
   /***
    *
    */
