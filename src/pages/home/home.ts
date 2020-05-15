@@ -36,8 +36,6 @@ export class HomePage {
   jsondata: any; // Data received form Databank containing Illegal Trash
   timestamp: any; // Timestamp of USer Position Coords
   loconoff: boolean = true; // Boolean for updating Map view
-  watch: any; // Keeps watching user Position
-  locationsubscription: any; // Subsription of watch
   bluedot: any; // The BlueDot showing users position
   markers:any; // Markers Layer Group
 
@@ -407,8 +405,8 @@ export class HomePage {
    */
   followLocation() {
       // Watch and Subscribe Location Changes
-      this.watch = this.geolocation.watchPosition();
-      this.locationsubscription = this.watch.subscribe((data) => {
+      let watch = this.geolocation.watchPosition();
+      watch.subscribe((data) => {
 
         // Keep updating Location Params
         this.lat = data.coords.latitude
