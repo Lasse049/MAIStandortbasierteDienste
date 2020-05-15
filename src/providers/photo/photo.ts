@@ -22,20 +22,20 @@ export class ProviderPhotoProvider {
 
   public ueber: any;
   public lueber: any;
-  //Loading Photos
-  private PHOTO_STORAGE: string = "photos";
 
   //private platform: Platform;
   //public androidPermissions: any;
 
+  /***
+   * Constructor
+   * Permissions for android to use the camera
+   */
   constructor(
     public http: HttpClient,
     public platform: Platform,
     public androidPermissions: AndroidPermissions
   ) {
-    // Prevent crashing on browser
     if (this.platform.is('cordova')) {
-      // Check and ask for Camera permission
       this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.CAMERA).then(
         result => console.log('Has permission?',result.hasPermission),
         err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.CAMERA)
@@ -43,45 +43,68 @@ export class ProviderPhotoProvider {
       this.androidPermissions.requestPermissions([this.androidPermissions.PERMISSION.CAMERA, this.androidPermissions.PERMISSION.GET_ACCOUNTS]);
       console.log("requested permission")
     } else {
-      // You're testing in browser // not using cordova, do nothing
+      // You're testing in browser, do nothing or mock the plugins' behaviour.
+      console.log("not using cordova")
     }
     this.platform = platform;
+    console.log('Hello Photo Provider');
   }
 
+
+  /***
+   * try to take a picture
+   * save the picture
+   */
   public async addNewToGallery() {
     // Take a photo
     try {
       const capturedPhoto = await Camera.getPhoto({
         resultType: CameraResultType.Uri,
+        //resultType: CameraResultType.DataUrl,
         source: CameraSource.Camera,
         quality: 10,
       });
 
       const savedImageFile = await this.savePicture(capturedPhoto)
+      //console.log('Fotopfad:' + savedImageFile);
       this.photos.unshift(savedImageFile);
+
+      console.log("57" + this.lueber);
 
     } catch (error) {
       console.error(error);
     }
   }
 
+  /***
+   * Setzt Übergabevariable des Fotos zurück, wenn:
+   * Foto gesendet wurde
+   * Foto geloescht wurde
+   * das Melden einer Müllablagerung abgebrochen wurde
+   */
   public async removePicturePath() {
-        if (this.ueber != null){
+
+    console.log(this.ueber)
+    if (this.ueber != null){
       this.ueber = null;
       console.log(this.ueber)
     }else {
+      console.log("Kein Foto aufgenommen!")
+      // Hier nen Alert???
     }
   }
 
+  /***
+   * Speichert Picture
+   * Übergabe Picture für Senden an Datenbank
+   * Konvertiert Picture in base64Data in Abhängigkeit
+   * der Platform
+   */
   private async savePicture(cameraPhoto : CameraPhoto) {
-    //this.ueber = cameraPhoto;
     // Convert photo to base64 format, required by Filesystem API to save
     const base64Data = await this.readAsBase64(cameraPhoto);
 
     this.ueber = base64Data;
-    //this.ueber = 'data:image/jpeg;base64,' +base64Data;
-    //console.log("92" + this.ueber);
-    // Write the file to the data directory
     const fileName = new Date().getTime() + '.jpeg';
     //console.log('fileName:' + fileName);
     const savedFile = await Filesystem.writeFile({
@@ -93,8 +116,6 @@ export class ProviderPhotoProvider {
     this.lueber = savedFile;
     //console.log("103" + this.lueber); Objekt
     if (this.platform.is('hybrid')) {
-      // Display the new image by rewriting the 'file://' path to HTTP
-      // Details: https://ionicframework.com/docs/building/webview#file-protocol
       return {
         filepath: savedFile.uri,
         webviewPath: Capacitor.convertFileSrc(savedFile.uri),
@@ -112,6 +133,7 @@ export class ProviderPhotoProvider {
     }
 
   }
+
 
   private async readAsBase64(cameraPhoto: CameraPhoto) {
 
@@ -141,9 +163,7 @@ export class ProviderPhotoProvider {
     };
     reader.readAsDataURL(blob);
   });
-
 }
-
 
 interface Photo {
 
