@@ -82,9 +82,13 @@ export class ProviderPhotoProvider {
   public async removePicturePath() {
 
     console.log(this.ueber)
-    this.ueber = null;
-    console.log(this.ueber)
-
+    if (this.ueber != null){
+      this.ueber = null;
+      console.log(this.ueber)
+    }else {
+      console.log("Kein Foto aufgenommen!")
+      // Hier nen Alert???
+    }
   }
 
 
