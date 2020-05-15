@@ -12,6 +12,7 @@ import {HTTPResponse} from "@ionic-native/http";
 import 'rxjs/add/operator/map';
 
 
+
 @Component({
   selector: 'page-checkbox',
   templateUrl: 'checkbox.html'
@@ -66,6 +67,28 @@ export class CheckboxPage {
   updateSperrmuell() {
     console.log('Sperrmuells new state:' + this.Sperrmuell);
 
+  }
+
+
+  onclickmethode(){
+    this.photoProvider.addNewToGallery();
+    console.log("onclickstart")
+    const emptypic = document.getElementById('machen');
+    const fullpic = document.getElementById('gemacht');
+    console.log(fullpic);
+    //this.photoProvider.removePicturePath();
+    if(this.photoProvider.ueber==null){
+      console.log("none")
+      fullpic.style.display='none';
+    } else {
+      console.log("inline")
+      fullpic.style.display='inline';
+    }
+
+    //gemacht.style.display='inline
+    //input.addEventListener('input', updateValue);
+
+    console.log("onclickstart")
   }
 
   send() {
@@ -136,6 +159,9 @@ export class CheckboxPage {
       this.showAlertSf()
     );
   }
+
+
+
 
   showAlertma() {
     const alert = this.alertCtrl.create({

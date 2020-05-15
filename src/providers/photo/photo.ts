@@ -7,7 +7,6 @@ import {Platform} from 'ionic-angular';
 import { AndroidPermissions } from '@ionic-native/android-permissions';
 const { Camera, Filesystem, Storage } = Plugins;
 
-
 /*
   Generated class for the ProviderPhotoProvider provider.
 
@@ -76,7 +75,6 @@ export class ProviderPhotoProvider {
     } catch (error) {
       console.error(error);
     }
-
   }
 
   public async removePicturePath() {
