@@ -75,6 +75,10 @@ export class CheckboxPage {
 
     let data64 = this.photoProvider.ueber;
 
+    //An dieser Stelle muss das Foto wieder entfernt werden, sosnt sendet es
+    //beim zweiten melden nochmal mit
+    this.photoProvider.removePicturePath();
+
     console.log("data64: " + data64);
     if (data64 != null){
       console.log("data64 is not null: " + data64);

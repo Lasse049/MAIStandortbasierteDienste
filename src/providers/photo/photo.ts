@@ -79,6 +79,15 @@ export class ProviderPhotoProvider {
 
   }
 
+  public async removePicturePath() {
+
+    console.log(this.ueber)
+    this.ueber = null;
+    console.log(this.ueber)
+
+  }
+
+
   private async savePicture(cameraPhoto : CameraPhoto) {
     //this.ueber = cameraPhoto;
     // Convert photo to base64 format, required by Filesystem API to save
