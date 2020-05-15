@@ -576,6 +576,30 @@ export class HomePage {
 
     console.log("setfilterMarker");
 
+    //addcontainer.style.backgroundImage = ;
+    for (let i = 0; i < this.hausmuellarr.length; i++) {
+      //Markerfarbe
+      let hausmarker = new leaflet.marker([this.hausmuellarr[i].latitude, this.hausmuellarr[i].longitude]);
+
+      let markerarr = [];
+      if (this.hausmuellarr[i].hausmuell == true) {
+        markerarr.push('<br> Hausmüll');
+      }
+      if (this.hausmuellarr[i].gruenabfall == true) {
+        markerarr.push('<br> Grünabfall');
+      }
+      if (this.hausmuellarr[i].sperrmuell == true) {
+        markerarr.push('<br> Sperrmüll');
+      }
+      if (this.hausmuellarr[i].sondermuell == true) {
+        markerarr.push('<br> Sondermüll');
+      }
+      //this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Gemeldet von: ' + this.jsondata[i].username + '<br>' + markerarr);
+      hausmarker.bindPopup('<b>Vorgefundene Abfallarten:</b> ' + markerarr + '<br> <b>Gemeldet von: </b> ' + this.hausmuellarr[i].username);
+      this.fmarkers.addLayer(hausmarker);
+    }
+    console.log("filterMarkersadded");
+    /*
     // run through Array if its not undefined. set markers, bind popups, add to layergroup fmakers
     if (this.hausmuellarr != undefined) {
       for (let i = 0; i < this.hausmuellarr.length; i++) {
@@ -611,7 +635,7 @@ export class HomePage {
     this.fmarkers.addTo(this.map);
 
     console.log("fMarkers added");
-
+*/
     // unsubscribe event to collect data from filter
     this.events.unsubscribe('custom-user-events'); // unsubscribe this event
 
@@ -718,7 +742,7 @@ export class HomePage {
     // create new alert
     this.filteralert = this.alertCtrl.create({
       title: 'Filterfehler!',
-      subTitle: 'Die Daten konnten nach den von Ihnen eingegbenen Kriterien nicht gefiltert werden.',
+      subTitle: 'Die Daten konnten nach den von Ihnen eingegebenen Kriterien nicht gefiltert werden.',
       buttons: [
         {
           text: 'OK',
