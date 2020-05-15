@@ -31,13 +31,14 @@ export class RestProvider {
       }, err => {
         console.log("Data request failed due to Server issues");
         console.log(err);
-        this.showAlertData();
+        //this.showAlertData();
       },() => {
         console.log("Data Request finished");
       });
     });
   }
 
+  /*
   // Alert
   public showAlertData() {
     const alert = this.alertCtrl.create({
@@ -51,6 +52,7 @@ export class RestProvider {
     });
     alert.present();
   }
+  */
 
 
 }

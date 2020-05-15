@@ -197,7 +197,7 @@ export class HomePage {
 
     //Create containers for buttons on the Map
     var container = leaflet.DomUtil.get('map');
-    var filtercontainer = leaflet.DomUtil.get('map');
+    this.filtercontainer = leaflet.DomUtil.get('map');
     var addcontainer = leaflet.DomUtil.get('map');
 
     // Button to follow Location
@@ -700,17 +700,23 @@ export class HomePage {
    * @return filtered data
    */
   showAlertnoData() {
+    // remove alert if existent
+    this.dismissAlert();
+    // create new alert
     this.alert = this.alertCtrl.create({
       title: 'Keine Verbindung zum Server!',
       subTitle: 'App nur eingeschränkt nutzbar.',
       buttons: [
+        // Retry Button dismisses loading spinner and fires startApp()
         {
           text: 'Retry',
           handler: () => {
             this.dismissLoading()
             this.startApp()
           }
-        },{
+        },
+        // OK Button dismisses loading
+        {
         text: 'OK',
         handler: () => {
           this.dismissLoading()
@@ -719,16 +725,17 @@ export class HomePage {
         }
       }]
     });
+    // Present the alert
     this.alert.present();
   }
 
   /***
    * Ionic Lifecycle Event when Page closes
-   * dismiss all loading
+   * dismiss all loading and Alert windows
    */
   ionViewDidLeave() {
     console.log("didleave");
-    //this.bluedot = null;
+    this.dismissAlert();
     this.dismissLoading();
   }
 }
