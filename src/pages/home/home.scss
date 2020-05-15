@@ -4,13 +4,14 @@ page-home {
     height: 100%;
   }
 
+  <!--overwrite positions attributes of h3 elements -->
   h3
   {
     margin-top: 0.1rem;
     margin-bottom: 0.5rem;
   }
 
-
+  <!--Definition of the style attributes for the legend element -->
   .legend {
     line-height: 28px;
     color: #333333;
