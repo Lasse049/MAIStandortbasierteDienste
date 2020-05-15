@@ -501,6 +501,7 @@ export class HomePage {
       if(data == 404 || data == null || data == undefined){
         console.log("404nodata");
         this.dismissLoading();
+        this.dismissLoading();
         this.dismissAlert();
         this.showAlertnoData();
       } else {

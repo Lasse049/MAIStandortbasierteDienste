@@ -24,11 +24,12 @@ export class RestProvider {
   public  getData() {
     return new Promise(resolve => {
       this.http.get(this.dburl)
-        .pipe(timeout(30000), catchError(error => of(404)))
+      //  .pipe(timeout(30000), catchError(error => of(404)))
         .subscribe(data => {
         resolve(data);
         console.log(data);
       }, err => {
+          resolve(404);
         console.log("Data request failed due to Server issues");
         console.log(err);
         //this.showAlertData();
