@@ -386,8 +386,8 @@ export class HomePage {
    * Starts follownav () to keep watching Users Location changes
    */
   followLocation() {
-    this.watch = this.geolocation.watchPosition();
-    this.locationsubscription = this.watch.subscribe((data) => {
+      this.watch = this.geolocation.watchPosition();
+      this.locationsubscription = this.watch.subscribe((data) => {
       this.lat = data.coords.latitude
       this.long = data.coords.longitude
       this.timestamp = data.timestamp;
@@ -499,6 +499,7 @@ export class HomePage {
     if (this.filterbool==false) {
       // if data is empty throw error with an Alert
       if(data == 404 || data == null || data == undefined){
+        console.log("404nodata");
         this.dismissLoading();
         this.dismissAlert();
         this.showAlertnoData();
