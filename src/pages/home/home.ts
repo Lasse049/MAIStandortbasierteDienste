@@ -492,7 +492,7 @@ export class HomePage {
     // if data wasnt filtered before
     if (this.filterbool==false || this.filterbool == undefined) {
       // if data is empty throw error with an Alert
-      if(this.filterbool== false){
+      if(this.filterbool== false &&(data!=null||data!=undefined||data!=404)){
         this.showAlertnofilter();
       }
       if(data == 404 || data == null || data == undefined){
