@@ -1,12 +1,6 @@
 import { Component } from '@angular/core';
 import {Events, IonicPage, NavController, NavParams} from 'ionic-angular';
-import {HomePage} from "../home/home";
-import {root} from "rxjs/util/root";
-//import { DatePicker } from '@ionic-native/date-picker';
-import { AlertController } from 'ionic-angular';
 import { DatePicker } from '@ionic-native/date-picker';
-import set = Reflect.set;
-
 
 
 @IonicPage()
@@ -14,6 +8,17 @@ import set = Reflect.set;
   selector: 'page-filterbox',
   templateUrl: 'filterbox.html',
 })
+
+/**
+ * Filter Page!
+
+ *
+ * @author Lasse Hybbeneth
+ * @author Felix
+ * @author Tristan
+ */
+
+
 export class FilterboxPage {
   fHausmuell: boolean; // filter boolean for Hausmüll
   fSondermuell: boolean; // filter boolean for Sondermüll

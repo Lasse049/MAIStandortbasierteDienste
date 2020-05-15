@@ -1,22 +1,24 @@
 import { Component } from '@angular/core';
-import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
-import {HomePage} from "../home/home";
+import {LoadingController, NavController, NavParams} from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 import {ProviderPhotoProvider} from "../../providers/photo/photo";
 import { Events } from 'ionic-angular';
-import {catchError, delay, timeout} from 'rxjs/operators';
-import { ReturnStatement } from '@angular/compiler';
-import {of} from "rxjs/observable/of";
-import {HTTPResponse} from "@ionic-native/http";
 import 'rxjs/add/operator/map';
-
-
 
 @Component({
   selector: 'page-checkbox',
   templateUrl: 'checkbox.html'
 })
+
+/**
+ * Submit Page!
+ *
+ * @author Lasse Hybbeneth
+ * @author Felix
+ * @author Tristan
+ */
+
 export class CheckboxPage {
   Hausmuell: boolean = false;
   Sondermuell: boolean = false;
@@ -143,6 +145,8 @@ export class CheckboxPage {
     };
 
     // post (Send) Data to server. Subscribe its answer
+    // url = server url_port/method
+    // data = data wrapped up as object
     this.postsubscription = this.http.post(url, data).subscribe((response) => {
       console.log(response);
       // Sending succsessful, show alert
@@ -159,7 +163,6 @@ export class CheckboxPage {
     // Remove picture so next time you send something you dont accidentaly send pictures
     this.photoProvider.removePicturePath();
   }
-
 
 
   /***
@@ -187,7 +190,8 @@ export class CheckboxPage {
   }
 
   /***
-   *  Simple Notification alert to let user know data was sent
+   *   Notification alert to let user know data was sent
+   *   unsubscirbes postsubscription after succsess and pops back to homepage
    */
   showAlertSe() {
     const alert = this.alertCtrl.create({

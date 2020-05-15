@@ -15,10 +15,14 @@ import {Network} from "@ionic-native/network/";
 })
 
 /**
+ *
  * An App which show a Map with users Location
  * Can Receive Trash from Databse and Send Trash to server :)
  * Can Filter Trash, Display it on the map, creates popups
  * Uncrashable
+ *
+ * HomePage!
+ * Loads a Map, shows users position, creates controls
  *
  * @author Lasse Hybbeneth
  * @author Felix
@@ -29,6 +33,8 @@ import {Network} from "@ionic-native/network/";
 export class HomePage {
 
   //Class Variables
+
+  // Map and Marker Variables
   map: any; // Leaflet Map
   lat: any; // Latitude of User Position Coords
   long: any; // Longitude of User Position Coords
@@ -39,12 +45,13 @@ export class HomePage {
   bluedot: any; // The BlueDot showing users position
   markers:any; // Markers Layer Group
 
+  // LoadingControl and Alerts
   loading:any; // Loading Spinner Animation
   alert: any; // Alert Window
 
+  // For Filtered Markers/Data
   filtercontainer: any; //Filterbutton
   filteralert:any; // Alert Window for filters
-
   hausmuellarr: any = []; // Filtered Array from DB Data
   gruenabfallarr: any = []; // Filtered Array from DB Data
   sondermuellarr: any = []; // Filtered Array from DB Data
@@ -57,9 +64,9 @@ export class HomePage {
   spermuell: any; // Layergroup single marker
   fmarkers: any; //Layergroup of all Filtered Markers
 
+  // Network Subscriptions
   connectSubscription: any; // Network Connection subscription
   disconnectSubscription: any; // Network Disconnection subscription
-
 
   constructor(
     public navCtrl: NavController,
@@ -72,12 +79,11 @@ export class HomePage {
     public events: Events,
     public network: Network,
   ) {
-
   }
 
 //todo Felix: Kommentieren, Text
 //todo Tristan: Kommentieren, Text
-//todo Lasse: Kommentieren, Text
+//todo Lasse: Text
 
   /***
    * Ionic Lifecycle Event
@@ -160,7 +166,7 @@ export class HomePage {
    */
   loadmap() {
     // Save remove Map if existent
-    if (this.map != undefined && this.map != null) {
+    if (this.map != undefined) {
       // Prevent loss of Blue dot by Page changes by removing it from the map and setting it null
       if(this.bluedot!=null) {
         this.map.removeLayer(this.bluedot);
@@ -191,7 +197,7 @@ export class HomePage {
 
     // set  initial zoom and view if no location found yet
     // use middle of germany
-    if (this.lat == null || this.lat == undefined) {
+    if (this.lat == null) {
       this.map.setZoom(6);
       this.map.setView([51.163361, 10.447683])
     } else {
