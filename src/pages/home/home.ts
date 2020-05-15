@@ -87,11 +87,16 @@ export class HomePage {
     this.connectSubscription = this.network.onConnect().subscribe(() => {
       //Dismiss Loading Spinner
       console.log('network connected!');
-      this.dismissLoading();
-      //Wait 2 seconds and (re)start the App
+      //Wait 2 seconds and (re)start the App if map wasnt loaded or data from database is empty
       setTimeout(() => {
         if (this.network.type != 'none') {
-          this.startApp();
+          if(this.map==null||this.jsondata==null||this.jsondata==404||this.jsondata==undefined){
+            this.dismissLoading();
+            this.startApp();
+          }
+          else {
+            this.dismissLoading();
+          }
           console.log("have connection");
         }
       }, 2000);
