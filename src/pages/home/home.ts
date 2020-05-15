@@ -68,12 +68,6 @@ export class HomePage {
    * On Start
    */
   ionViewDidEnter() {
-    // Prevent loss of Blue dot by Page changes by removing it from the map and setting it null
-    if(this.map!= null && this.bluedot!=null) {
-      this.map.removeLayer(this.bluedot);
-      this.bluedot = null;
-    }
-
     //Create and present Loading Spinner
     this.loading = this.loadingCtrl.create({
       content: 'Checking Internet Connection',
@@ -154,10 +148,17 @@ export class HomePage {
    */
   loadmap() {
     // Save remove Map if existent
-    if (this.map != undefined) {
-      console.log("map removed")
+    if (this.map != undefined && this.map != null) {
+      // Prevent loss of Blue dot by Page changes by removing it from the map and setting it null
+      if(this.bluedot!=null) {
+        this.map.removeLayer(this.bluedot);
+        this.bluedot = null;
+        console.log("bluedot removed on loadmap");
+      }
+      console.log("map removed");
       this.map.remove();
       this.map=null;
+
     }
 
 
@@ -473,7 +474,7 @@ export class HomePage {
         JSON.stringify(data, null,2);
         console.log(data);
 
-        this.dismissLoading();
+
         this.setMarker(data);
 
         return (data)
@@ -676,7 +677,7 @@ export class HomePage {
 
   // Dismiss Loading Spinner and set in null
   dismissLoading(){
-    if (this.loading != null) {
+    while (this.loading != null) {
       this.loading.dismissAll();
       this.loading = null;
     }
@@ -684,7 +685,7 @@ export class HomePage {
 
   // Dismiss Alert Window and set in null
   dismissAlert(){
-    if (this.alert!=null){
+    while (this.alert!=null){
       this.alert.dismiss();
       this.alert = null;
     }
