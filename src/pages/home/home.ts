@@ -476,6 +476,8 @@ export class HomePage {
    * else run setFilterMarker()
    */
   setMarker(data){
+    console.log('filterbool!!')
+    console.log(this.filterbool)
     //remove old markers if existent
     if(this.markers!=null) {
       this.map.removeLayer(this.markers);

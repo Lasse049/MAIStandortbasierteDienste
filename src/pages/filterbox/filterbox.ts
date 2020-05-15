@@ -30,7 +30,7 @@ export class FilterboxPage {
   guenabfallarr: any = []; // Array for only Grünabfall
   namearr: any = []; // Array to filter Data by username oder date
   datearr: any = [];
-  filterboolean: any;// boolean for recognising if there is some filter working
+  filterboolean: any = false;// boolean for recognising if there is some filter working
   originialdata:any; // orginaldata from the server
  b:boolean
 
@@ -70,43 +70,19 @@ export class FilterboxPage {
 
   }
 
-  /*
-  calendar(){
-    this.datePicker.show({
-      date: new Date(),
-      mode: 'date'
-      //allowFutureDates: false,
-      //androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
-    }).then(
-      date => this.setdate(date)
-      ,
-      err => console.log('Error occurred while getting date: ', err)
-    );
-  }
-
-  setdate(date){
-    this.fdate=date;
-    console.log('Got date: ', date)
-  }
-
-   */
-  parseDate(date){
-    for (let a = 0; a < 10; a++){
-          this.namearr[a] = this.data.date[a];
-    }
-  }
   filter2() {                                             //Filterfunktion - started when Button is clicked
     // braucht die nächste zeile wirklich?
     //this.data = JSON.parse(JSON.stringify(this.data));
-    console.log('button works')
-    // console.log('namearr' + this.namearr)
+    console.log('button works!!')
+    if(this.finput != undefined){
+      if(this.finput[0] == null){
+        this.finput = null
+      }
+    }
+    console.log(this.finput)
     //if(this.finput!=null|| ){
     if (this.data != null) {                             // Only works when there are data from the Server
-
-      let d = 0;
       let g = 0;                                         // counting Variable
-
-
       console.log(this.finput)
       if(this.finput != null && this.fdate != null){     // if there is an input for username and date
         for (let a = 0; a < this.data.length; a++) {
@@ -131,7 +107,6 @@ export class FilterboxPage {
               var dateTime = this.data[a].time;
               var getdateTime = dateTime.split("T",1);
               if (getdateTime == this.fdate) {
-             // if (this.fdate.compareTo(this.data[a].time) == 0){
                 this.namearr[g] = this.data[a];
                 g++;
               }
@@ -150,7 +125,7 @@ export class FilterboxPage {
 
       console.log(this.datearr)
 
-      if(((this.fdate != null ||this.finput != null)||(this.finput != undefined || this.fdate == undefined)) && (this.fSperrmuell == undefined || this.fSperrmuell == false) && (this.fHausmuell == undefined || this.fHausmuell == false) && (this.fGruenabfall == undefined || this.fGruenabfall == false) && (this.fSperrmuell == undefined|| this.fSperrmuell == false)){
+      if(((this.fdate != null ||this.finput != null)||(this.finput != undefined || this.fdate != undefined)) && (this.fSperrmuell == undefined || this.fSperrmuell == false) && (this.fHausmuell == undefined || this.fHausmuell == false) && (this.fGruenabfall == undefined || this.fGruenabfall == false) && (this.fSperrmuell == undefined|| this.fSperrmuell == false)){
         this.fHausmuell = true;
         this.fSperrmuell = true;
         this.fGruenabfall = true;
@@ -185,8 +160,11 @@ export class FilterboxPage {
          };
        }
     }
-    // fitlerbool sollte nur true sein wenn auch gefilter wurde und daten nicht null/leer sind!!
-    this.filterboolean=true;
+    // fitlerbool nur true wenn auch gefilter wurde und daten nicht null/leer sind!!
+    if ((this.hausmuellarr != undefined ||this.hausmuellarr != null)||(this.guenabfallarr != undefined ||this.guenabfallarr != null)||(this.sondermuellarr != undefined ||this.sondermuellarr != null)||(this.sperrmuellarr != undefined ||this.sperrmuellarr != null)){
+      this.filterboolean=true;
+    };
+
     let filterdata = {
       hausmuellarr:this.hausmuellarr,
       sperrmuelarr:this.sperrmuellarr,

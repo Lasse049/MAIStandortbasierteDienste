@@ -8,12 +8,12 @@
   <ion-item id="nutzer">
 
     <ion-label id="username">Benutzername:   </ion-label>
-    <ion-input id="input" [(ngModel)]="username"></ion-input>
+    <ion-input id="input" margin="10" [(ngModel)]="username"></ion-input>
   </ion-item>
 
 
 
-  <p> Bitte geben Sie die aufgefundenen Abfallarten an!</p>
+  <p> Bitte geben Sie die aufgefundene/n Abfallart/en an!</p>
   <ion-list>
 
     <ion-item>
@@ -37,7 +37,7 @@
     </ion-item>
 
   </ion-list>
-
+<p> Aufgefundenen Müll mit Foto dokumentieren (optional)</p>
   <!-- <button ion-button round outline icon name="camera" (click)="photoProvider.addNewToGallery()">Foto aufnehmen</button> -->
 
   <!-- Problem Button entsteht auch wenn auf TakePicture gedrückt wird und Camera geschlossen wird, ohne ein Foto zu machen -->
@@ -57,8 +57,8 @@
     </form>
 
   </div> -->
-
+<ion-footer>
   <button ion-button round outline (click)="back()" style="margin-bottom: 60px">Zurück</button>
   <button ion-button round outline (click)="send()" style="margin-bottom: 60px">Send</button>
-
+</ion-footer>
 </ion-content>
