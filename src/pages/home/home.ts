@@ -181,11 +181,18 @@ export class HomePage {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(this.map);
 
+    // try run showBlueDot in case location is there already
+    this.showBlueDot();
 
 
-    // set  initial zoom and view
-    this.map.setZoom(6);
-    this.map.setView([51.163361, 10.447683])
+    // set  initial zoom and view if no location found yet
+    if (this.lat == null || this.lat == undefined) {
+      this.map.setZoom(6);
+      this.map.setView([51.163361, 10.447683])
+    } else {
+      this.map.setZoom(17);
+      this.map.setView([this.lat, this.long]);
+    }
 
     //Create containers for buttons on the Map
     var container = leaflet.DomUtil.get('map');
@@ -262,6 +269,7 @@ export class HomePage {
             this.openfilterbox();
           }
         }else{
+            this.dismissAlert();
             this.showAlertnoData();
           }}
         .bind(this)
@@ -465,6 +473,7 @@ export class HomePage {
         JSON.stringify(data, null,2);
         console.log(data);
 
+        this.dismissLoading();
         this.setMarker(data);
 
         return (data)
@@ -489,21 +498,25 @@ export class HomePage {
     if (this.filterbool==false) {
       // if data is empty throw error with an Alert
       if(data == 404 || data == null || data == undefined){
+        this.dismissLoading();
+        this.dismissAlert();
         this.showAlertnoData();
       } else {
         // not filtered, data no empty or error, set markers
         this.setDefaultMarker(data)
         // Dismiss alerts as program finished with succsess
         this.dismissAlert();
+        // Program finished and shows data or alert. dismiss loading spinner
+        this.dismissLoading();
       }
     } else {
       // this.filterbool == true, set filtered markers
       this.setFilterMarker();
       // Dismiss alerts as program finished with succsess
       this.dismissAlert();
+      // Program finished and shows data or alert. dismiss loading spinner
+      this.dismissLoading();
     }
-    // Program finished and shows data or alert. dismiss loading spinner
-    this.dismissLoading();
     }
 
 
@@ -661,6 +674,7 @@ export class HomePage {
     );
   }
 
+  // Dismiss Loading Spinner and set in null
   dismissLoading(){
     if (this.loading != null) {
       this.loading.dismissAll();
@@ -668,10 +682,11 @@ export class HomePage {
     }
   }
 
+  // Dismiss Alert Window and set in null
   dismissAlert(){
-    // Dismiss alerts as program finished with succsess
     if (this.alert!=null){
       this.alert.dismiss();
+      this.alert = null;
     }
   }
 
