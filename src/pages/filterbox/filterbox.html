@@ -8,20 +8,21 @@
   <ion-title><h3>Filter</h3></ion-title>
 </ion-header>
 
-<ion-content padding>
-  <p>  Die Einträge welchen Nutzers sollen angezeigt werden?</p>
+<ion-content height="100%" width="98%">
+  <br>
+  <p margin-left="2%">  Nach Nutzernamen filtern </p>
   <ion-item id="nutzerfilter"margin="5px">
     <ion-label id="username">Benutzername:</ion-label>
     <ion-input id="finput" placeholder="Nutzername" [(ngModel)]="finput">   </ion-input>
   </ion-item>
-
-<p>  Die Einträge an welchem Datum sollen Sie angezeigt werden?  </p>
+  <br>
+  <p margin-left="2%">  Nach Datum filtern  </p>
   <ion-item id="datum" margin ="2px">
     <ion-label color="dark">Date:</ion-label>
     <ion-datetime displayFormat="DD.MM.YYYY" [(ngModel)]="fdate"></ion-datetime>
   </ion-item>
-
-  <p> Welche Abfallart/en sollen angezeigt werden?</p>
+  <br>
+  <p margin-left="2%"> Nach Abfallart filtern </p>
   <ion-list>
 
     <ion-item margin="2px">
@@ -44,9 +45,9 @@
       <ion-checkbox [(ngModel)]="fSperrmuell" (ionChange)="updateSperrmuell()"></ion-checkbox>
     </ion-item>
   </ion-list>
-
-  <button ion-button round outline  (click)="back()">Zurück</button>
-  <button ion-button round outline  (click)="filter2()">Anzeigen</button>
-
+  <br>
+  <button ion-button round outline (click)="back()" size="large" style="margin-left:10%" >Zurück</button>
+  <button ion-button round outline (click)="filter2()"  size="large" style="margin-left:15%">Anzeigen</button>
+  <br>
 </ion-content>
 

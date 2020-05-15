@@ -3,20 +3,16 @@
       <h3>Müll melden</h3>
     </ion-title>
 </ion-header>
-
-<ion-content padding>
-  <p>Bitte geben Sie ihren Namen ein</p>
+<br>
+<ion-content height="100%" width="98%">
+  <p margin-left="2%">Bitte geben Sie ihren Namen ein (*)</p>
   <ion-item id="nutzer">
-
     <ion-label id="username">Benutzername:   </ion-label>
-    <ion-input id="input" margin="10" [(ngModel)]="username"></ion-input>
+    <ion-input id="input" [(ngModel)]="username"></ion-input>
   </ion-item>
-
-
-
-  <p> Bitte geben Sie die aufgefundene/n Abfallart/en an!</p>
+<br>
+  <p margin-left="2%"> Bitte geben Sie die aufgefundene/n Abfallart/en an (*)</p>
   <ion-list>
-
     <ion-item>
       <ion-label id="hausmuell">Hausmuell</ion-label>
       <ion-checkbox [(ngModel)]="Hausmuell" (ionChange)="updateHausmuell()"></ion-checkbox>
@@ -36,34 +32,13 @@
       <ion-label>Sperrmuell</ion-label>
       <ion-checkbox [(ngModel)]="Sperrmuell" (ionChange)="updateSperrmuell()"></ion-checkbox>
     </ion-item>
-
   </ion-list>
-<p> Aufgefundenen Müll mit Foto dokumentieren (optional)</p>
-  <!-- <button ion-button round outline icon name="camera" (click)="photoProvider.addNewToGallery()">Foto aufnehmen</button> -->
-
-  <!-- Problem Button entsteht auch wenn auf TakePicture gedrückt wird und Camera geschlossen wird, ohne ein Foto zu machen -->
-  <input type="image" src="/assets/icon/camera.svg" width="50px" height="60px" style="margin-left: 25px;" (click)="onclickmethode()"  id="machen">
-  <input type="image" src="/assets/icon/camera-off.svg" width="50px" height="60px" style="margin-left: 55px; display: none" (click)="photoProvider.removePicturePath()" onclick="gemacht.style.display='none';" id="gemacht">
-<!--
-
-  onclick="gemacht.style.display='inline';"
-  <input type="image" src="/assets/icon/camera-off.svg" width="50px" height="60px" style="margin-left: 10px; display: none" (click)="photoProvider.removePicturePath()" onclick="gemacht.style.display='none';" id="gemacht">
--->
-
-
-  <!--<div>
-
-    <form class="innerdiv" style="margin-right: 20px; margin-bottom: 10px">
-      <input type="image" src="/assets/icon/camera.svg" width="50px" height="60px" (click)="photoProvider.addNewToGallery()">
-    </form>
-
-  </div> -->
-
-  <ion-item>
-    <button ion-button round outline (click)="back()" style="width:50px" style="height:20px" style="margin-bottom:5px" style="left:20px">Zurück</button>
-    <button ion-button round outline (click)="send()" style="width:50px" style="height:20px"  style="margin-bottom:5px" style="margin-left:60px">Abenden</button>
-  </ion-item>
-
-
-
+<br>
+  <p margin-left="2%"> Aufgefundenen Müll mit Foto dokumentieren (optional)</p>
+  <input type="image" src="/assets/icon/camera.svg" width="50px" height="60px" style="margin-left: 20%;" (click)="onclickmethode()"  id="machen">
+  <input type="image" src="/assets/icon/camera-off.svg" width="50px" height="60px" style="margin-right: 20%; display: none" (click)="photoProvider.removePicturePath()" onclick="gemacht.style.display='none';" id="gemacht">
+<br>
+    <button ion-button round outline (click)="back()" size="large" style="margin-left:10%">Zurück</button>
+    <button ion-button round outline (click)="send()" size="large" style="margin-left:20%">Abenden</button>
+<br>
 </ion-content>
