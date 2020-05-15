@@ -703,11 +703,12 @@ export class HomePage {
           }
         }]
     });
+
+
     // Present the alert
     this.alert.present();
   }
-
-
+  
   /***
    *
    */

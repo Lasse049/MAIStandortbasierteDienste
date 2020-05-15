@@ -166,6 +166,7 @@ export class FilterboxPage {
     this.filterboolean=false;
     } else {
       this.filterboolean = true;
+
     }
 
     let filterdata = {
