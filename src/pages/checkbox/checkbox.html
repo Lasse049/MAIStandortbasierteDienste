@@ -42,8 +42,8 @@
   <!-- <button ion-button round outline icon name="camera" (click)="photoProvider.addNewToGallery()">Foto aufnehmen</button> -->
 
   <!-- Problem Button entsteht auch wenn auf TakePicture gedrückt wird und Camera geschlossen wird, ohne ein Foto zu machen -->
-  <input type="image" src="/assets/icon/camera.svg" width="50px" height="60px" style="margin-left: 20px;" (click)="onclickmethode()"  id="machen">
-  <input type="image" src="/assets/icon/camera-off.svg" width="50px" height="60px" style="margin-left: 10px; display: none" (click)="photoProvider.removePicturePath()" onclick="gemacht.style.display='none';" id="gemacht">
+  <input type="image" src="/assets/icon/camera.svg" width="50px" height="60px" style="margin-left: 25px;" (click)="onclickmethode()"  id="machen">
+  <input type="image" src="/assets/icon/camera-off.svg" width="50px" height="60px" style="margin-left: 55px; display: none" (click)="photoProvider.removePicturePath()" onclick="gemacht.style.display='none';" id="gemacht">
 <!--
 
   onclick="gemacht.style.display='inline';"
@@ -58,8 +58,12 @@
     </form>
 
   </div> -->
-<ion-footer>
-  <button ion-button round outline (click)="back()" style="margin:5px">Zurück</button>
-  <button ion-button round outline (click)="send()" style="margin:5px">Abenden</button>
-</ion-footer>
+
+  <ion-item>
+    <button ion-button round outline (click)="back()" style="width:50px" style="height:20px" style="margin-bottom:5px" style="left:20px">Zurück</button>
+    <button ion-button round outline (click)="send()" style="width:50px" style="height:20px"  style="margin-bottom:5px" style="margin-left:60px">Abenden</button>
+  </ion-item>
+
+
+
 </ion-content>

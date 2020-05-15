@@ -32,7 +32,7 @@ export class FilterboxPage {
   datearr: any = [];
   filterboolean: any = false;// boolean for recognising if there is some filter working
   originialdata:any; // orginaldata from the server
- b:boolean
+  b:boolean
 
   constructor(
     public navCtrl: NavController,
