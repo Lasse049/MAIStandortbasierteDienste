@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {Events, LoadingController, NavController, NavParams} from 'ionic-angular';
 import leaflet from 'leaflet';
 import { Geolocation } from '@ionic-native/geolocation';

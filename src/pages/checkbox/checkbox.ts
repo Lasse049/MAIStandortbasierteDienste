@@ -29,12 +29,10 @@ export class CheckboxPage {
   data: any;
   username: any;
   timestamp: any;
-  photopfad: any;
   picture: any;
   error: boolean = false;
   sending: any;
   subscriptioncomplete: boolean = false;
-  sendingdata: any;
   postsubscription: any;
 
   constructor(
@@ -69,40 +67,35 @@ export class CheckboxPage {
 
   }
 
-
+  /***
+   * On Clicking the Photo Button
+   */
   async onclickmethode(){
+    // Wait for picture to be taken or cancled
     await this.photoProvider.addNewToGallery();
-    console.log("onclickstart")
-    const emptypic = document.getElementById('machen');
+    //const emptypic = document.getElementById('machen');
     const fullpic = document.getElementById('gemacht');
-    console.log(fullpic);
-    //this.photoProvider.removePicturePath();
+    // If picute wasnt taken style is none taken
     if(this.photoProvider.ueber==null){
-      console.log("none")
       fullpic.style.display='none';
     } else {
-      console.log("inline")
+      // Picture taken, indicate with button appearing
       fullpic.style.display='inline';
     }
-
-    //gemacht.style.display='inline
-    //input.addEventListener('input', updateValue);
-
-    console.log("onclickstart")
   }
 
+  /***
+   * On Clicking the Send Button
+   * Make sure Data to be submitted contains location, name and trash information
+   * Show alerts or sendtoserver(data+photo)
+   * @param this.photop
+   */
   send() {
-    this.photopfad = this.photoProvider.ueber;
-    console.log("Da Pic: " + this.photoProvider.picture)
-    console.log("Hier Pfad: " + this.photopfad);
 
+    // save base64 string
     let data64 = this.photoProvider.ueber;
 
-    console.log("data64: " + data64);
-    if (data64 != null){
-      console.log("data64 is not null: " + data64);
-    }
-
+    // Check for input
     if (this.username == null) {
       this.showAlertnu()
     }
@@ -119,18 +112,24 @@ export class CheckboxPage {
   }
 
 
+  /***
+   * On Clicking the Send Button
+   * Make sure Data to be submitted contains location, name and trash information
+   * Show alerts or sendtoserver(data+photo)
+   */
   sendtoserver(photo) {
-    console.log("sendToserver Ausgeloest");
-    console.log(photo);
 
+    // Show Sending Spinner
     this.sending = this.loadingCtrl.create({
       content: 'Sending Data',
       spinner: 'circles'
     });
     this.sending.present();
 
+    // Call ServerAdress:Port/Method
     const url = "http://igf-srv-lehre.igf.uni-osnabrueck.de:44458/send"
-//  const url = "http://igf-srv-lehre.igf.uni-osnabrueck.de:33859/send" js 2  44458 für 22
+
+    //Wrap up a data object
     let data = {
       time: this.timestamp,
       user: this.username,
@@ -143,24 +142,29 @@ export class CheckboxPage {
       picture: photo,
     };
 
+    // post (Send) Data to server. Subscribe its answer
     this.postsubscription = this.http.post(url, data).subscribe((response) => {
       console.log(response);
+      // Sending succsessful, show alert
       if(response['status'] == 200){
         this.showAlertSe()
+      // Sending failed, show alert
       }else{
         this.showAlertSf()
       }
     },err=>
+      //Sending failed, no Connection
       this.showAlertSf()
     );
-    //An dieser Stelle muss das Foto wieder entfernt werden, sosnt sendet es
-    //beim zweiten melden nochmal mit
+    // Remove picture so next time you send something you dont accidentaly send pictures
     this.photoProvider.removePicturePath();
   }
 
 
 
-
+  /***
+   *  Simple Notification alert to let user know that Trash kind was missing
+   */
   showAlertma() {
     const alert = this.alertCtrl.create({
       title: 'Fehlende Müllart!',
@@ -170,6 +174,9 @@ export class CheckboxPage {
     alert.present();
   }
 
+  /***
+   *  Simple Notification alert to let user know that Name was missing
+   */
   showAlertnu() {
     const alert = this.alertCtrl.create({
       title: 'Fehlender Benutzername!',
@@ -179,6 +186,9 @@ export class CheckboxPage {
     alert.present();
   }
 
+  /***
+   *  Simple Notification alert to let user know data was sent
+   */
   showAlertSe() {
     const alert = this.alertCtrl.create({
       title: 'Daten wurden versandt.',
@@ -198,6 +208,9 @@ export class CheckboxPage {
     alert.present();
   }
 
+  /***
+   *  Simple Notification alert to let user know that data could not be sent
+   */
   showAlertSf() {
     const alert = this.alertCtrl.create({
       title: 'Daten konnten nicht übermittelt werden!',
@@ -217,19 +230,24 @@ export class CheckboxPage {
     alert.present();
   }
 
+  /***
+   *  Go back to home page
+   *  Delete pictures
+   */
   back(){
     this.navCtrl.pop();
     this.photoProvider.removePicturePath().then();
   }
 
+  /***
+   *  Leaving page
+   *  Dismiss Loading spinners if active and delete photo
+   */
   ionViewDidLeave() {
     if(this.sending!=null){
       this.sending.dismissAll();
       this.sending = null;
       this.photoProvider.removePicturePath().then();
     }
-    //Send Data back to home
   }
-
-
 }
