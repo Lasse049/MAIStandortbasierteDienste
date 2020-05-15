@@ -712,6 +712,7 @@ export class HomePage {
    *     @param this.jsondata passes back the original data
    */
   openfilterbox(){
+    // Subscribe Event to get Data from Filter Page
     this.events.subscribe('custom-user-events', (filterdata) => {
       this.dataFromOtherPage = filterdata;
       this.hausmuellarr = filterdata.hausmuellarr;
@@ -721,8 +722,10 @@ export class HomePage {
       this.filterbool = filterdata.filterbool;
       this.jsondata = filterdata.origindata;
     })
+    // Open Filter Page
     this.navCtrl.push(FilterboxPage,
       {
+        // Push data to prevent loss
         data:this.jsondata,
       },{},function(e){
       }
