@@ -33,7 +33,9 @@ export class ProviderPhotoProvider {
     public platform: Platform,
     public androidPermissions: AndroidPermissions
   ) {
+    // Prevent crashing on browser
     if (this.platform.is('cordova')) {
+      // Check and ask for Camera permission
       this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.CAMERA).then(
         result => console.log('Has permission?',result.hasPermission),
         err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.CAMERA)
@@ -41,54 +43,35 @@ export class ProviderPhotoProvider {
       this.androidPermissions.requestPermissions([this.androidPermissions.PERMISSION.CAMERA, this.androidPermissions.PERMISSION.GET_ACCOUNTS]);
       console.log("requested permission")
     } else {
-      // You're testing in browser, do nothing or mock the plugins' behaviour.
-      console.log("not using cordova")
+      // You're testing in browser // not using cordova, do nothing
     }
     this.platform = platform;
-    console.log('Hello Photo Provider');
   }
-
-
 
   public async addNewToGallery() {
     // Take a photo
     try {
       const capturedPhoto = await Camera.getPhoto({
         resultType: CameraResultType.Uri,
-        //resultType: CameraResultType.DataUrl,
         source: CameraSource.Camera,
         quality: 10,
       });
 
       const savedImageFile = await this.savePicture(capturedPhoto)
-      //console.log('Fotopfad:' + savedImageFile);
       this.photos.unshift(savedImageFile);
 
-      //this.lueber =  'data:image/jpeg;base64,' + savedImageFile;
-      console.log("57" + this.lueber);
-      /*this.photos.unshift({
-        filepath: "soon...",
-        webviewPath: capturedPhoto.webPath
-      });*/
-
-      //this.picture = capturedPhoto.base64String;
     } catch (error) {
       console.error(error);
     }
   }
 
   public async removePicturePath() {
-
-    console.log(this.ueber)
-    if (this.ueber != null){
+        if (this.ueber != null){
       this.ueber = null;
       console.log(this.ueber)
     }else {
-      console.log("Kein Foto aufgenommen!")
-      // Hier nen Alert???
     }
   }
-
 
   private async savePicture(cameraPhoto : CameraPhoto) {
     //this.ueber = cameraPhoto;
@@ -158,27 +141,6 @@ export class ProviderPhotoProvider {
     };
     reader.readAsDataURL(blob);
   });
-
-  //Loading Photos
-  /*public async loadSaved() {
-    // Retrieve cached photo array data
-    const photos = await Storage.get({ key: this.PHOTO_STORAGE });
-    this.photos = JSON.parse(photos.value) || [];
-
-    if (!this.platform.is('hybrid')) {
-
-      for (let photo of this.photos) {
-        // Read each saved photo's data from the Filesystem
-        const readFile = await Filesystem.readFile({
-            path: photo.filepath,
-            directory: FilesystemDirectory.Data
-        });
-
-        // Web platform only: Save the photo into the base64 field
-        photo.base64 = `data:image/jpeg;base64,${readFile.data}`;
-      }
-    }
-  }*/
 
 }
 
