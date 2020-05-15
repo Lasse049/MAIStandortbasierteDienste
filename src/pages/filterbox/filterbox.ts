@@ -186,10 +186,10 @@ export class FilterboxPage {
 
 
     back(){
-      this.filterboolean=false;
+      //this.filterboolean=false;
       let filterdata = {
         origindata: this.originialdata,
-        filterbool: this.filterboolean
+        //filterbool: this.filterboolean
       }
       ;
       this.navCtrl.pop().then(() => {
