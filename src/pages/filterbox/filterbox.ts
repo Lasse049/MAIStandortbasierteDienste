@@ -139,21 +139,21 @@ export class FilterboxPage {
            this.hausmuellarr.push(this.namearr[i]);
            console.log("hausmuellarr");
            console.log(this.hausmuellarr);
-         }
+         }else
          if (this.namearr[i].gruenabfall == true && this.fGruenabfall == true && this.fGruenabfall != undefined) {
-           this.guenabfallarr.push(this.namearr[i]);
+           this.hausmuellarr.push(this.namearr[i]);
            console.log("gruen");
            console.log(this.guenabfallarr);
 
-         };
+         } else
          if (this.namearr[i].sondermuell == true && this.fSondermuell == true && this.fSondermuell != undefined) {
-           this.sondermuellarr.push(this.namearr[i]);
+           this.hausmuellarr.push(this.namearr[i]);
            console.log("sonder");
            console.log(this.sondermuellarr);
 
-         };
+         } else
          if (this.namearr[i].sperrmuell == true && this.fSperrmuell == true && this.fSperrmuell != undefined) {
-           this.sperrmuellarr.push(this.namearr[i]);
+           this.hausmuellarr.push(this.namearr[i]);
            console.log("sper");
            console.log(this.sperrmuellarr);
 
