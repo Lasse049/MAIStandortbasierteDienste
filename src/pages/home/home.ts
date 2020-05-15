@@ -68,12 +68,6 @@ export class HomePage {
    * On Start
    */
   ionViewDidEnter() {
-    //Create and present Loading Spinner
-    this.loading = this.loadingCtrl.create({
-      content: 'Checking Internet Connection',
-      spinner: 'circles'
-    });
-    //this.loading.present();
 
     // Watch Network for Disconnection
     this.disconnectSubscription = this.network.onDisconnect().subscribe(() => {
@@ -126,12 +120,13 @@ export class HomePage {
    * Starts the Application by running loadmap() and getLocation()
    */
   startApp(){
-    this.dismissLoading();
     this.loading = this.loadingCtrl.create({
       content: 'Loading App',
       spinner: 'circles'
     });
-    this.loading.present();
+    this.loading.present().setTimeout(() => {
+      this.dismissLoading();
+      }, 15000);;
     this.loadmap();
     //this.getLocation();
   }
