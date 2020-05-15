@@ -115,7 +115,7 @@ export class CheckboxPage {
       this.showAlertma()
     }
     if ( this.username!= null) {
-      if (this.Hausmuell == true || this.Gruenabfall == true || this.Sperrmuell == true || this.Sondermuell || true) {
+      if (this.Hausmuell == true || this.Gruenabfall == true || this.Sperrmuell == true || this.Sondermuell == true) {
        if (this.longitude != null && this.latitude != null) {
          this.sendtoserver(data64);
         }

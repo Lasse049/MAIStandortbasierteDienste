@@ -110,7 +110,9 @@ export class FilterboxPage {
       console.log(this.finput)
       if(this.finput != null && this.fdate != null){     // if there is an input for username and date
         for (let a = 0; a < this.data.length; a++) {
-          if (this.data[a].username == this.finput && this.data[a].time == this.fdate) {
+          var dateTime = this.data[a].time;
+          var getdateTime = dateTime.split("T",1);
+          if (this.data[a].username == this.finput && getdateTime == this.fdate) {
             this.namearr[g] = this.data[a];
             g++;
           }

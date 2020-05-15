@@ -11,7 +11,7 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-item id="nutzerfilter">
+  <ion-item id="nutzerfilter"margin-top="20px">
     <p> Einträge welchen Nutzers sollen angezeigt werden?</p>
     <ion-label id="username">Benutzername:</ion-label>
     <ion-input id="finput" placeholder="Nutzername" [(ngModel)]="finput">   </ion-input>
@@ -52,7 +52,7 @@
 -->
 
 
-  <ion-item id="datum">
+  <ion-item id="datum" margin-top="20px" margin-bottom="60">
     <ion-label color="dark">Date:</ion-label>
     <ion-datetime displayFormat="DD.MM.YYYY" [(ngModel)]="fdate"></ion-datetime>
   </ion-item>
@@ -61,29 +61,30 @@
   <p> Welche Abfallart/en sollen angezeigt werden?</p>
   <ion-list>
 
-    <ion-item>
+    <ion-item margin="10px">
       <ion-label id="hausmuell">Hausmuell</ion-label>
       <ion-checkbox [(ngModel)]="fHausmuell" (ionChange)="updateHausmuell()"></ion-checkbox>
     </ion-item>
 
-    <ion-item>
+    <ion-item margin="10px">
       <ion-label>Sondermuell</ion-label>
       <ion-checkbox [(ngModel)]="fSondermuell" (ionChange)="updateSondermuell()"></ion-checkbox>
     </ion-item>
 
-    <ion-item>
+    <ion-item margin="10px">
       <ion-label>Grünabfall</ion-label>
       <ion-checkbox [(ngModel)]="fGruenabfall" (ionChange)="updateGruenabfall()"></ion-checkbox>
     </ion-item>
 
-    <ion-item>
+    <ion-item margin="10px">
       <ion-label>Sperrmuell</ion-label>
       <ion-checkbox [(ngModel)]="fSperrmuell" (ionChange)="updateSperrmuell()"></ion-checkbox>
     </ion-item>
-
   </ion-list>
-  <button ion-button round outline (click)="filter2()">Anzeigen</button>
-  <button ion-button round outline (click)="back()">Zurück</button>
+<ion-footer>
+  <button ion-button round outline  margin="10px" (click)="filter2()">Anzeigen</button>
+  <button ion-button round outline margin="10px" (click)="back()">Zurück</button>
 
+</ion-footer>
 </ion-content>
 
