@@ -619,16 +619,20 @@ export class HomePage {
    * pushes params data, coords and time to ChecboxPage
    */
   opencheckbox(){
-    this.navCtrl.push(CheckboxPage,
-      {
-        data:this.jsondata,
-        long:this.long,
-        lat:this.lat,
-        time:this.timestamp,
-      },{},function(e){
-      console.log("data pushed");
-      }
+    if(this.lat!=null) {
+      this.navCtrl.push(CheckboxPage,
+        {
+          data: this.jsondata,
+          long: this.long,
+          lat: this.lat,
+          time: this.timestamp,
+        }, {}, function (e) {
+          console.log("data pushed");
+        }
       );
+    } else{
+      this.showAlertnoLoc();
+    }
   }
 
 
@@ -681,11 +685,29 @@ export class HomePage {
 
 
   /***
-   * Opens Page to filter data
-   * @param data
-   * pushes params data to Filterbox Page
-   * Subscribing returend Data from filterbox.ts
-   * @return filtered data
+   *
+   */
+  showAlertnoLoc() {
+    // remove alert if existent
+    this.dismissAlert();
+    // create new alert
+    this.alert = this.alertCtrl.create({
+      title: 'Konnte keinen Standort finden!',
+      subTitle: 'Benötige GPS Daten zum Melden von Müllablagerungen.',
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+          }
+        }]
+    });
+    // Present the alert
+    this.alert.present();
+  }
+
+
+  /***
+   *
    */
   showAlertnoData() {
     // remove alert if existent
