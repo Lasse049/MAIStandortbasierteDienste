@@ -45,6 +45,7 @@ export class HomePage {
   alert: any; // Alert Window
   filtercontainer: any; //Filterbutton
   //markerarr: any = [];
+  filteralert:any;
 
   constructor(
     public navCtrl: NavController,
@@ -254,7 +255,7 @@ export class HomePage {
 
         this.filtercontainer.onclick = function() {
           if(this.jsondata != null){
-          if (this.filterbool == false) {
+          if (this.filterbool == false|| this.filterbool == undefined) {
             this.filtercontainer.style.backgroundImage = "url('/assets/icon/funnel-outline.svg')";
             //this.filtercontainer.style.backgroundColor = "light";
             this.openfilterbox();
@@ -715,7 +716,7 @@ export class HomePage {
     // remove alert if existent
     this.dismissAlert();
     // create new alert
-    this.alert = this.alertCtrl.create({
+    this.filteralert = this.alertCtrl.create({
       title: 'Filterfehler!',
       subTitle: 'Die Daten konnten nach den von Ihnen eingegbenen Kriterien nicht gefiltert werden.',
       buttons: [
@@ -728,7 +729,7 @@ export class HomePage {
 
 
     // Present the alert
-    this.alert.present();
+    this.filteralert.present();
   }
   /***
    *
