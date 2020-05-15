@@ -15,13 +15,13 @@
     <ion-label id="username">Benutzername:</ion-label>
     <ion-input id="finput" placeholder="Nutzername" [(ngModel)]="finput">   </ion-input>
   </ion-item>
-  <br>
+
   <p margin-left="2%">  Nach Datum filtern  </p>
   <ion-item id="datum" margin ="2px">
     <ion-label color="dark">Date:</ion-label>
     <ion-datetime displayFormat="DD.MM.YYYY" [(ngModel)]="fdate"></ion-datetime>
   </ion-item>
-  <br>
+
   <p margin-left="2%"> Nach Abfallart filtern </p>
   <ion-list>
 
@@ -44,8 +44,10 @@
       <ion-label>Sperrmuell</ion-label>
       <ion-checkbox [(ngModel)]="fSperrmuell" (ionChange)="updateSperrmuell()"></ion-checkbox>
     </ion-item>
+    <ion-item>
+    </ion-item>
   </ion-list>
-  <br>
+
   <button ion-button round outline (click)="back()" size="large" style="margin-left:10%" >Zurück</button>
   <button ion-button round outline (click)="filter2()"  size="large" style="margin-left:15%">Anzeigen</button>
   <br>

@@ -11,8 +11,9 @@
     <ion-input id="input" [(ngModel)]="username"></ion-input>
   </ion-item>
 <br>
+<br>
   <p margin-left="2%"> Bitte geben Sie die aufgefundene/n Abfallart/en an (*)</p>
-  <ion-list>
+  <ion-list margin-bottom="5px">
     <ion-item>
       <ion-label id="hausmuell">Hausmuell</ion-label>
       <ion-checkbox [(ngModel)]="Hausmuell" (ionChange)="updateHausmuell()"></ion-checkbox>
@@ -32,16 +33,18 @@
       <ion-label>Sperrmuell</ion-label>
       <ion-checkbox [(ngModel)]="Sperrmuell" (ionChange)="updateSperrmuell()"></ion-checkbox>
     </ion-item>
+    <ion-item>
+    </ion-item>
   </ion-list>
-
   <p margin-left="2%"> Aufgefundenen Müll mit Foto dokumentieren (optional)</p>
+<br>
   <input type="image" src="/assets/icon/camera.svg" width="50px" height="60px" style="margin-left: 20%;" (click)="onclickmethode()"  id="machen">
-  <input type="image" src="/assets/icon/camera-off.svg" width="50px" height="60px" style="margin-left: 40%; display: none" (click)="photoProvider.removePicturePath()" onclick="gemacht.style.display='none';" id="gemacht">
+  <input type="image" src="/assets/icon/camera-off.svg" width="50px" height="60px" style="margin-left:35%; display: none" (click)="photoProvider.removePicturePath()" onclick="gemacht.style.display='none';" id="gemacht">
+<br>
 <br>
 <br>
 <br>
 <br>
     <button ion-button round outline (click)="back()" size="large" style="margin-left:10%">Zurück</button>
     <button ion-button round outline (click)="send()" size="large" style="margin-left:20%">Abenden</button>
-<br>
 </ion-content>
