@@ -120,13 +120,12 @@ export class HomePage {
    * Starts the Application by running loadmap() and getLocation()
    */
   startApp(){
+    this.dismissLoading();
     this.loading = this.loadingCtrl.create({
       content: 'Loading App',
       spinner: 'circles'
     });
-    this.loading.present().setTimeout(() => {
-      this.dismissLoading();
-      }, 15000);;
+    this.loading.present();
     this.loadmap();
     //this.getLocation();
   }
@@ -454,13 +453,6 @@ export class HomePage {
    * @return data //Database Json Data containing Trash-Objects to be used for Markers on the Map
    */
   getDBData() {
-    // Create Loading Spinner
-    this.dismissLoading();
-    this.loading = this.loadingCtrl.create({
-      content: 'Getting Server Data',
-      spinner: 'circles'
-    });
-    this.loading.present();
 
     // run getData() in restProvider
     // then setMarker()
@@ -468,7 +460,6 @@ export class HomePage {
       .then(data => {
         JSON.stringify(data, null,2);
         console.log(data);
-
 
         this.setMarker(data);
 
