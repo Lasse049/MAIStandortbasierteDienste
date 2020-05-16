@@ -11,6 +11,7 @@
 <ion-content height="95%" width="98%">
   <br>
   <p margin-left="2%">  Nach Nutzernamen filtern </p>
+  <!-- Input to get a Name to filter the Data by this Name -->
   <ion-item id="nutzerfilter"margin="5px">
     <ion-label id="username">Benutzername:</ion-label>
     <ion-input id="finput" placeholder="Ihre Eingabe" [(ngModel)]="finput">   </ion-input>
@@ -19,27 +20,28 @@
   <p margin-left="2%">  Nach Datum filtern  </p>
   <ion-item id="datum" margin ="2px">
     <ion-label color="dark">Datum:</ion-label>
+    <!-- Datepicker to get a Date (Day/Month/Year) to filter the Data by this Date -->
     <ion-datetime displayFormat="DD.MM.YYYY" [(ngModel)]="fdate"></ion-datetime>
   </ion-item>
 
   <p margin-left="2%"> Nach Abfallart filtern </p>
   <ion-list>
-
+    <!-- Checkbox to filter the Data with the Attribute Hausmüll -->
     <ion-item margin="2px">
       <ion-label id="hausmuell">Hausmüll</ion-label>
       <ion-checkbox [(ngModel)]="fHausmuell" (ionChange)="updateHausmuell()"></ion-checkbox>
     </ion-item>
-
+    <!-- Checkbox to filter the Data with the Attribute Sondermüll -->
     <ion-item margin="2px">
       <ion-label>Sondermüll</ion-label>
       <ion-checkbox [(ngModel)]="fSondermuell" (ionChange)="updateSondermuell()"></ion-checkbox>
     </ion-item>
-
+    <!-- Checkbox to filter the Data with the Attribute Grünabfall -->
     <ion-item margin ="2px">
       <ion-label>Grünabfall</ion-label>
       <ion-checkbox [(ngModel)]="fGruenabfall" (ionChange)="updateGruenabfall()"></ion-checkbox>
     </ion-item>
-
+    <!-- Checkbox to filter the Data with the Attribute Sperrmüll -->
     <ion-item margin = "2px">
       <ion-label>Sperrmüll</ion-label>
       <ion-checkbox [(ngModel)]="fSperrmuell" (ionChange)="updateSperrmuell()"></ion-checkbox>
@@ -47,8 +49,9 @@
     <ion-item>
     </ion-item>
   </ion-list>
-
+  <!-- Button to go back to the Homepage without filtering the Data -->
   <button ion-button round outline (click)="back()" size="large" style="margin-left:10%" >Zurück</button>
+  <!-- Button to filter the Data/ On the Homepage displays filtered Data-->
   <button ion-button round outline (click)="filter2()"  size="large" style="margin-left:15%">Anzeigen</button>
   <br>
 </ion-content>

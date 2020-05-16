@@ -6,6 +6,7 @@
 <br>
 <ion-content height="95%" width="98%">
   <p margin-left="2%">Bitte geben Sie ihren Namen ein (*)</p>
+  <!-- input to insert username -->
   <ion-item id="nutzer">
     <ion-label id="username">Benutzername:   </ion-label>
     <ion-input id="input" [(ngModel)]="username"></ion-input>
@@ -14,21 +15,22 @@
 <br>
   <p margin-left="2%"> Bitte geben Sie die aufgefundene/n Abfallart/en an (*)</p>
   <ion-list margin-bottom="5px">
+    <!--Checkbox to indicate Hausmüll  -->
     <ion-item>
       <ion-label id="hausmuell">Hausmüll</ion-label>
       <ion-checkbox [(ngModel)]="Hausmuell" (ionChange)="updateHausmuell()"></ion-checkbox>
     </ion-item>
-
+    <!--Checkbox to indicate Sondermüll  -->
     <ion-item>
       <ion-label>Sondermüll</ion-label>
       <ion-checkbox [(ngModel)]="Sondermuell" (ionChange)="updateSondermuell()"></ion-checkbox>
     </ion-item>
-
+    <!--Checkbox to indicate Grünabfall  -->
     <ion-item>
       <ion-label>Grünabfall</ion-label>
       <ion-checkbox [(ngModel)]="Gruenabfall" (ionChange)="updateGruenabfall()"></ion-checkbox>
     </ion-item>
-
+    <!--Checkbox to indicate Sperrmüll  -->
     <ion-item>
       <ion-label>Sperrmüll</ion-label>
       <ion-checkbox [(ngModel)]="Sperrmuell" (ionChange)="updateSperrmuell()"></ion-checkbox>
