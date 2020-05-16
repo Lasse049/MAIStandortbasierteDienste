@@ -13,12 +13,12 @@
   <p margin-left="2%">  Nach Nutzernamen filtern </p>
   <ion-item id="nutzerfilter"margin="5px">
     <ion-label id="username">Benutzername:</ion-label>
-    <ion-input id="finput" placeholder="Nutzername" [(ngModel)]="finput">   </ion-input>
+    <ion-input id="finput" placeholder="Ihre Eingabe" [(ngModel)]="finput">   </ion-input>
   </ion-item>
 
   <p margin-left="2%">  Nach Datum filtern  </p>
   <ion-item id="datum" margin ="2px">
-    <ion-label color="dark">Date:</ion-label>
+    <ion-label color="dark">Datum:</ion-label>
     <ion-datetime displayFormat="DD.MM.YYYY" [(ngModel)]="fdate"></ion-datetime>
   </ion-item>
 
@@ -26,12 +26,12 @@
   <ion-list>
 
     <ion-item margin="2px">
-      <ion-label id="hausmuell">Hausmuell</ion-label>
+      <ion-label id="hausmuell">Hausmüll</ion-label>
       <ion-checkbox [(ngModel)]="fHausmuell" (ionChange)="updateHausmuell()"></ion-checkbox>
     </ion-item>
 
     <ion-item margin="2px">
-      <ion-label>Sondermuell</ion-label>
+      <ion-label>Sondermüll</ion-label>
       <ion-checkbox [(ngModel)]="fSondermuell" (ionChange)="updateSondermuell()"></ion-checkbox>
     </ion-item>
 
@@ -41,7 +41,7 @@
     </ion-item>
 
     <ion-item margin = "2px">
-      <ion-label>Sperrmuell</ion-label>
+      <ion-label>Sperrmüll</ion-label>
       <ion-checkbox [(ngModel)]="fSperrmuell" (ionChange)="updateSperrmuell()"></ion-checkbox>
     </ion-item>
     <ion-item>
