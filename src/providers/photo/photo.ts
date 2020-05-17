@@ -23,9 +23,6 @@ export class ProviderPhotoProvider {
   public ueber: any;
   public lueber: any;
 
-  //private platform: Platform;
-  //public androidPermissions: any;
-
   /***
    * Constructor
    * Permissions for android to use the camera
@@ -41,7 +38,6 @@ export class ProviderPhotoProvider {
         err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.CAMERA)
       );
       this.androidPermissions.requestPermissions([this.androidPermissions.PERMISSION.CAMERA, this.androidPermissions.PERMISSION.GET_ACCOUNTS]);
-      console.log("requested permission")
     } else {
       // You're testing in browser, do nothing or mock the plugins' behaviour.
       console.log("not using cordova")
@@ -66,10 +62,7 @@ export class ProviderPhotoProvider {
       });
 
       const savedImageFile = await this.savePicture(capturedPhoto)
-      //console.log('Fotopfad:' + savedImageFile);
       this.photos.unshift(savedImageFile);
-
-      console.log("57" + this.lueber);
 
     } catch (error) {
       console.error(error);
@@ -86,10 +79,9 @@ export class ProviderPhotoProvider {
    */
   public async removePicturePath() {
 
-    console.log(this.ueber)
     if (this.ueber != null){
       this.ueber = null;
-      console.log(this.ueber)
+
     }else {
       console.log("Kein Foto aufgenommen!")
     }
@@ -164,6 +156,7 @@ export class ProviderPhotoProvider {
   }
 
   convertBlobToBase64 = (blob: Blob) => new Promise((resolve, reject) => {
+    console.log("TESTEN!")
     const reader = new FileReader;
     reader.onerror = reject;
     reader.onload = () => {
