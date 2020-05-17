@@ -521,6 +521,7 @@ export class HomePage {
       if(this.filterbool== false && data!=404){
         this.dismissAlert();
         this.showAlertnofilter();
+        this.filterbool = undefined;
       }
       // Didnt get any data from the server or request failed
       if(data == 404 || data == null || data == undefined){
