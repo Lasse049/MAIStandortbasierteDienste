@@ -350,9 +350,8 @@ export class HomePage {
     this.map.invalidateSize();
   }
 
-
   /***
-   **************************************************************
+   * creates a legend based on innerHTML
    */
   getLegend() {
 
