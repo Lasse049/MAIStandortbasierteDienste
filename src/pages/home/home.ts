@@ -80,10 +80,6 @@ export class HomePage {
   ) {
   }
 
-//todo Felix: Kommentieren, Text
-//todo Tristan: Kommentieren, Text
-//todo Lasse: Text
-
   /***
    * Ionic Lifecycle Event
    * Fired when page loades

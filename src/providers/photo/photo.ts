@@ -39,8 +39,8 @@ export class ProviderPhotoProvider {
       );
       this.androidPermissions.requestPermissions([this.androidPermissions.PERMISSION.CAMERA, this.androidPermissions.PERMISSION.GET_ACCOUNTS]);
     } else {
-      // You're testing in browser, do nothing or mock the plugins' behaviour.
-      console.log("not using cordova")
+      // No using cordova
+      // You're testing in browser, do nothing.
     }
     this.platform = platform;
     console.log('Hello Photo Provider');
