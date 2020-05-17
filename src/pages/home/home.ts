@@ -20,8 +20,8 @@ import {Network} from "@ionic-native/network/";
  * Loads a Map, shows users position, creates controls
  *
  * @author Lasse Hybbeneth
- * @author Felix
- * @author Tristan
+ * @author Felix Cziudai-Sonntag
+ * @author Tristan Pollach
  */
 
 
@@ -376,6 +376,7 @@ export class HomePage {
    */
   getLocation() {
     //Requests the Current Position of the User and responds with coordinates and timestamp
+    //Permission request by default
     this.geolocation.getCurrentPosition().then((resp) => {
       // On Sucsess
       this.lat = resp.coords.latitude;
@@ -392,6 +393,7 @@ export class HomePage {
 
       // No Location? Do nothing. Cant show a blue dot or follow nothing
     }).catch((error) => {
+      this.showAlertnoLoc();
     });
   }
 
@@ -474,7 +476,6 @@ export class HomePage {
    * @return data //Database Json Data containing Trash-Objects to be used for Markers on the Map
    */
   getDBData() {
-
     // run getData() in restProvider
     // Makes data a json object
     // then use data to setMarker(data)
@@ -507,7 +508,7 @@ export class HomePage {
 
     // if data wasnt filtered
     if (this.filterbool== false || this.filterbool == undefined) {
-      // could not filter data (wrong day/name/impossible) but we have data so not getting double alert for filter and data
+      // could not filter data (invalid day/name/trashtype combination) but we have data so not getting double alert for filter and data
       if(this.filterbool== false && data!=404){
         this.dismissAlert();
         this.showAlertnofilter();
@@ -612,8 +613,11 @@ export class HomePage {
       if (this.filtereddata[i].sondermuell == true) {
         markerarr.push('<br> Sondermüll');
       }
-      //this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Gemeldet von: ' + this.jsondata[i].username + '<br>' + markerarr);
+
+      // Bind a popup to the Marker showing Information
       onefiltermarker.bindPopup('<b>Vorgefundene Abfallarten:</b> ' + markerarr + '<br> <b>Gemeldet von: </b> ' + this.filtereddata[i].username);
+
+      // Add Marker to markers LayerGroup (group already on the map)
       this.fmarkers.addLayer(onefiltermarker);
     }
 
@@ -632,7 +636,6 @@ export class HomePage {
    * @param this.lat
    * @param this.long
    * @param this.timestamp
-
    *
    */
   opencheckbox(){
@@ -660,13 +663,10 @@ export class HomePage {
    * pushes params data to Filterbox Page
    * Subscribing returend Data from filterbox.ts
    * @return filtered data
-   *     @param this.dataFromOtherPage filtered object
-   *     @param this.hausmueelarr array containing trashmarkers where at least hausmuell was true
-   *     @param this.gruenabfallarr array containing trashmarkers where at least hausmuell was true
-   *     @param this.sperrmuellarr array containing trashmarkers where at least sperrmuell was true
-   *     @param this.sondermuellarr array containing trashmarkers where at least sondermuell was true
+   *     @param this.dataFromOtherPage data object from the filterpage
+   *     @param this.filtereddata array containing filtered data
    *     @param this.filterbool boolean indicating if data was filtered or not
-   *      true if filtered, false if it wasnt possible. else it stays undefined
+   *            true if filtered, false if it wasnt possible. else it stays undefined
    *     @param this.jsondata passes back the original data
    */
   openfilterbox(){
