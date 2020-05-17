@@ -21,7 +21,6 @@ export class ProviderPhotoProvider {
   public photos: Photo[] = [];
 
   public ueber: any;
-  public lueber: any;
 
   /***
    * Constructor
@@ -104,7 +103,6 @@ export class ProviderPhotoProvider {
       directory: FilesystemDirectory.Data
     });
 
-    this.lueber = savedFile;
     if (this.platform.is('hybrid')) {
       return {
         filepath: savedFile.uri,
@@ -113,7 +111,6 @@ export class ProviderPhotoProvider {
     }
 
     else {
-
       // Use webPath to display the new image instead of base64 since it's
       // already loaded into memory
       return {
@@ -152,7 +149,6 @@ export class ProviderPhotoProvider {
   }
 
   convertBlobToBase64 = (blob: Blob) => new Promise((resolve, reject) => {
-    console.log("TESTEN!")
     const reader = new FileReader;
     reader.onerror = reject;
     reader.onload = () => {
