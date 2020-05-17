@@ -53,7 +53,7 @@ export class ProviderPhotoProvider {
 
   /***
    * try to take a picture
-   * save the picture
+   * Call the method savePicture
    */
   public async addNewToGallery() {
     // Take a photo
@@ -77,10 +77,12 @@ export class ProviderPhotoProvider {
   }
 
   /***
-   * Setzt Übergabevariable des Fotos zurück, wenn:
-   * Foto gesendet wurde
-   * Foto geloescht wurde
-   * das Melden einer Müllablagerung abgebrochen wurde
+   * Reset the variable for transferring
+   * the Picture/ Picturepath
+   * when the picture was send
+   * or the picture has been deleted
+   * or when the reporting of trash
+   * has been canceled
    */
   public async removePicturePath() {
 
@@ -90,15 +92,17 @@ export class ProviderPhotoProvider {
       console.log(this.ueber)
     }else {
       console.log("Kein Foto aufgenommen!")
-      // Hier nen Alert???
     }
   }
 
   /***
-   * Speichert Picture
-   * Übergabe Picture für Senden an Datenbank
-   * Konvertiert Picture in base64Data in Abhängigkeit
-   * der Platform
+   * Save the Picture
+   * call methods readAsBase64, getTime and writeFile
+   * transfer picture for sending to the database
+   *
+   * return the picture depending on the platform
+   *
+   * @param cameraPhoto
    */
   private async savePicture(cameraPhoto : CameraPhoto) {
     // Convert photo to base64 format, required by Filesystem API to save
@@ -106,7 +110,6 @@ export class ProviderPhotoProvider {
 
     this.ueber = base64Data;
     const fileName = new Date().getTime() + '.jpeg';
-    //console.log('fileName:' + fileName);
     const savedFile = await Filesystem.writeFile({
       path: fileName,
       data: base64Data,
@@ -114,7 +117,6 @@ export class ProviderPhotoProvider {
     });
 
     this.lueber = savedFile;
-    //console.log("103" + this.lueber); Objekt
     if (this.platform.is('hybrid')) {
       return {
         filepath: savedFile.uri,
@@ -134,6 +136,12 @@ export class ProviderPhotoProvider {
 
   }
 
+  /***
+   * Converts the picture depending
+   * on the platform
+   *
+   * @param cameraPhoto
+   */
 
   private async readAsBase64(cameraPhoto: CameraPhoto) {
 
