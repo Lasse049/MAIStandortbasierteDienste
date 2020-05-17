@@ -59,6 +59,7 @@ export class ProviderPhotoProvider {
         quality: 10,
       });
 
+      //Save Image
       const savedImageFile = await this.savePicture(capturedPhoto)
       this.photos.unshift(savedImageFile);
 
@@ -95,7 +96,10 @@ export class ProviderPhotoProvider {
     // Convert photo to base64 format, required by Filesystem API to save
     const base64Data = await this.readAsBase64(cameraPhoto);
 
+    //The Photo as base 64 String
     this.ueber = base64Data;
+
+    // Write filename
     const fileName = new Date().getTime() + '.jpeg';
     const savedFile = await Filesystem.writeFile({
       path: fileName,
