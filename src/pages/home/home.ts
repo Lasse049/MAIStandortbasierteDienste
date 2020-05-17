@@ -52,7 +52,7 @@ export class HomePage {
   // For Filtered Markers/Data
   filtercontainer: any; //Filterbutton
   filteralert:any; // Alert Window for filters
-  hausmuellarr: any = []; // Filtered Array from DB Data
+  filtereddata: any = []; // Filtered Array from DB Data
   gruenabfallarr: any = []; // Filtered Array from DB Data
   sondermuellarr: any = []; // Filtered Array from DB Data
   sperrmuellarr: any = []; // Filtered Array from DB Data
@@ -508,6 +508,11 @@ export class HomePage {
       this.map.removeLayer(this.markers);
       this.markers = null;
     }
+    if(this.fmarkers!=null) {
+      this.map.removeLayer(this.fmarkers);
+      this.markers = null;
+    }
+
     // if data wasnt filtered
     if (this.filterbool==false || this.filterbool == undefined) {
       // could not filter data (wrong day/name/impossible) but we have data so not getting double alert for filter and data
@@ -591,35 +596,31 @@ export class HomePage {
    * Creates Layergroups of markers and ands them on the map
    */
   setFilterMarker(){
-    // Create Layer groups
+    // Create Layer group
     this.fmarkers = new leaflet.layerGroup().addTo(this.map);
-    // Create Sub-Layer groups
-    this.hausmarker = new leaflet.layerGroup().addTo(this.map);
-    this.gruenabfall = new leaflet.layerGroup().addTo(this.map);
-    this.sondermuell = new leaflet.layerGroup().addTo(this.map);
-    this.spermuell = new leaflet.layerGroup().addTo(this.map);
 
+    // run through received data json array
+    for (let i = 0; i < this.filtereddata.length; i++) {
 
-    for (let i = 0; i < this.hausmuellarr.length; i++) {
-      //Markerfarbe
-      let hausmarker = new leaflet.marker([this.hausmuellarr[i].latitude, this.hausmuellarr[i].longitude]);
+      // Create a marker using filtered data latitude and longitude
+      let onefiltermarker = new leaflet.marker([this.filtereddata[i].latitude, this.filtereddata[i].longitude]);
 
       let markerarr = [];
-      if (this.hausmuellarr[i].hausmuell == true) {
+      if (this.filtereddata[i].hausmuell == true) {
         markerarr.push('<br> Hausmüll');
       }
-      if (this.hausmuellarr[i].gruenabfall == true) {
+      if (this.filtereddata[i].gruenabfall == true) {
         markerarr.push('<br> Grünabfall');
       }
-      if (this.hausmuellarr[i].sperrmuell == true) {
+      if (this.filtereddata[i].sperrmuell == true) {
         markerarr.push('<br> Sperrmüll');
       }
-      if (this.hausmuellarr[i].sondermuell == true) {
+      if (this.filtereddata[i].sondermuell == true) {
         markerarr.push('<br> Sondermüll');
       }
       //this.marker.bindPopup('<br>' + this.jsondata[i].time + ' <br> Gemeldet von: ' + this.jsondata[i].username + '<br>' + markerarr);
-      hausmarker.bindPopup('<b>Vorgefundene Abfallarten:</b> ' + markerarr + '<br> <b>Gemeldet von: </b> ' + this.hausmuellarr[i].username);
-      this.fmarkers.addLayer(hausmarker);
+      onefiltermarker.bindPopup('<b>Vorgefundene Abfallarten:</b> ' + markerarr + '<br> <b>Gemeldet von: </b> ' + this.filtereddata[i].username);
+      this.fmarkers.addLayer(onefiltermarker);
     }
 
     /*
@@ -715,10 +716,10 @@ export class HomePage {
     // Subscribe Event to get Data from Filter Page
     this.events.subscribe('custom-user-events', (filterdata) => {
       this.dataFromOtherPage = filterdata;
-      this.hausmuellarr = filterdata.hausmuellarr;
-      this.gruenabfallarr = filterdata.gruenabfallarr;
-      this.sperrmuellarr = filterdata.sperrmuelarr;
-      this.sondermuellarr = filterdata.sondermuellarr;
+      this.filtereddata = filterdata.filtdata;
+      //this.gruenabfallarr = filterdata.gruenabfallarr;
+      //this.sperrmuellarr = filterdata.sperrmuelarr;
+      //this.sondermuellarr = filterdata.sondermuellarr;
       this.filterbool = filterdata.filterbool;
       this.jsondata = filterdata.origindata;
     })

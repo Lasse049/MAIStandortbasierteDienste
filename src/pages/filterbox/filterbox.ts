@@ -29,7 +29,7 @@ export class FilterboxPage {
   fdate: any; //datefilterinput
   data: any; //Data of Server got from homepage
   data2: any = [];
-  hausmuellarr: any = []; // Array for only Hausmülldata
+  fildata: any = []; // Array for only Hausmülldata
   namearr: any = []; // Array to filter Data by username oder date
   filterboolean: any = false;// boolean for recognising if there is some filter working
   originialdata:any; // orginaldata from the server
@@ -137,22 +137,22 @@ export class FilterboxPage {
       */
        for (let i = 0; i < this.namearr.length; i++) {
          if (this.namearr[i].hausmuell== true && this.fHausmuell == true && this.fHausmuell != undefined) {
-           this.hausmuellarr.push(this.namearr[i]);
+           this.fildata.push(this.namearr[i]);
            console.log("hausmuellarr");
-           console.log(this.hausmuellarr);
+           console.log(this.fildata);
          }else
          if (this.namearr[i].gruenabfall == true && this.fGruenabfall == true && this.fGruenabfall != undefined) {
-           this.hausmuellarr.push(this.namearr[i]);
+           this.fildata.push(this.namearr[i]);
            console.log("gruen");
 
          } else
          if (this.namearr[i].sondermuell == true && this.fSondermuell == true && this.fSondermuell != undefined) {
-           this.hausmuellarr.push(this.namearr[i]);
+           this.fildata.push(this.namearr[i]);
            console.log("sonder");
 
          } else
          if (this.namearr[i].sperrmuell == true && this.fSperrmuell == true && this.fSperrmuell != undefined) {
-           this.hausmuellarr.push(this.namearr[i]);
+           this.fildata.push(this.namearr[i]);
            console.log("sper");
          };
        }
@@ -160,7 +160,7 @@ export class FilterboxPage {
   // if there are no data pushed into the hausmuellarr because there is no dataentry of the dataset that equals the set filter
   // the filterboolean is set false
   // if there is data in the hausmuellarr the filterboolean is set true
-    if(this.hausmuellarr.length== 0) {
+    if(this.fildata.length == 0) {
     this.filterboolean=false;
     } else {
       this.filterboolean = true;
@@ -168,7 +168,7 @@ export class FilterboxPage {
     }
     // combine data to the var filterdata
     let filterdata = {
-      hausmuellarr:this.hausmuellarr,
+      filtdata:    this.fildata,
       filterbool: this.filterboolean,
       origindata: this.originialdata
     };
