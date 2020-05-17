@@ -542,7 +542,14 @@ export class HomePage {
       // Program finished and shows data or alert. dismiss loading spinner
       this.dismissLoading();
     }
+
+    // Finished, dismiss loadin
     this.dismissLoading();
+
+    // Show Alert if no Location was found
+    if(this.lat==null){
+      this.showAlertnoLoc();
+    }
     }
 
 
@@ -773,7 +780,7 @@ export class HomePage {
           text: 'Retry',
           handler: () => {
             this.dismissLoading()
-            this.startApp()
+            this.getDBData()
           }
         },
         // OK Button dismisses loading
