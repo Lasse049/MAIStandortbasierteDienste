@@ -5,7 +5,7 @@ import {Injectable} from '@angular/core';
 import {CameraPhoto, CameraResultType, CameraSource, Capacitor, FilesystemDirectory, Plugins} from '@capacitor/core';
 import {Platform} from 'ionic-angular';
 import { AndroidPermissions } from '@ionic-native/android-permissions';
-const { Camera, Filesystem, Storage } = Plugins;
+const { Camera, Filesystem } = Plugins;
 
 /*
   Generated class for the ProviderPhotoProvider provider.

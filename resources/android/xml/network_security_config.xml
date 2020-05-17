@@ -6,7 +6,6 @@
   </base-config>
   <domain-config cleartextTrafficPermitted="true">
     <domain includeSubdomains="true">localhost</domain>
-    <domain includeSubdomains="true">igf-srv-lehre.igf.uni-osnabrueck.de:33859"</domain>
     <domain includeSubdomains="true">igf-srv-lehre.igf.uni-osnabrueck.de:44458"</domain>
   </domain-config>
 </network-security-config>
