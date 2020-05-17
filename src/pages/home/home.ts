@@ -332,7 +332,7 @@ export class HomePage {
     this.map.whenReady(function(e){
         this.mapinit = true;
         this.getLocation();
-      this.getDBData();
+        this.getDBData();
       }.bind(this)
     );
 
