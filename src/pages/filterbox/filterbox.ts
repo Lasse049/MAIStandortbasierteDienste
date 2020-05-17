@@ -29,7 +29,7 @@ export class FilterboxPage {
   fdate: any; //datefilterinput
   data: any; //Data of Server got from homepage
   data2: any = [];
-  fildata: any = []; // Array for only Hausmülldata
+  fildata: any = []; // Array for ofiltered data
   namearr: any = []; // Array to filter Data by username oder date
   filterboolean: any = false;// boolean for recognising if there is some filter working
   originialdata:any; // orginaldata from the server
@@ -71,7 +71,7 @@ export class FilterboxPage {
 
   }
 
-  filter2() {                                             //Filterfunktion - started when Button is clicked
+  filter() {                                             //Filterfunktion - started when Button is clicked
 
     console.log('button works!!')  //Consolelog printed when button is clicked and method starts
     if(this.finput != undefined){  // if finput (set in the Filterbox.html) is not undefined/ when there is/was an input..
@@ -166,13 +166,15 @@ export class FilterboxPage {
       this.filterboolean = true;
 
     }
-    // combine data to the var filterdata
+
+    // create object with filtered data, boolean indicationg if its filtered and the original data
     let filterdata = {
-      filtdata:    this.fildata,
+      filtdata:   this.fildata,
       filterbool: this.filterboolean,
       origindata: this.originialdata
     };
-// go back to the Homepage and send filtered data to it
+
+    // go back to the Homepage and send filtered data to it
     this.navCtrl.pop().then(() => {
       // Trigger custom event and pass data to be send back
       this.events.publish('custom-user-events', filterdata);
