@@ -9,11 +9,6 @@ import { AlertController } from 'ionic-angular';
 import {Platform} from 'ionic-angular';
 import {Network} from "@ionic-native/network/";
 
-@Component({
-  selector: 'page-home',
-  templateUrl: 'home.html'
-})
-
 /**
  *
  * An App which show a Map with users Location
@@ -28,6 +23,13 @@ import {Network} from "@ionic-native/network/";
  * @author Felix
  * @author Tristan
  */
+
+
+// Angular Metadata
+@Component({
+  selector: 'page-home',
+  templateUrl: 'home.html'
+})
 
 
 export class HomePage {
@@ -623,43 +625,6 @@ export class HomePage {
       this.fmarkers.addLayer(onefiltermarker);
     }
 
-    /*
-    // run through Array if its not undefined. set markers, bind popups, add to layergroup fmakers
-    if (this.hausmuellarr != undefined) {
-      for (let i = 0; i < this.hausmuellarr.length; i++) {
-        this.hausmarker = new leaflet.marker([this.hausmuellarr[i].latitude, this.hausmuellarr[i].longitude]);
-        this.hausmarker.bindPopup('<br>' + this.hausmuellarr[i].time + ' <br> Username: ' + this.hausmuellarr[i].username + '<br>' + ' Hausmuell');
-        this.fmarkers.addLayer(this.hausmarker);
-      }
-    }
-    console.log('okayklappt')
-    if (this.sperrmuellarr != undefined) {
-      for (let i = 0; i < this.sperrmuellarr.length; i++) {
-        this.spermuell = new leaflet.marker([this.sperrmuellarr[i].latitude, this.sperrmuellarr[i].longitude]);
-        this.spermuell.bindPopup('<br>' + this.sperrmuellarr[i].time + ' <br> Username: ' + this.sperrmuellarr[i].username + '<br>' + ' Sperrmuell');
-        this.fmarkers.addLayer(this.spermuell);
-      }
-    }
-    if (this.gruenabfallarr != undefined) {
-      for (let i = 0; i < this.gruenabfallarr.length; i++) {
-        this.gruenabfall = new leaflet.marker([this.gruenabfallarr[i].latitude, this.gruenabfallarr[i].longitude]);
-        this.gruenabfall.bindPopup('<br>' + this.gruenabfallarr[i].time + ' <br> Username: ' + this.gruenabfallarr[i].username + '<br>' + ' Gruenabfall');
-        this.fmarkers.addLayer(this.gruenabfall);
-      }
-    }
-    if (this.sondermuellarr != undefined) {
-      for (let i = 0; i < this.sondermuellarr.length; i++) {
-        this.sondermuell = new leaflet.marker([this.sondermuellarr[i].latitude, this.sondermuellarr[i].longitude]);
-        this.sondermuell.bindPopup('<br>' + this.sondermuellarr[i].time + ' <br> Username: ' + this.sondermuellarr[i].username + '<br>' + ' Sondermuell');
-        this.fmarkers.addLayer(this.sondermuell);
-        console.log('klappt auch ganz toll')
-      }
-    }
-    // Add Layergroup Filteredmakers fmakers to map
-    this.fmarkers.addTo(this.map);
-
-    console.log("fMarkers added");
-*/
     // unsubscribe event to collect data from filter
     this.events.unsubscribe('custom-user-events'); // unsubscribe this event
 
@@ -717,9 +682,6 @@ export class HomePage {
     this.events.subscribe('custom-user-events', (filterdata) => {
       this.dataFromOtherPage = filterdata;
       this.filtereddata = filterdata.filtdata;
-      //this.gruenabfallarr = filterdata.gruenabfallarr;
-      //this.sperrmuellarr = filterdata.sperrmuelarr;
-      //this.sondermuellarr = filterdata.sondermuellarr;
       this.filterbool = filterdata.filterbool;
       this.jsondata = filterdata.origindata;
     })
