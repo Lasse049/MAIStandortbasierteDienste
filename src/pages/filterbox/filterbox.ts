@@ -22,16 +22,15 @@ import { DatePicker } from '@ionic-native/date-picker';
 
 
 export class FilterboxPage {
+  data: any; //Data of Server got from homepage
   fHausmuell: boolean; // filter boolean for Hausmüll
   fSondermuell: boolean; // filter boolean for Sondermüll
   fGruenabfall: boolean; // filter boolean for Grünabfall
   fSperrmuell: boolean; // filter boolean for Sperrmüll
-  root: any; // for the way back to the homepage
   fname: any; // usernamefilterinput
   fdate: any; //datefilterinput
-  data: any; //Data of Server got from homepage
-  fildata: any = []; // Array for ofiltered data
   prefilter: any = []; // Array to filter Data by username oder date
+  fildata: any = []; // Array for ofiltered data
   filterboolean: any = false;// boolean for recognising if there is some filter working
   originialdata:any; // orginaldata from the server
 
@@ -45,23 +44,6 @@ export class FilterboxPage {
     this.originialdata = this.data;
   }
 
-  ionViewDidLoad() {
-  }
-
-  datesave() {
-  }
-
-  updateHausmuell() {
-  }
-
-  updateSondermuell() {
-  }
-
-  updateGruenabfall() {
-  }
-
-  updateSperrmuell() {
-  }
 
   filter() {                                             //Filterfunktion - started when Button is clicked
 
