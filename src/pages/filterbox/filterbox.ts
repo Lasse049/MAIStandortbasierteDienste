@@ -137,15 +137,26 @@ export class FilterboxPage {
          };
        }
     }
-  // if there are no data pushed into the hausmuellarr because there is no dataentry of the dataset that equals the set filter
-  // the filterboolean is set false
-  // if there is data in the hausmuellarr the filterboolean is set true
+
+    // if there are no data pushed into the hausmuellarr because there is no dataentry of the dataset that equals the set filter
+    // the filterboolean is set false
+    // if there is data in the hausmuellarr the filterboolean is set true
     if(this.fildata.length == 0) {
-    this.filterboolean=false;
+      this.filterboolean=false;
     } else {
       this.filterboolean = true;
-
     }
+
+
+    if(((this.fdate == null && this.fname == null)) &&
+      (this.fSperrmuell == undefined || this.fSperrmuell == false) &&
+      (this.fHausmuell == undefined || this.fHausmuell == false) &&
+      (this.fGruenabfall == undefined || this.fGruenabfall == false) &&
+      (this.fSperrmuell == undefined|| this.fSperrmuell == false)){
+      this.filterboolean = undefined;
+    }
+
+
 
     // create object with filtered data, boolean indicationg if its filtered and the original data
     let filterdata = {
