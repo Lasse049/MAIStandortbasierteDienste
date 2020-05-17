@@ -149,7 +149,7 @@ export class FilterboxPage {
 
     // create object with filtered data, boolean indicationg if its filtered and the original data
     let filterdata = {
-      filtdata:   this.fildata,
+      fildata:   this.fildata,
       filterbool: this.filterboolean,
       origindata: this.originialdata
     };
@@ -161,7 +161,7 @@ export class FilterboxPage {
     });
     }
 
-// Function to go back to the Homepage and als send the original data to it
+    // Function to go back to the Homepage and als send the original data to it
     back(){
       let filterdata = {
         origindata: this.originialdata,

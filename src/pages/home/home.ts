@@ -55,9 +55,6 @@ export class HomePage {
   filtercontainer: any; //Filterbutton
   filteralert:any; // Alert Window for filters
   filtereddata: any = []; // Filtered Array from DB Data
-  gruenabfallarr: any = []; // Filtered Array from DB Data
-  sondermuellarr: any = []; // Filtered Array from DB Data
-  sperrmuellarr: any = []; // Filtered Array from DB Data
   filterbool: boolean; // Indicates if Data was filtered
   dataFromOtherPage: any = null; // Filtered Data Object
   hausmarker: any; // Layergroup single marker
@@ -516,7 +513,7 @@ export class HomePage {
     }
 
     // if data wasnt filtered
-    if (this.filterbool==false || this.filterbool == undefined) {
+    if (this.filterbool== false || this.filterbool == undefined) {
       // could not filter data (wrong day/name/impossible) but we have data so not getting double alert for filter and data
       if(this.filterbool== false && data!=404){
         this.dismissAlert();
@@ -682,7 +679,7 @@ export class HomePage {
     // Subscribe Event to get Data from Filter Page
     this.events.subscribe('custom-user-events', (filterdata) => {
       this.dataFromOtherPage = filterdata;
-      this.filtereddata = filterdata.filtdata;
+      this.filtereddata = filterdata.fildata;
       this.filterbool = filterdata.filterbool;
       this.jsondata = filterdata.origindata;
     })
