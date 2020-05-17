@@ -6,6 +6,7 @@ import {ProviderPhotoProvider} from "../../providers/photo/photo";
 import { Events } from 'ionic-angular';
 import 'rxjs/add/operator/map';
 
+// Angular Metadata
 @Component({
   selector: 'page-checkbox',
   templateUrl: 'checkbox.html'
@@ -20,22 +21,18 @@ import 'rxjs/add/operator/map';
  */
 
 export class CheckboxPage {
-  Hausmuell: boolean = false;
-  Sondermuell: boolean = false;
-  Gruenabfall: boolean = false;
-  Sperrmuell: boolean = false;
-  root: any;
-  input: any;
-  latitude: any;
-  longitude: any;
-  data: any;
-  username: any;
-  timestamp: any;
-  picture: any;
-  error: boolean = false;
-  sending: any;
-  subscriptioncomplete: boolean = false;
-  postsubscription: any;
+  Hausmuell: boolean = false;             // indicate if Hausmüll is checked
+  Sondermuell: boolean = false;           // indicate if Sondermüll is checked
+  Gruenabfall: boolean = false;           // indicate if Grünabfall is checked
+  Sperrmuell: boolean = false;            // indicate if Sperrmüll is checked
+  latitude: any;                          // Latitude of user position
+  longitude: any;                         // Longitute of user position
+  username: any;                          // Usernameinput
+  timestamp: any;                         // Geolocation timestamp
+  error: boolean = false;                 // Boolean to indicate if sending is Possible and correct
+  sending: any;                           // Loading Spinner
+  subscriptioncomplete: boolean = false;  // Boolean indicates if data was send
+  postsubscription: any;                  // Listen to server response
 
   constructor(
     public navCtrl: NavController,
@@ -47,26 +44,10 @@ export class CheckboxPage {
     public event: Events
   )
   {
+    //Get data from other Page
     this.latitude = this.navParams.get('lat');
     this.longitude = this.navParams.get('long');
     this.timestamp = this.navParams.get('time');
-    this.data = this.navParams.get('data');
-
-  }
-  updateHausmuell() {
-    console.log('Hausmuell new state:' + this.Hausmuell);
-  }
-
-  updateSondermuell() {
-    console.log('Sondermuells new state:' + this.Sondermuell);
-  }
-  updateGruenabfall() {
-    console.log('Gruenabfall new state:' + this.Gruenabfall);
-
-  }
-  updateSperrmuell() {
-    console.log('Sperrmuells new state:' + this.Sperrmuell);
-
   }
 
   /***
@@ -148,7 +129,6 @@ export class CheckboxPage {
     // url = server url_port/method
     // data = data wrapped up as object
     this.postsubscription = this.http.post(url, data).subscribe((response) => {
-      console.log(response);
       // Sending succsessful, show alert
       if(response['status'] == 200){
         this.showAlertSe()

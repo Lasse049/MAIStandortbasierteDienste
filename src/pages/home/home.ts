@@ -643,7 +643,6 @@ export class HomePage {
     if(this.lat!=null) {
       this.navCtrl.push(CheckboxPage,
         {
-          data: this.jsondata,
           long: this.long,
           lat: this.lat,
           time: this.timestamp,

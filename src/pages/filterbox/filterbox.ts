@@ -30,7 +30,7 @@ export class FilterboxPage {
   fname: any; // usernamefilterinput
   fdate: any; //datefilterinput
   prefilter: any = []; // Array to filter Data by username oder date
-  fildata: any = []; // Array for ofiltered data
+  fildata: any = []; // Array for of filtered data
   filterboolean: any = false;// boolean for recognising if there is some filter working
   originialdata:any; // orginaldata from the server
 
@@ -53,42 +53,42 @@ export class FilterboxPage {
       }
     }
 
-    if (this.data != null) {                             // Only works when there are data from the Server
-      let g = 0;                                         // counting Variable
-      if(this.fname != null && this.fdate != null){     // if there is an input for username and date
-        for (let a = 0; a < this.data.length; a++) {     // for every entry of the dataset ...
-          var dateTime = this.data[a].time;              //... extract date and time from the entry
-          var getdateTime = dateTime.split("T",1); // and split the Date and the Time/ Date is saved in getdateTime
+    if (this.data != null) {                                                       // Only works when there are data from the Server
+      let g = 0;                                                                   // counting Variable
+      if(this.fname != null && this.fdate != null){                                // if there is an input for username and date
+        for (let a = 0; a < this.data.length; a++) {                               // for every entry of the dataset ...
+          var dateTime = this.data[a].time;                                        //... extract date and time from the entry
+          var getdateTime = dateTime.split("T",1);                   // and split the Date and the Time/ Date is saved in getdateTime
           if (this.data[a].username == this.fname && getdateTime == this.fdate) { //if the name and the date of the Datasetentry is equal to the entry in the Filterboxpage...
-            this.prefilter[g] = this.data[a];              // the datasetentry is written in the prefilter
-            g++                                          // the index of the prefilter is increased
+            this.prefilter[g] = this.data[a];                                     // the datasetentry is written in the prefilter
+            g++                                                                   // the index of the prefilter is increased
           }
         }
       } else {                                           // if there is only a entry for a name or date on the Filterboxpage
-        if (this.fname != null) {                       // if there is a entry in fname
+        if (this.fname != null) {                        // if there is a entry in fname
           for (let a = 0; a < this.data.length; a++) {   // for every entry of the dataset ...
-            if (this.data[a].username == this.fname) {  // if the nameentry of the dataset is equal to the entry given on the Filterboxpage
-              this.prefilter[g] = this.data[a];            // the datasetentry is written in the prefilter
+            if (this.data[a].username == this.fname) {   // if the nameentry of the dataset is equal to the entry given on the Filterboxpage
+              this.prefilter[g] = this.data[a];          // the datasetentry is written in the prefilter
               g++;                                       // the index of the prefilter is increased
             }
           }
-        } else {                                         // if there is no entry for a name on the Filterboxpage
-          if (this.fdate != null) {                      // if there is a entry for a date on the Filterboxpage
-            for (let a = 0; a < this.data.length; a++) { // for every entry of the dataset ...
-              var dateTime = this.data[a].time;          // extract date and time from the entry
+        } else {                                                     // if there is no entry for a name on the Filterboxpage
+          if (this.fdate != null) {                                  // if there is a entry for a date on the Filterboxpage
+            for (let a = 0; a < this.data.length; a++) {             // for every entry of the dataset ...
+              var dateTime = this.data[a].time;                      // extract date and time from the entry
               var getdateTime = dateTime.split("T",1); // and split the Date and the Time / Date is saved in getdateTime
-              if (getdateTime == this.fdate) {           // if the getdateTime of the dataset is equal to the entry given on the Filterboxpage
-                this.prefilter[g] = this.data[a];          // the datasetentry is written in the prefilter
-                g++;                                     // the index of the prefilter is increased
+              if (getdateTime == this.fdate) {                      // if the getdateTime of the dataset is equal to the entry given on the Filterboxpage
+                this.prefilter[g] = this.data[a];                   // the datasetentry is written in the prefilter
+                g++;                                                // the index of the prefilter is increased
               }
             }
           }
         }
       }
       if (this.fdate == null && this.fname == null){   // if there is no entry for a name or a date on the Filterboxpage
-        for (let a = 0; a < this.data.length; a++) {    // for every entry of the dataset
-          this.prefilter[g] = this.data[a];               // the datasetentry is written in the prefilter
-          g++;                                          // the index of the prefilter is increased
+        for (let a = 0; a < this.data.length; a++) {   // for every entry of the dataset
+          this.prefilter[g] = this.data[a];            // the datasetentry is written in the prefilter
+          g++;                                         // the index of the prefilter is increased
         }
       }
 
@@ -129,7 +129,8 @@ export class FilterboxPage {
       this.filterboolean = true;
     }
 
-
+    // if there is no selection to filter the filterboolean is overwritten to the status undefined
+    // so you will see all data and get no allert for impossible filtering
     if(((this.fdate == null && this.fname == null)) &&
       (this.fSperrmuell == undefined || this.fSperrmuell == false) &&
       (this.fHausmuell == undefined || this.fHausmuell == false) &&
