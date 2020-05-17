@@ -113,10 +113,8 @@ export class ProviderPhotoProvider {
         webviewPath: Capacitor.convertFileSrc(savedFile.uri),
       };
     }
-
     else {
-      // Use webPath to display the new image instead of base64 since it's
-      // already loaded into memory
+      // Use webPath to display the new image instead of base64 since it's already loaded into memory
       return {
         filepath: fileName,
         webviewPath: cameraPhoto.webPath
@@ -140,7 +138,6 @@ export class ProviderPhotoProvider {
       const file = await Filesystem.readFile({
         path: cameraPhoto.path
       });
-
       return file.data;
     }
     else {
@@ -152,6 +149,7 @@ export class ProviderPhotoProvider {
     }
   }
 
+  // Convert the Blob to a Base64 String
   convertBlobToBase64 = (blob: Blob) => new Promise((resolve, reject) => {
     const reader = new FileReader;
     reader.onerror = reject;
