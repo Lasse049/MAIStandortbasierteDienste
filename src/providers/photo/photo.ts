@@ -43,7 +43,6 @@ export class ProviderPhotoProvider {
       // You're testing in browser, do nothing.
     }
     this.platform = platform;
-    console.log('Hello Photo Provider');
   }
 
 
@@ -65,7 +64,6 @@ export class ProviderPhotoProvider {
       this.photos.unshift(savedImageFile);
 
     } catch (error) {
-      console.error(error);
     }
   }
 
@@ -81,9 +79,7 @@ export class ProviderPhotoProvider {
 
     if (this.ueber != null){
       this.ueber = null;
-
     }else {
-      console.log("Kein Foto aufgenommen!")
     }
   }
 

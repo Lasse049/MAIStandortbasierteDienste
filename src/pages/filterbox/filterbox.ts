@@ -45,7 +45,7 @@ export class FilterboxPage {
   }
 
 
-  filter() {                                             //Filterfunktion - started when Button is clicked
+  filter() {                      //Filterfunktion - started when Button is clicked
 
     if(this.fname != undefined){  // if fname (set in the Filterbox.html) is not undefined/ when there is/was an input..
       if(this.fname[0] == null){  // ...and If there is no entry in fname... (when text is deleted)...
