@@ -766,7 +766,7 @@ export class HomePage {
           text: 'Retry',
           handler: () => {
             this.dismissLoading()
-            this.getDBData()
+            this.startApp()
           }
         },
         // OK Button dismisses loading
