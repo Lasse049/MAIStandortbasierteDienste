@@ -28,12 +28,10 @@ export class FilterboxPage {
   finput: any; // usernamefilterinput
   fdate: any; //datefilterinput
   data: any; //Data of Server got from homepage
-  data2: any = [];
   fildata: any = []; // Array for ofiltered data
   namearr: any = []; // Array to filter Data by username oder date
   filterboolean: any = false;// boolean for recognising if there is some filter working
   originialdata:any; // orginaldata from the server
-  b:boolean
 
   constructor(
     public navCtrl: NavController,
