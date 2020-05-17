@@ -191,8 +191,6 @@ export class HomePage {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(this.map);
 
-    // try run showBlueDot in case location is there already
-    this.showBlueDot();
 
     // set  initial zoom and view if no location found yet
     // use middle of germany
@@ -454,7 +452,7 @@ export class HomePage {
       // Bind a popup to be displayed on clicking the marker
       this.bluedot.bindPopup(' <b> Ihre Position:  </b>' + '<br>' + 'Latitude: ' + this.lat + '</br>' + 'Longitude: ' + this.long + '</br>');
     } else {
-    // Lat or Long is null, No Location, do nothing
+        this.showAlertnoLoc();
     }
   }
 
@@ -542,14 +540,8 @@ export class HomePage {
       // Program finished and shows data or alert. dismiss loading spinner
       this.dismissLoading();
     }
-
     // Finished, dismiss loadin
     this.dismissLoading();
-
-    // Show Alert if no Location was found
-    if(this.lat==null){
-      this.showAlertnoLoc();
-    }
     }
 
 

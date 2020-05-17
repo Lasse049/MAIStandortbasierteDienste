@@ -21,7 +21,7 @@
   <ion-item id="datum" margin ="2px">
     <ion-label>Datum:</ion-label>
     <!-- Datepicker to get a Date (Day/Month/Year) to filter the Data by this Date -->
-    <ion-datetime displayFormat="DD.MM.YYYY" [(ngModel)]="fdate"></ion-datetime>
+    <ion-datetime displayFormat="DD.MM.YYYY" [(ngModel)]="fdate" margin-right="1%"> </ion-datetime>
   </ion-item>
 
   <p margin-left="2%"> Nach Abfallart filtern </p>
@@ -29,22 +29,22 @@
     <!-- Checkbox to filter the Data with the Attribute Hausmüll -->
     <ion-item margin="2px">
       <ion-label id="hausmuell">Hausmüll</ion-label>
-      <ion-checkbox [(ngModel)]="fHausmuell" (ionChange)="updateHausmuell()"></ion-checkbox>
+      <ion-checkbox [(ngModel)]="fHausmuell" ></ion-checkbox>
     </ion-item>
     <!-- Checkbox to filter the Data with the Attribute Sondermüll -->
     <ion-item margin="2px">
       <ion-label>Sondermüll</ion-label>
-      <ion-checkbox [(ngModel)]="fSondermuell" (ionChange)="updateSondermuell()"></ion-checkbox>
+      <ion-checkbox [(ngModel)]="fSondermuell"></ion-checkbox>
     </ion-item>
     <!-- Checkbox to filter the Data with the Attribute Grünabfall -->
     <ion-item margin ="2px">
       <ion-label>Grünabfall</ion-label>
-      <ion-checkbox [(ngModel)]="fGruenabfall" (ionChange)="updateGruenabfall()"></ion-checkbox>
+      <ion-checkbox [(ngModel)]="fGruenabfall"></ion-checkbox>
     </ion-item>
     <!-- Checkbox to filter the Data with the Attribute Sperrmüll -->
     <ion-item margin = "2px">
       <ion-label>Sperrmüll</ion-label>
-      <ion-checkbox [(ngModel)]="fSperrmuell" (ionChange)="updateSperrmuell()"></ion-checkbox>
+      <ion-checkbox [(ngModel)]="fSperrmuell"></ion-checkbox>
     </ion-item>
     <!--Empty Item for Style improvement  -->
     <ion-item>
